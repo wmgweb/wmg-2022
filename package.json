@@ -1,0 +1,24 @@
+{
+    "name:": "WMG",
+    "repository": {
+        "type": "git"
+    },
+    "dependencies": {
+        "bootstrap": "latest",
+        "slick-carousel": "latest",
+        "gulp-handlebars": "latest"
+    },
+    "devDependencies": {
+        "gulp": "latest",
+        "gulp-sass": "latest",
+        "sass": "latest",
+        "gulp-css-globbing": "latest",
+        "gulp-terser": "latest",
+        "gulp-concat": "latest",
+        "gulp-wrap": "latest",
+        "gulp-declare": "latest",
+        "gulp-autoprefixer": "latest",
+        "gulp-sourcemaps": "latest"
+    },
+    "license": "MIT"
+}

@@ -1,0 +1,1 @@
+jQuery(document).ready((function(c){c(".wmg-block").each((function(){var o=c(this).data(),t=WMG.blocks[o.block_id],i={};c.each(o,(function(c,o){"block_id"!=c&&(i[c]=o)})),c(this).html(t(i))}))}));

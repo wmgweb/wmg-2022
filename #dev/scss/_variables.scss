@@ -1,0 +1,33 @@
+// Fonts
+$font-def 	: Lato, Helvetica Neue, Helvetica, Arial, sans-serif;
+
+// Default Colours
+$color-black	: #000;
+$color-white	: #fff;
+
+// Custom Colours
+$color-dark 		: #282828;
+$color-lightgrey-1 	: #EEF0F3;
+$color-lightgrey-2 	: #D9DDE0;
+$color-lightgrey-3 	: #E6E8EA;
+$color-grey 		: #6D6E71;
+$color-darkgrey 	: #4D4D4F;
+$color-red 			: #ee3124;
+$color-gold 		: #fbb034;
+$color-blue 		: #009ddc;
+$color-orange 		: #F47920;
+$color-darkblue 	: #17427F;
+$color-green 		: #C1D82F;
+
+$color-text  	: $color-dark;
+
+// Bootstrap Breakpoints
+$bs-lg 	: 1200px;
+$bs-md  : 992px;
+$bs-sm	: 768px;
+
+// Transition
+$global-transition	: all .3s; 
+
+// File Path
+$file_path : 'https://warwick.ac.uk/fac/sci/wmg-2021/'

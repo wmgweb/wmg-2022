@@ -1,0 +1,26 @@
+<div id="block-{{ blockCount }}" class="block block-IN block-IN03">
+	<div class="container">
+		<div class="block__content">
+			<div class="row">
+				<div class="col-12 col-lg-8"><div class="IN__main">{{{content.[0].content}}}</div></div>
+				<div class="col-12 col-lg-4">
+					<aside class="IN__sidebar bg--lightgrey-3">
+						{{{content.[1].content}}}
+					</aside>
+					<div class="IN__form bg--dark color--white">
+						<p>Register your details for updates</p>
+						<form method="POST" action="">
+							<input type="email" name="email" placeholder="Email address" required>
+							<button type="submit" class="btn btn--red">Submit</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	jQuery(document).ready(function($) {
+		blockFunctions('{{ blockCount }}');
+	});
+</script>

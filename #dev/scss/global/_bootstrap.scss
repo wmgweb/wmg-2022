@@ -1,0 +1,61 @@
+@use "sass:math";
+
+// Make bootstrap grid flex instead of float
+$bs_breakpoints : ('sm' : $bs-sm, 'md' : $bs-md, 'lg' : $bs-lg);
+
+.row {
+	display: flex;
+	width: calc(100% + 20px);
+	margin: 0 -10px;
+	flex-wrap: wrap;
+	flex-direction: row;
+
+	> div[class^="col-"] {
+		float: none;
+		padding: 0 10px;
+	}
+
+	// Create default columns
+	@for $i from 1 through 12 {
+		.col-#{$i} {
+			width: unquote(100 * math.div($i, 12) + '%'); 
+		}
+	}
+
+	// Create breakpoint columns
+	@each $bp, $px in $bs_breakpoints {
+		@media(min-width: $px) {
+			@for $i from 1 through 12 {
+				.col-#{$bp}-#{$i} {
+					width: unquote(100 * math.div($i, 12) + '%'); 
+				}
+			}
+		}
+	}
+}
+
+$bs_displays : ('none', 'block', 'flex');
+
+@for $i from 1 through 12 {
+	.col-#{$i} {
+		width: unquote(100 * math.div($i, 12) + '%'); 
+	}
+}
+
+@each $display in $bs_displays {
+	.d-#{$display} {
+		display: #{$display} !important;
+	}
+
+	@each $bp, $px in $bs_breakpoints {
+		@media(min-width: $px) {
+			.d-#{$bp}-#{$display} {
+				display: #{$display} !important;
+			}
+		}
+	}
+}
+
+.align-items-center {
+	align-items: center;
+}

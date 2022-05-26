@@ -1,0 +1,15 @@
+<div id="block-{{ blockCount }}" class="block block-IN block-IN02">
+	<div class="container">
+		<div class="block__content">
+			<div class="row">
+				<div class="col-12 col-lg-8"><div class="IN__main">{{{content.[0].content}}}</div></div>
+				<div class="col-12 col-lg-4"><aside class="IN__sidebar bg--lightgrey-3">{{{content.[1].content}}}</aside></div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	jQuery(document).ready(function($) {
+		blockFunctions('{{ blockCount }}');
+	});
+</script>

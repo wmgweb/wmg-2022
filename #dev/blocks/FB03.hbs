@@ -1,0 +1,18 @@
+<div id="block-{{ blockCount }}" class="block block-FB block-FB03">
+	<div class="block__content">
+		<div class="row">
+			<div class="col-12 col-md-6 FB03__img">{{{content.[0].content}}}</div>
+			<div class="col-12 col-md-6 FB03__main">
+				<svg width="150" height="305" viewBox="0 0 150 305" fill="none" xmlns="http://www.w3.org/2000/svg" class="corner-arrow theme-fill-path">
+					<path d="M0 0L150 -1.31134e-05L150 305L0 0Z" fill="#EE3124"/>
+				</svg>
+				<div class="half-container half-container--right">{{{content.[1].content}}}</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	jQuery(document).ready(function($) {
+		blockFunctions('{{ blockCount }}');
+	});
+</script>

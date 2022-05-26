@@ -56,3 +56,6 @@ static/
 # Emacs
 *~
 
+# SFTP
+sftp-config.json
+

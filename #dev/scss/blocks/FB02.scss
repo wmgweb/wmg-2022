@@ -1,0 +1,19 @@
+.block-FB02 {
+	padding: 30px 0;
+
+	.FB02__img {
+		padding-bottom: 16px;
+
+		p {
+			margin: 0;
+		}
+	}
+
+	@include lg {
+		padding: 54px 0;
+
+		.FB02__img {
+			padding-bottom: 0;
+		}
+	}
+}

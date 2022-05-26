@@ -1,0 +1,52 @@
+.block-IN05 {	
+	.IN__social {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 18px 24px;
+
+		.IN__social-main {
+			p {
+				margin: 0 15px 0 0;
+				display: inline-block;
+				vertical-align: middle;
+			}
+
+			ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: inline-block;
+				vertical-align: middle;
+
+				li {
+					margin: 0 0 0 5px;
+					display: inline-block;
+
+					a {
+						text-decoration: none;
+						font-size: 35px;
+					}
+				}
+			}
+		}
+	}
+
+	.IN__main {
+		margin-bottom: 30px;
+	}
+
+	.IN__map-main {
+		p {
+			margin: 0;
+		}
+	}
+
+	@include lg {
+		.IN__main {
+			padding-top: 30px;
+			margin: 0;
+		}
+	}
+}

@@ -1,0 +1,32 @@
+<div id="block-{{ blockCount }}" class="block block-IN block-IN05">
+	<div class="container">
+		<div class="block__content">
+			<div class="row">
+				<div class="col-12 col-lg-6"><div class="IN__main">{{{content.[0].content}}}</div></div>
+				<div class="col-12 col-lg-6">
+					<div class="IN__social bg--red color--white">
+						<div class="IN__social-link">
+							<a href="https://www.google.com/maps/dir//WMG+Warwick+6+Lord+Bhattacharyya+Way+Coventry+CV4+7AL/@52.3843819,-1.5618825,13z/data=!4m5!4m4!1m0!1m2!1m1!1s0x48774ac55565518b:0x52952e4c9e69efec" target="_blank">Find us</a>
+						</div>
+						<div class="IN__social-main">
+							<p>Connect with us</p>
+							<ul>
+								<li><a href="https://twitter.com/wmgwarwick" class="fa fa-twitter" target="_blank"></a></li>
+								<li><a href="https://www.linkedin.com/company/wmg-university-of-warwick/" class="fa fa-linkedin" target="_blank"></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="IN__map">
+						<div class="IN__map-main video-wrapper">{{{content.[1].content}}}</div>
+						<div class="IN__map-description">{{{content.[2].content}}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	jQuery(document).ready(function($) {
+		blockFunctions('{{ blockCount }}');
+	});
+</script>

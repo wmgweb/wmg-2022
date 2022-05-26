@@ -1,0 +1,43 @@
+<div id="block-{{ blockCount }}" class="block block-FB block-FB01">
+	<div class="block__content">
+		<div class="row">
+			<div class="col-12 col-lg-6">
+				<div class="FB01__module FB01__module-left bg--dark color--white">
+					<div class="FB01__module-top">{{{content.[0].content}}}</div>
+					<div class="FB01__module-bottom">
+						<div class="half-container half-container--lg half-container--left">
+							<div class="FB01__module-bottom-content">{{{content.[1].content}}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-lg-6">
+				<div class="FB01__module FB01__module-right bg--light-grey">
+					<div class="FB01__module-top bg--red color--white">
+						<div class="row FB01__module-top-split">
+							<div class="col-12 col-md-6">
+								<div class="FB01__module-top-main">{{{content.[2].content}}}</div>
+							</div>
+							<div class="d-none d-md-block col-md-6">
+								<div class="FB01__module-top-image"></div>
+							</div>
+						</div>
+					</div>
+					<div class="FB01__module-bottom">
+						<div class="half-container half-container--lg half-container--right">
+							<div class="FB01__module-bottom-content">{{{content.[3].content}}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	jQuery(document).ready(function($) {
+		blockFunctions('{{ blockCount }}');
+
+		$('#block-{{ blockCount }} .FB01__module-top-main img:first-child').appendTo('#block-{{ blockCount }} .FB01__module-top-image');
+		$('#block-{{ blockCount }} .FB01__module-top-main p:first-child').remove();
+	});
+</script>

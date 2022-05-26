@@ -1,0 +1,56 @@
+.btn {
+	cursor: pointer;
+	display: inline-block;
+	padding: 10px 29px;
+	text-decoration: none !important;
+	border-radius: 0;
+	transition: all .3s;
+	font-weight: bold;
+	font-size: 15px;
+
+	&:hover {
+		opacity: .4;
+	}
+
+	&.btn--red {
+		background-color: $color-red;
+		color: $color-white;
+	}
+	
+	&.btn--gold {
+		background-color: $color-gold;
+		color: $color-dark;
+	}
+	
+	&.btn--blue {
+		background-color: $color-blue;
+		color: $color-dark;
+	}
+	
+	&.btn--orange {
+		background-color: $color-orange;
+		color: $color-dark;
+	}
+	
+	&.btn--dark {
+		background-color: $color-dark;
+		color: $color-white;
+	}
+	
+	&.btn--white {
+		background-color: $color-white;
+		color: $color-dark;
+	}
+	
+	&.btn--lightgrey,
+	&.btn--lightgrey-1 {
+		background-color: $color-lightgrey-1;
+		color: $color-dark;
+	}
+
+	&.btn--text {
+		color: inherit;
+		text-decoration: underline;
+		padding: 0;
+	}
+}

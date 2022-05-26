@@ -1,0 +1,100 @@
+h1,
+.h1 {
+	font-size: 40px;
+	line-height: 44px;
+	margin: 0 0 30px;
+	font-weight: 300;
+	color: inherit;
+}
+
+h2,
+.h2 {
+	font-size: 29px;
+	line-height: 37.7px;
+	margin: 0 0 30px;
+	font-weight: normal;
+	color: inherit;
+}
+
+h3,
+.h3 {
+	font-size: 26px;
+	line-height: 33.8px;
+	margin: 0 0 30px;
+	font-weight: normal;
+	color: inherit;
+}
+
+h4,
+.h4 {
+	font-size: 22px;
+	line-height: 30.8px;
+	margin: 0 0 30px;
+	font-weight: normal;
+	color: inherit;
+}
+
+h5,
+.h5 {
+	font-size: 14px;
+	line-height: 21px;
+	margin: 0 0 30px;
+	font-weight: normal;
+	color: inherit;
+}
+
+h6,
+.h6 {
+	font-size: 12px;
+	line-height: 18px;
+	margin: 0 0 30px;
+	font-weight: normal;
+	color: inherit;
+}
+
+p {
+	font-size: 16px;
+	margin: 0 0 20px;
+
+	strong {
+		font-weight: bold;
+	}
+}
+
+ul,
+ol {
+	margin: 0 0 20px;
+
+	li {
+		margin: 0 0 10px;
+	}
+}
+
+a:not(.btn) {
+	text-decoration: underline;
+    color: inherit;
+
+    &:focus {
+    	background: inherit !important;
+        outline: none !important;
+        box-shadow: none !important;
+        color: inherit !important;
+    }
+}
+
+blockquote {
+	font-size: 20px;
+	line-height: 28px;
+	font-style: normal;
+	display: block;
+	padding: 0;
+	margin: 30px 0;
+
+	cite {
+		font-size: 14px;
+		line-height: 21px;
+		font-style: normal;
+		display: block;
+		margin: 25px 0 0;
+	}
+}

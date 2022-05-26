@@ -1,36 +1,37 @@
 "use strict";
 
-// Load Plugins
-const gulp 			= require('gulp');
-const sass 			= require('gulp-sass')(require('sass'));
-const globbing 		= require('gulp-css-globbing');
-const terser     	= require('gulp-terser');
-const concat		= require('gulp-concat');
-const autoprefixer  = require('gulp-autoprefixer');
-const sourcemaps 	= require('gulp-sourcemaps');
-const handlebars 	= require('gulp-handlebars');
-const wrap 			= require('gulp-wrap');
-const declare 		= require('gulp-declare');
-
 // Set Vars
 var config = {
 	devSASS 	: '#dev/scss/',
 	devJS 		: '#dev/js/',
-	devBlocks 	: '#dev/blocks/',
-	assetsCSS 	: 'build/assets/css/',
+	devBlocks : '#dev/blocks/',
+	assetsCSS : 'build/assets/css/',
 	assetsJS 	: 'build/assets/js/'
 }
+
+// Load Plugins
+const gulp 						= require('gulp');
+const sass 						= require('gulp-sass')(require('sass'));
+const globbing 				= require('gulp-css-globbing');
+const terser     			= require('gulp-terser');
+const concat					= require('gulp-concat');
+const autoprefixer  	= require('gulp-autoprefixer');
+const sourcemaps 			= require('gulp-sourcemaps');
+const gulpHandlebars	= require('gulp-handlebars');
+const wrap 						= require('gulp-wrap');
+const declare 				= require('gulp-declare');
+const rename 					= require('gulp-rename');
 
 // Compile Dependencies
 function dependencies(done) {
     gulp.src(['node_modules/handlebars/dist/handlebars.js']).pipe(gulp.dest(config.devJS + '/vendor/'));
-    //gulp.src(['node_modules/slick-carousel/slick/slick.js']).pipe(gulp.dest(config.devJS + '/vendor/'));
+    gulp.src(['node_modules/slick-carousel/slick/slick.js']).pipe(gulp.dest(config.devJS + '/vendor/'));
     done();
 }
 
 function handlebarsTemplates() {
 	return gulp.src(config.devBlocks + '*.hbs')
-    .pipe(handlebars())
+    .pipe(gulpHandlebars())
     .pipe(wrap('Handlebars.template(<%= contents %>)'))
     .pipe(declare({
       namespace: 'WMG.blocks',
@@ -38,7 +39,6 @@ function handlebarsTemplates() {
     }))
     .pipe(concat('blocks.js'))
     .pipe(gulp.dest(config.assetsJS));
-
 }
 
 
@@ -63,7 +63,11 @@ function css() {
 function js() {
 	return gulp
 		.src([config.devJS + '**/*.js'])
-        .pipe(terser())
+        .pipe(terser({
+        	compress: false,
+        	keep_fnames: true,
+        	keep_classnames: true
+        }))
         .pipe(gulp.dest(config.assetsJS));
 };
 

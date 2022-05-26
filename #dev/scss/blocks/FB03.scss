@@ -1,0 +1,39 @@
+.block-FB03 {
+	.FB03__img {
+		p {
+			margin: 0;
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	.FB03__main {
+		position: relative;
+		padding: 30px 0;
+
+		.h3,
+		h3 {
+			margin: 0;
+			color: $color-grey;
+		}
+
+		.corner-arrow {
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 53px;
+		}
+	}
+
+	@include lg {
+		.FB03__main {
+			svg {
+				width: 150px;
+			}
+		}
+	}
+}

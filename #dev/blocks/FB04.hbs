@@ -1,0 +1,24 @@
+<div id="block-{{ blockCount }}" class="block block-FB block-FB04">
+	<div class="block__content">
+		<div class="row">
+			{{#each content}}
+				<div class="col-12 col-lg-6">
+					<div class="FB04__article bg--dark color--white">
+						<div class="FB04__article-img"></div>
+						<div class="FB04__article-content">{{{content}}}</div>
+					</div>
+				</div>
+			{{/each}}
+		</div>
+	</div>
+</div>
+<script>
+	jQuery(document).ready(function($) {
+		blockFunctions('{{ blockCount }}');
+
+		$('#block-{{ blockCount }} .FB04__article').each(function() {
+			$('.FB04__article-content img', $(this)).appendTo($('.FB04__article-img', $(this)));
+			$('.FB04__article-content p:first-child', $(this)).remove();
+		});
+	});
+</script>

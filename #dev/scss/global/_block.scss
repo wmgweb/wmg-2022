@@ -1,0 +1,38 @@
+.block {
+	position: relative;
+	overflow: hidden;
+	margin: 30px 0;
+
+	.block__edit {
+		display: none;
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		z-index: 1000;
+		text-decoration: none;
+		background: $color-dark;
+		color: $color-white;
+		padding: .5rem 2rem;
+	}
+
+	&:hover {
+		.block__edit {
+			display: block;
+		}
+	}
+
+	.block__buttons {
+		margin: 0 -1rem;
+
+		a {
+			margin: 0 1rem;
+
+		}
+	}
+
+	.block__content {
+		.btn {
+			margin-right: 1rem;
+		}
+	}
+}

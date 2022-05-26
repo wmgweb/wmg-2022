@@ -1,0 +1,49 @@
+<div id="block-{{ blockCount }}" class="block block-HB01">
+	<div class="block__content">
+		<!-- Get first content as background image -->
+		{{{content.[0].content}}}
+		<div id="slick-{{ blockCount }}" class="block-HB01__carousel">
+			<!-- All content except first output as carousel item -->
+			{{#each content}}
+				{{#if @index includeZero=false}}
+					<div class="block-HB01__carousel-item">
+						{{{ this.content }}}
+					</div>
+				{{/if}}
+			{{/each}}
+		</div>
+	</div>
+<script>
+	jQuery(document).ready(function($) {
+		blockFunctions('{{ blockCount }}', ['blockBG']);
+
+		var blockParent = $('#block-{{ blockCount }}').parent('.wmg-block');
+
+		slickSettings = {};
+		
+		if(blockParent.attr('data-slick')) {
+			var slickSettings = blockParent.attr('data-slick');
+			slickSettings = JSON.parse(slickSettings.replace(/'/g, '"'));
+		}
+
+		$('.block-HB01__carousel-item', blockParent).prepend('<span class="brand-triangle"></span>');
+
+		var slickObject = {
+			autoplay: true,
+			arrows: false,
+			draggable: false,
+			customPaging : function(slider, i) {
+				var thumb = $(slider.$slides[i]).data();
+				return '<a>0' + parseInt(i+1) + '</a>';
+			}			
+		}
+
+		if(slickSettings.hasOwnProperty('dots')) {
+			slickObject.dots = slickSettings.dots;
+		}
+
+		$(window).on('load', function(){
+			$('#slick-{{ blockCount }}').slick(slickObject);
+		});
+	});
+</script>

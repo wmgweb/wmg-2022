@@ -1,0 +1,99 @@
+/* Footer */
+.id7-page-footer {
+	.id7-site-footer {
+		background: #272729 !important;
+		padding: 90px 0 40px;
+	} 
+
+	.id7-app-footer {
+		background: #272729 !important;
+		color: #fff;
+		padding: 20px 0 30px;
+		border-top:  1px solid #fff;
+
+		a, 
+		a:link, 
+		a:visited {
+			color: #fff;
+		}
+	}
+
+	.id7-site-footer,
+	.id7-app-footer {
+		.id7-site-footer-content,
+		.id7-app-footer-content {
+			max-width: 90%;
+			width: 90%;
+			margin: 0 auto;
+		}
+
+		.id7-logo-bleed {
+			display: none;
+		}
+	}
+
+	.id7-site-footer-content {
+		 .quick-links + .row {
+			display: none;
+		}	
+
+		.row {
+			margin: 0 -30px;
+
+			> div {
+				padding: 0 30px 30px;
+
+				&:before {
+					content: '';
+					display: block;
+					width: 100%;
+					height: 5px;
+					background: #EE3224;
+					margin: 0 0 5px;
+				}
+
+				&:nth-child(2):before {
+					background: #FCB034;
+				}
+
+				&:nth-child(3):before {
+					background: #009DDC;
+				}
+
+				&:nth-child(4):before {
+					background: #818181;
+				}
+			}
+		}
+
+		.list-unstyled {
+			li {
+				font-size: 16px;
+
+				a {
+					text-decoration: none;
+				}
+
+				&:first-child {
+					font-size: 20px;
+				}
+			}
+		}
+	}
+
+	.fa-social-icons {
+		text-align: left;
+		margin: 20px 0 0 0;
+
+		&:before {
+			content: 'Contact us';
+			display: block;
+			margin: 0 0 10px;
+			font-size: 16px;
+		}
+
+		a {
+			margin-right: 5px;
+		}
+	}
+}

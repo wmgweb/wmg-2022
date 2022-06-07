@@ -4,88 +4,113 @@
 var config = {
 	devSASS 	: '#dev/scss/',
 	devJS 		: '#dev/js/',
-	devBlocks : '#dev/blocks/',
-	assetsCSS : 'build/assets/css/',
-	assetsJS 	: 'build/assets/js/'
+	devBlocks 	: '#dev/blocks/',
+	dist 		: 'dist/',
+	distCSS 	: 'dist/css/',
+	distJS 		: 'dist/js/'
 }
 
 // Load Plugins
-const gulp 						= require('gulp');
-const sass 						= require('gulp-sass')(require('sass'));
-const globbing 				= require('gulp-css-globbing');
-const terser     			= require('gulp-terser');
-const concat					= require('gulp-concat');
+const gulp 				= require('gulp');
+const sass 				= require('gulp-sass')(require('sass'));
+const globbing 			= require('gulp-css-globbing');
+const terser     		= require('gulp-terser');
+const concat			= require('gulp-concat');
 const autoprefixer  	= require('gulp-autoprefixer');
-const sourcemaps 			= require('gulp-sourcemaps');
+const sourcemaps 		= require('gulp-sourcemaps');
 const gulpHandlebars	= require('gulp-handlebars');
-const wrap 						= require('gulp-wrap');
-const declare 				= require('gulp-declare');
-const rename 					= require('gulp-rename');
+const wrap 				= require('gulp-wrap');
+const declare 			= require('gulp-declare');
+const rename 			= require('gulp-rename');
 
-// Compile Dependencies
+// Add Dependencies
 function dependencies(done) {
     gulp.src(['node_modules/handlebars/dist/handlebars.js']).pipe(gulp.dest(config.devJS + '/vendor/'));
     gulp.src(['node_modules/slick-carousel/slick/slick.js']).pipe(gulp.dest(config.devJS + '/vendor/'));
     done();
 }
 
-function handlebarsTemplates() {
-	return gulp.src(config.devBlocks + '*.hbs')
-    .pipe(gulpHandlebars())
-    .pipe(wrap('Handlebars.template(<%= contents %>)'))
-    .pipe(declare({
-      namespace: 'WMG.blocks',
-      noRedeclare: true, // Avoid duplicate declarations
-    }))
-    .pipe(concat('blocks.js'))
-    .pipe(gulp.dest(config.assetsJS));
-}
-
 
 // Compile CSS
 function css() {
 	return gulp
-		.src(config.devSASS + '*.scss')
+		.src(config.devSASS + 'global.scss', config.devSASS + 'blocks.scss')
 		.pipe(sourcemaps.init())
 		.pipe(globbing({
 			extensions: ['.scss']
 		}))
-        .pipe(sass({
-	        outputStyle: 'compressed'
-	    }).on('error', sass.logError))
+    	.pipe(sass({
+	      	outputStyle: 'compressed'
+	  	}).on('error', sass.logError))
 		.pipe(autoprefixer())
 		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest(config.assetsCSS));
+		.pipe(gulp.dest(config.distCSS));
 };
 
 
 // Compile JS
 function js() {
 	return gulp
-		.src([config.devJS + '**/*.js'])
-        .pipe(terser({
-        	compress: false,
-        	keep_fnames: true,
-        	keep_classnames: true
-        }))
-        .pipe(gulp.dest(config.assetsJS));
+		.src([config.devJS + 'vendor/**/*.js', config.devJS + 'block-output.js'])
+		.pipe(concat('main.js'))
+	    .pipe(gulp.dest(config.distJS));
 };
+
+// Compile Handlebars Templates
+function handlebarsTemplates() {
+	return gulp
+		.src(config.devBlocks + '*.hbs')
+	    .pipe(gulpHandlebars())
+	    .pipe(wrap('Handlebars.template(<%= contents %>)'))
+	    .pipe(declare({
+	      namespace: 'WMG.blocks',
+	      noRedeclare: true, // Avoid duplicate declarations
+	    }))
+	    .pipe(concat('handlebars-blocks.js'))
+	    .pipe(gulp.dest(config.distJS));
+}
+
+// Compile all CSS into one file
+function cssCombine() {
+	return gulp
+		.src(config.devSASS + 'main.scss')
+		.pipe(globbing({
+			extensions: ['.scss']
+		}))
+	    .pipe(sass({
+	        outputStyle: 'compressed'
+	    }).on('error', sass.logError))
+		.pipe(autoprefixer())
+		.pipe(gulp.dest(config.dist));
+};
+
+// Compile all JS into one file
+function jsCombine() {
+	return gulp
+		.src([config.distJS + 'main.js', config.distJS + 'handlebars-blocks.js'])
+		.pipe(concat('main.js'))
+        .pipe(gulp.dest(config.dist));
+}
 
 
 // Watch Files 
 function watchFiles() {
-	gulp.watch(config.devJS + '**/*.js', js);
-	gulp.watch(config.devSASS + '**/*.scss', css);
-	gulp.watch(config.devBlocks + '**/*.hbs', handlebarsTemplates);
+	gulp.watch(config.devBlocks + '**/*.hbs', [handlebarsTemplates, jsCombine]);
+	gulp.watch(config.devJS + '**/*.js', [js, jsCombine]);
+	gulp.watch(config.devSASS + '**/*.scss', [css, cssCombine]);
 }
 
 const watch = gulp.series(watchFiles);
-const dep 	= gulp.parallel(dependencies, css, js);
+const dep 	= gulp.parallel(dependencies);
+const build = gulp.parallel(dependencies, css, cssCombine, js, handlebarsTemplates, jsCombine);
 
 // Export Tasks
 exports.css = css;
+exports.cssCombine = cssCombine;
 exports.js = js;
+exports.jsCombine = jsCombine;
 exports.handlebars = handlebarsTemplates;
 exports.watch = watch;
 exports.dep = dep;
+exports.build = build;
 exports.default = watch;

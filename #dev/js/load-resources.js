@@ -2,7 +2,8 @@ const timestamp = Date.now();
 
 // Load Additional CSS
 const css_files = [
-	'https://staging.grid-digital.co.uk/wmg/dist/main.css'
+	//'https://staging.grid-digital.co.uk/wmg/dist/main.css'
+	'https://cdn.jsdelivr.net/gh/wmgweb/wmg-2022@dev/dist/main.css'
 ];
 
 css_files.forEach(function (item, index) {
@@ -15,7 +16,8 @@ css_files.forEach(function (item, index) {
 
 // Load Additional JS
 const js_files = [
-	'https://staging.grid-digital.co.uk/wmg/dist/main.js?v=' + timestamp
+	//'https://staging.grid-digital.co.uk/wmg/dist/main.js?v=' + timestamp
+	'https://cdn.jsdelivr.net/gh/wmgweb/wmg-2022@dev/dist/main.js?v=' + timestamp 
 ];
 
 js_files.forEach(function (item, index) {

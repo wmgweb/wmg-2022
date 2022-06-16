@@ -3,7 +3,11 @@
 		<div class="row">
 			<div class="col-12">
 				<div class="block__content">
-					<h2>TB01</h2>
+					{{#each content}}
+						<div class="block-TB01__column">
+							{{{ this.content }}}
+						</div>
+					{{/each}}
 				</div>
 			</div>
 		</div>

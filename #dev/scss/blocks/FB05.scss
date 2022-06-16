@@ -54,6 +54,13 @@
 	}
 
 	@include lg {
+		&.height--tall {
+			.FB05__main {
+				padding-top: 65px;
+				padding-bottom: 65px;
+			}
+		}
+
 		.FB05__main {
 			position: relative;
 			padding: 20px 124px 20px 0;

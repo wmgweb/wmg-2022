@@ -31,7 +31,12 @@
 
 	@include lg {
 		.FB03__main {
-			svg {
+			display: flex;
+			align-items: center;
+			padding-top: 20px;
+			padding-bottom: 20px;
+
+			.corner-arrow {
 				width: 150px;
 			}
 		}

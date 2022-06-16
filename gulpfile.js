@@ -95,9 +95,9 @@ function jsCombine() {
 
 // Watch Files 
 function watchFiles() {
-	gulp.watch(config.devBlocks + '**/*.hbs', [handlebarsTemplates, jsCombine]);
-	gulp.watch(config.devJS + '**/*.js', [js, jsCombine]);
-	gulp.watch(config.devSASS + '**/*.scss', [css, cssCombine]);
+	gulp.watch(config.devBlocks + '**/*.hbs', gulp.series(handlebarsTemplates, jsCombine));
+	gulp.watch(config.devJS + '**/*.js', gulp.series(js, jsCombine));
+	gulp.watch(config.devSASS + '**/*.scss', gulp.series(css, cssCombine));
 }
 
 const watch = gulp.series(watchFiles);

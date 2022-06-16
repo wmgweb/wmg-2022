@@ -2,7 +2,6 @@
 	.FB04__article {
 		display: flex;
 		width: 100%;
-		margin: 0 0 13px;
 
 		.FB04__article-img {
 			width: 128px;
@@ -38,6 +37,12 @@
 				margin: 0;
 				color: $color-grey;
 			}
+		}
+	}
+
+	.row {
+		> div {
+			padding-bottom: 13px;
 		}
 	}
 

@@ -1,0 +1,48 @@
+.inner-block {
+	padding: 50px 5vw;
+	color: $color-white;
+	position: relative;
+	overflow: hidden;
+
+	svg {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		margin: 0;
+	}
+
+	&.inner-block--red {
+		background-color: $color-red;
+
+		svg path {
+			fill: #EE3124;
+		}
+	}
+
+	@include lg {
+		padding: 20px 40px 20px 20px;
+		display: flex;
+		align-items: center;
+
+		&:after {
+			content: '';
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			width: 33px;
+			height: calc(100% - 50px);
+		}
+
+		&.inner-block--red:after {
+			background-color: #de0905;
+		}
+	}
+}

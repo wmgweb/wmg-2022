@@ -4,9 +4,9 @@
 			<div class="row align-items-center">
 				<div class="col-12 col-lg-6"><div class="IN__main">{{{content.[0].content}}}</div></div>
 				<div class="col-12 col-lg-6">
-					<div class="IN__video">
-						<div class="IN__video-main video-wrapper">{{{content.[1].content}}}</div>
-						<div class="IN__video-description">{{{content.[2].content}}}</div>
+					<div class="IN__media">
+						<div class="IN__media-main">{{{content.[1].content}}}</div>
+						<div class="IN__media-description">{{{content.[2].content}}}</div>
 					</div>
 				</div>
 			</div>
@@ -16,5 +16,10 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		if($('#block-{{ blockCount }} .IN__media-main iframe').length) {
+			$('#block-{{ blockCount }} .IN__media-main iframe').unwrap('p');
+			$('#block-{{ blockCount }} .IN__media-main iframe').wrap('<div class="video-wrapper"></div>');
+		}
 	});
 </script>

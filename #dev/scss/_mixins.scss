@@ -26,7 +26,7 @@
 
 
 // Theme
-$theme-colors: ('dark': $color-dark, 'red': $color-red, 'gold': $color-gold, 'blue': $color-blue, 'orange': $color-orange, 'darkblue': $color-darkblue, 'green': $color-green, 'lightgrey-1': $color-lightgrey-1, 'lightgrey-2': $color-lightgrey-2, 'lightgrey-3': $color-lightgrey-3, 'grey': $color-grey, 'white': $color-white);
+$theme-colors: ('dark': $color-dark, 'dark-2': $color-dark-2, 'red': $color-red, 'gold': $color-gold, 'blue': $color-blue, 'orange': $color-orange, 'darkblue': $color-darkblue, 'green': $color-green, 'lightgrey-1': $color-lightgrey-1, 'lightgrey-2': $color-lightgrey-2, 'lightgrey-3': $color-lightgrey-3, 'grey': $color-grey, 'white': $color-white);
 @mixin theme($property, $element : '', $type : '') {
     @each $name, $color in $theme-colors {
         #{$type}.theme--#{$name} #{$element} {

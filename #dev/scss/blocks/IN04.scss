@@ -1,11 +1,50 @@
 .block-IN04 {
-	.IN__video-main {
+	.IN__media-main {
 		p {
 			margin: 0;
 		}
 	}
 	
-	.IN__video-description {
+	.IN__media-description {
 		margin-top: 10px;
+
+		p {
+			font-size: 14px;
+			
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	.IN__main {
+		padding: 30px 0;
+
+		.h3,
+		h3 {
+			margin: 0;
+			color: $color-grey;
+		}
+	}
+
+	@include lg {
+		&.media-align--left {
+			.row {
+				> div {
+					&:first-child {
+						order: 2;
+					}
+
+					&:last-child {
+						order: 1;
+					}
+				}
+			}
+
+			.IN__main {
+				padding-left: 32px;
+				padding-right: 0;
+			}
+		}		
 	}
 }

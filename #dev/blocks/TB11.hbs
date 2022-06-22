@@ -1,0 +1,56 @@
+<div id="block-{{ blockCount }}" class="block block-TB block-TB11">
+	<div class="container">
+		<div class="block__content">
+			<div class="row align-items-center">
+				<div class="col-12 col-lg-6">
+					<div class="TB__main">
+						<div class="TB11__carousel">
+							{{#if content.[2].content }}
+								<div>{{{content.[2].content}}}</div>
+							{{/if}}
+							{{#if content.[3].content }}
+								<div>{{{content.[3].content}}}</div>
+							{{/if}}
+							{{#if content.[4].content }}
+								<div>{{{content.[4].content}}}</div>
+							{{/if}}
+							{{#if content.[5].content }}
+								<div>{{{content.[5].content}}}</div>
+							{{/if}}
+							{{#if content.[6].content }}
+								<div>{{{content.[6].content}}}</div>
+							{{/if}}
+							{{#if content.[7].content }}
+								<div>{{{content.[7].content}}}</div>
+							{{/if}}
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-lg-6">
+					<div class="TB__media">
+						<div class="TB__media-main">{{{content.[0].content}}}</div>
+						<div class="TB__media-description">{{{content.[1].content}}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	jQuery(document).ready(function($) {
+		blockFunctions('{{ blockCount }}');
+
+		if($('#block-{{ blockCount }} .TB__media-main iframe').length) {
+			$('#block-{{ blockCount }} .TB__media-main iframe').unwrap('p');
+			$('#block-{{ blockCount }} .TB__media-main iframe').wrap('<div class="video-wrapper"></div>');
+		}
+
+		$('#block-{{ blockCount }} .TB11__carousel').slick({
+			autoplay: false,
+			dots: true,
+			arrows: false,
+			slidesToShow: 1
+		});
+
+	});
+</script>

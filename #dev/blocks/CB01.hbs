@@ -1,10 +1,12 @@
 <div id="block-{{ blockCount }}" class="block block-CB block-CB01">
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>CB01</h2>
-				</div>
+		<div class="block__content">
+			<div class="CB-row">
+				{{#each content}}
+					<div class="CB-col">
+						<div class="card-block">{{{ this.content }}}</div>
+					</div>
+				{{/each}}
 			</div>
 		</div>
 	</div>
@@ -12,5 +14,11 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		$('#block-{{ blockCount }} .card-block').each(function() {
+			if($('img', $(this)).length) {
+				$('img', $(this)).unwrap('p').wrap('<div class="card-block__image"></div>');
+			}
+		});
 	});
 </script>

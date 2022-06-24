@@ -1,0 +1,51 @@
+.block-MB08 {
+	position: relative;
+
+
+	.MB08-bg {
+		width: 100%;
+		height: 230px;
+		z-index: 1;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	.MB08-content {
+		padding: 40px 0;
+		text-align: center;
+
+		.h3,
+		h3 {
+			margin: 0;
+			color: $color-grey;
+		}
+	}
+
+	.container {
+		z-index: 2;
+		position: relative;
+	}
+
+	@include md {
+		padding: 120px 0;
+
+		.MB08-bg {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+		}
+
+		.MB08-content {
+			background: $color-white;
+			padding: 25px;
+			width: 100%;
+			max-width: 752px;
+			margin: 0 auto;
+		}
+	}
+}

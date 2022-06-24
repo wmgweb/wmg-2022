@@ -21,5 +21,9 @@
 			$('#block-{{ blockCount }} .IN__media-main iframe').unwrap('p');
 			$('#block-{{ blockCount }} .IN__media-main iframe').wrap('<div class="video-wrapper"></div>');
 		}
+
+		if($('#block-{{ blockCount }} .IN__media-main video').length) {
+			$('#block-{{ blockCount }} .IN__media-main video').unwrap('p');
+		}
 	});
 </script>

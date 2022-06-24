@@ -1,0 +1,71 @@
+.block-MB {
+	.MB-carousel {
+		position: relative;
+		margin: 0 -16px;
+		width: calc(100% + 32px);
+
+		.MB-carousel__item {
+			padding: 0 16px;
+			font-size: 16px;
+
+			video,
+			iframe,
+			img,
+			.video-wrapper {
+				margin-bottom: 11px;
+				width: 100%;
+				display: block;
+			}
+		}
+
+		.slick-arrow {
+			position: absolute;
+			left: 0;
+			top: 50%;
+			margin-top: -12.5px;
+			border: 0;
+			background: transparent;
+			cursor: pointer;
+			z-index: 10;
+
+			svg {
+				width: 13px;
+				height: 25px;
+			}
+
+			&.slick-next {
+				left: auto;
+				right: 0;
+			}
+		}
+	}
+
+	@include sm {
+		.slick-arrow {
+			left: -10px;
+
+			&.slick-next {
+				right: -10px;
+			}
+		}
+	}
+
+	@include md {
+		.MB-carousel {
+			.slick-arrow {
+				margin-top: -16px;
+				left: -30px;
+
+				svg {
+					width: 17px;
+					height: 32px;
+				}
+
+				&.slick-next {
+					left: auto;
+					right: -30px;
+				}
+			}
+		}
+	}
+}

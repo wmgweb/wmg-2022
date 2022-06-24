@@ -1,10 +1,10 @@
 <div id="block-{{ blockCount }}" class="block block-IG block-IG02">
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>IG02</h2>
-				</div>
+		<div class="block__content">
+			<div class="row">
+				{{#each content}}
+					<div class="col-12 col-sm-6 col-md-3"><div class="IG02__item">{{{ this.content }}}</div></div>
+				{{/each}}
 			</div>
 		</div>
 	</div>
@@ -12,5 +12,9 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		$('#block-{{ blockCount }} img').each(function() {
+			$(this).unwrap('p');
+		});
 	});
 </script>

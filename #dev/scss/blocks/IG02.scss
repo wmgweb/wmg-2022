@@ -1,0 +1,18 @@
+.block-IG02 {
+	.row {
+		margin: 0 -36px;
+		width: calc(100% + 72px);
+
+		> div {
+			padding: 0 36px 72px;
+		}
+	}
+
+	.IG02__item {
+		text-align: center;
+
+		img {
+			margin: 0 0 10px;
+		}
+	}
+}

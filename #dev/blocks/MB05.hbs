@@ -1,16 +1,35 @@
 <div id="block-{{ blockCount }}" class="block block-MB block-MB05">
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>MB05</h2>
-				</div>
+		<div class="block__content">
+			<div class="MB05__intro">{{{content.[0].content}}}</div>
+			<div class="row">
+				{{#each content}}
+					{{#if @index includeZero=false}}
+						<div class="col-12 col-md-6 col-lg-4"><div class="MB05__item">{{{ this.content }}}</div></div>
+					{{/if}}
+				{{/each}}
 			</div>
+			<div class="MB05__button text-center"></div>
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		$('#block-{{ blockCount }} iframe').each(function() {
+			$(this).unwrap('p');
+			$(this).wrap('<div class="video-wrapper"></div>');
+		});
+
+		$('#block-{{ blockCount }} video').each(function() {
+			$(this).unwrap('p');
+		});
+
+		$('#block-{{ blockCount }} img').each(function() {
+			$(this).unwrap('p');
+		});
+
+		$('#block-{{ blockCount }} .MB05__intro .btn').appendTo('#block-{{ blockCount }} .MB05__button');
 	});
 </script>

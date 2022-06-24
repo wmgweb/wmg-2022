@@ -1,0 +1,13 @@
+.block-MB01 {
+	.MB01-img {
+		height: 236px;
+		background-attachment: fixed;
+		background-size: cover;
+	}
+
+	@include md {
+		.MB01-img {
+			height: 463px;
+		}
+	}
+}

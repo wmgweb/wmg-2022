@@ -1,0 +1,38 @@
+.block-MB05 {
+	.row {
+		padding: 0 16px;
+		width: calc(100% + 32px);
+
+		> div {
+			
+		}
+	}
+	
+	.MB05__item {
+		padding-bottom: 30px;
+
+		.video-wrapper,
+		video,
+		iframe,
+		img {
+			margin: 0 0 20px;
+		}
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			margin: 0 0 15px;
+		}
+	}
+
+	.MB05__intro {
+		margin-bottom: 15px;
+	}
+
+	.MB05__button {
+		margin: 30px 0;
+	}
+}

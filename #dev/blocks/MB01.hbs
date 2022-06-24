@@ -1,16 +1,18 @@
 <div id="block-{{ blockCount }}" class="block block-MB block-MB01">
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>MB01</h2>
-				</div>
-			</div>
-		</div>
+	<div class="block__content">
+		{{{content.[0].content}}}
+		<div class="MB01-img"></div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		var $img = $('#block-{{ blockCount }} img');
+		var imgSrc = $img.attr('src');
+		$img.unwrap('p').remove();
+
+		$('#block-{{ blockCount }} .MB01-img').css('background-image', 'url(' + imgSrc + ')');
+		 
 	});
 </script>

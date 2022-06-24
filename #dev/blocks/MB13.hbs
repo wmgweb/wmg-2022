@@ -1,16 +1,14 @@
 <div id="block-{{ blockCount }}" class="block block-MB block-MB13">
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>MB13</h2>
-				</div>
-			</div>
+		<div class="block__content">
+			<div class="video-wrapper">{{{content.[0].content}}}</div>
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		$('#block-{{ blockCount }} iframe').unwrap('p');
+		$('#block-{{ blockCount }} video').unwrap('p');		 
 	});
 </script>

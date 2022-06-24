@@ -1,10 +1,10 @@
 <div id="block-{{ blockCount }}" class="block block-MB block-MB03">
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>MB03</h2>
-				</div>
+		<div class="block__content">
+			<div class="MB-carousel MB03-carousel">
+				{{#each content}}
+					<div class="MB-carousel__item">{{{ this.content }}}</div>
+				{{/each}}
 			</div>
 		</div>
 	</div>
@@ -12,5 +12,42 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		$('#block-{{ blockCount }} iframe').each(function() {
+			$(this).unwrap('p');
+			$(this).wrap('<div class="video-wrapper"></div>');
+		});
+
+		$('#block-{{ blockCount }} video').each(function() {
+			$(this).unwrap('p');
+		});
+
+		$('#block-{{ blockCount }} img').each(function() {
+			$(this).unwrap('p');
+		});
+
+		$('#block-{{ blockCount }} .MB03-carousel').slick({
+			dots: false,
+			arrows: true,
+			autoplay: false,
+			infinite: true,
+			slidesToShow: 3,
+			nextArrow: '<button class="slick-next slick-arrow"><svg width="15" height="27" viewBox="0 0 15 27" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L14 13.5L1 26" stroke="#6D6F71"/></svg></button>',
+			prevArrow: '<button class="slick-prev slick-arrow"><svg width="15" height="27" viewBox="0 0 15 27" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 1L1 13.5L14 26" stroke="#6D6F71"/></svg></button>',
+			responsive: [
+			    {
+			      breakpoint: 991,
+			      settings: {
+			        slidesToShow: 2
+			      }
+			    },
+			    {
+			      breakpoint: 767,
+			      settings: {
+			        slidesToShow: 1
+			      }
+			    }
+			]
+		});		
 	});
 </script>

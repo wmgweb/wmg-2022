@@ -2,6 +2,9 @@
 @include theme('fill', '.theme-fill');
 @include theme('fill', '.theme-fill-path path');
 
+@include theme('background-color', '.bg--theme');
+@include theme('border-color', '.border-color--theme');
+
 @include colors('background-color', 'bg');
 @include colors('color', 'color');
 @include colors('fill', 'brand-triangle', 'path');

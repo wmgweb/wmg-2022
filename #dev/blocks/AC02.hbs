@@ -1,9 +1,25 @@
 <div id="block-{{ blockCount }}" class="block block-AC block-AC02">
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>AC02</h2>
+		<div class="block__content">
+			<div class="AC02__intro border-color--theme">
+				{{{content.[0].content}}}
+			</div>
+			<div class="AC02__main">
+				<div class="AC02__carousel">
+					{{#each content}}
+						{{#if @index includeZero=false}}
+							<div class="AC02__carousel-item">
+								<div class="row">
+									<div class="col-12 col-md-7">
+										<div class="AC02__carousel-item-content">{{{content}}}</div>
+									</div>
+									<div class="col-12 col-md-5">
+										<div class="AC02__carousel-item-image"></div>
+									</div>
+								</div>
+							</div>
+						{{/if}}
+					{{/each}}
 				</div>
 			</div>
 		</div>
@@ -12,5 +28,50 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		$('#block-{{ blockCount }} .AC02__intro .btn').wrap('<div class="AC02__intro-btn"></div>');
+		$('#block-{{ blockCount }} .AC02__intro').children().not('.AC02__intro-btn').wrapAll('<div class="AC02__intro-content"></div>');
+
+		$('#block-{{ blockCount }} .AC02__carousel').slick({
+			autoplay: false,
+			dots: true,
+			arrows: false,
+			fade: true,
+			customPaging : function(slider, i) {
+        		var title = $(slider.$slides[i].innerHTML).find('.AC02__carousel-item-content').children().first().html();
+        		return '<span>' + title + '</span>';
+    		},
+		});
+
+		// Loop through each slide content
+		$('#block-{{ blockCount }} .AC02__carousel-item-content').each(function() {
+			var $parent = $(this).parents('.AC02__carousel-item');
+
+			// Remove pagination heading
+			$(this).children().first().remove();
+
+			// Move image
+			var $img = $('img', $(this));
+			var imgSrc = $img.attr('src');
+			var imgAlt = $img.attr('alt');
+			$img.unwrap('p').remove();
+
+			$('.AC02__carousel-item-image', $parent).prepend('<img src="' + imgSrc + '" alt="' + imgAlt + '">');
+
+		});
+
+		function block{{ blockCount }}DotsPosition() {
+			if($(window).width() < 992) {
+				var dotsHeight = $('#block-{{ blockCount }} .slick-dots').height() + 40;
+				$('#block-{{ blockCount }} .AC02__intro').css('padding-bottom', dotsHeight + 'px')
+			}
+		}
+
+		block{{ blockCount }}DotsPosition();
+
+		$(window).resize(function() {
+			block{{ blockCount }}DotsPosition();
+		});
+		
 	});
 </script>

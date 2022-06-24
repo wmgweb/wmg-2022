@@ -1,0 +1,64 @@
+.block-AC {
+	.AC-accordion {
+		background-color: $color-lightgrey-3;
+		font-size: 19px;
+		padding: 15px;
+		margin: 0 0 11px;
+
+		.AC-accordion__heading {
+			cursor: pointer;
+			position: relative;
+			padding-right: 40px;
+
+			svg {
+				position: absolute;
+				right: 15px;
+				top: 50%;
+				margin-top: -7.5px;
+			}
+
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6,
+			p,
+			ul,
+			ol {
+				margin: 0;
+			}
+		}
+
+		.AC-accordion__content {
+			display: none;
+			padding-top: 20px;
+
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6,
+			p,
+			ul,
+			ol {
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}
+
+		&.active {
+			.AC-accordion__content {
+				display: block;
+			}
+
+			.AC-accordion__heading {
+				svg {
+					transform: rotate(180deg);
+				}
+			}
+		}
+	}
+}

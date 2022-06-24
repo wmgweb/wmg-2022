@@ -1,0 +1,40 @@
+.block-CB08 {
+	.CB08__side {
+		background-color: $color-red;
+		color: $color-white;
+		padding: 23px 30px;
+		margin: 0 0 11px;
+		min-height: 160px;
+	}
+
+	.CB08__item {
+		background-color: $color-lightgrey-3;
+		font-size: 19px;
+		padding: 15px;
+		margin: 0 0 11px;
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			margin: 0;
+		}
+	}
+
+	.row {
+		margin: 0 -15px;
+		width: calc(100% + 30px);
+
+		> div {
+			padding: 0 15px;
+		}
+	}
+
+	@include md {
+		.CB08__side {
+			min-height: 300px;
+		}
+	}
+}

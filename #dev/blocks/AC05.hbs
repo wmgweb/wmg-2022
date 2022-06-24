@@ -1,16 +1,34 @@
 <div id="block-{{ blockCount }}" class="block block-AC block-AC05">
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>AC05</h2>
+		<div class="block__content">
+			{{#each content}}
+				<div class="AC-accordion">
+					{{{ this.content }}}
 				</div>
-			</div>
+			{{/each}}
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
-		blockFunctions('{{ blockCount }}');
+		blockFunctions('{{ blockCount }}');	
+
+		// Looop through all accordion items
+		$('#block-{{ blockCount }} .AC-accordion').each(function() {
+
+			// Create wrapper for heading
+			$(this).children().first().wrap('<div class="AC-accordion__heading"></div>');
+			// Create wrapper for content
+			$(this).children().not(':first-child').wrapAll('<div class="AC-accordion__content"></div>');
+
+			// Append chevron SVG
+			$('.AC-accordion__heading', $(this)).append('<svg width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.70337 10.1595L0.330365 3.57953C-0.110122 3.12474 -0.110122 2.38933 0.330365 1.93937L1.38941 0.845933C1.8299 0.39114 2.54217 0.39114 2.97798 0.845933L7.5 5.50514L12.0173 0.841094C12.4578 0.386301 13.1701 0.386301 13.6059 0.841094L14.6696 1.93453C15.1101 2.38932 15.1101 3.12473 14.6696 3.57469L8.29663 10.1547C7.85614 10.6143 7.14386 10.6143 6.70337 10.1595Z" fill="#6A6A6A"/></svg>');
+		});
+
+		// Add on-click function to show/hide content
+		$('#block-{{ blockCount }} .AC-accordion__heading').click(function() {
+			var $parent = $(this).parent('.AC-accordion');
+			$parent.toggleClass('active');
+		});
 	});
 </script>

@@ -1,0 +1,24 @@
+.block-AC01 {
+	.AC01__side {
+		background-color: $color-red;
+		color: $color-white;
+		padding: 23px 30px;
+		margin: 0 0 11px;
+		min-height: 160px;
+	}
+	
+	.row {
+		margin: 0 -15px;
+		width: calc(100% + 30px);
+
+		> div {
+			padding: 0 15px;
+		}
+	}
+
+	@include md {
+		.AC01__side {
+			min-height: 300px;
+		}
+	}
+}

@@ -1,9 +1,22 @@
 <div id="block-{{ blockCount }}" class="block block-CB block-CB08">
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>CB08</h2>
+		<div class="block__content">
+			<div class="row">
+				<div class="col-12 col-md-3">
+					<div class="CB08__side bg--theme">
+						{{{content.[0].content}}}
+					</div>
+				</div>
+				<div class="col-12 col-md-9">
+					<div class="CB08__main">
+						{{#each content}}
+							{{#if @index includeZero=false}}
+								<div class="CB08__item">
+									{{{ this.content }}}
+								</div>
+							{{/if}}
+						{{/each}}
+					</div>
 				</div>
 			</div>
 		</div>

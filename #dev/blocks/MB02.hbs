@@ -1,33 +1,17 @@
 <div id="block-{{ blockCount }}" class="block block-MB block-MB02">
 	<div class="container">
 		<div class="block__content">
-			<div class="d-md-none MB02-carousel">
+			<div class="d-none MB02__images">
+				{{#each content}}
+					{{{ this.content }}}
+				{{/each}}
+			</div>
+			<div class="d-md-none MB02-mobile-carousel">
 				{{#each content}}
 					<div class="MB02-carousel__item">{{{ this.content }}}</div>
 				{{/each}}
 			</div>
-			<div class="d-none d-md-block MB02-grid">
-				<div class="row">
-					<div class="col-12 col-md-6">
-						<div class="MB02-img">{{{content.[0].content}}}</div>
-					</div>
-					<div class="col-12 col-md-6">
-						<div class="">
-							<div class="row">
-								<div class="col-12 col-md-6">
-									<div class="MB02-img MB02-img--half">{{{content.[1].content}}}</div>
-								</div>
-								<div class="col-12 col-md-6">
-									<div class="MB02-img MB02-img--half">{{{content.[2].content}}}</div>
-								</div>
-								<div class="col-12">
-									<div class="MB02-img MB02-img--half">{{{content.[3].content}}}</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			<div class="d-none d-md-block MB02-carousel"></div>
 		</div>
 	</div>
 </div>
@@ -39,14 +23,54 @@
 			$(this).unwrap('p');
 		});
 
-		if($(window).width() < 768) {
-			$('.MB02-carousel').slick({
-				dots: true,
-				arrows: true,
-				autoplay: false,
-				nextArrow: '<button class="slick-next slick-arrow"><svg width="15" height="27" viewBox="0 0 15 27" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L14 13.5L1 26" stroke="#6D6F71"/></svg></button>',
-				prevArrow: '<button class="slick-prev slick-arrow"><svg width="15" height="27" viewBox="0 0 15 27" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 1L1 13.5L14 26" stroke="#6D6F71"/></svg></button>'
-			});			
+		var block{{ blockCount }}ImageCount = 0;
+		var block{{ blockCount }}Images = [];
+		var block{{ blockCount }}SlideImages = [];
+
+		// Loop through images and split into array of slides
+		$('#block-{{ blockCount }} .MB02__images img').each(function() {
+			block{{ blockCount }}ImageCount = block{{ blockCount }}ImageCount + 1;
+			block{{ blockCount }}SlideImages.push($(this).attr('src'));
+
+			// If slide is finished, set new array
+			if(block{{ blockCount }}ImageCount % 4 === 0) {
+				block{{ blockCount }}Images.push(block{{ blockCount }}SlideImages);
+				block{{ blockCount }}SlideImages = [];
+			}
+
+		});
+
+		$.each(block{{ blockCount }}Images, function(index, value) {
+		  	var block{{ blockCount }}SlideHTML = '<div class="MB02-grid"><div class="row"><div class="col-12 col-md-6"><div class="MB02-img"><img src="' + value[0] + '"></div></div><div class="col-12 col-md-6"><div class="row"><div class="col-12 col-md-6"><div class="MB02-img MB02-img--half"><img src="' + value[1] + '"></div></div><div class="col-12 col-md-6"><div class="MB02-img MB02-img--half"><img src="' + value[2] + '"></div></div><div class="col-12"><div class="MB02-img MB02-img--half"><img src="' + value[3] + '"></div></div></div></div></div></div>';
+		  	$('#block-{{ blockCount }} .MB02-carousel').prepend(block{{ blockCount }}SlideHTML);
+		});
+
+		function block{{ blockCount }}Carousels() {
+			if($(window).width() < 768) {
+				$('#block-{{ blockCount }} .MB02-mobile-carousel').slick({
+					dots: true,
+					arrows: true,
+					autoplay: false,
+					nextArrow: '<button class="slick-next slick-arrow"><svg width="15" height="27" viewBox="0 0 15 27" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L14 13.5L1 26" stroke="#6D6F71"/></svg></button>',
+					prevArrow: '<button class="slick-prev slick-arrow"><svg width="15" height="27" viewBox="0 0 15 27" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 1L1 13.5L14 26" stroke="#6D6F71"/></svg></button>'
+				});			
+			}
+
+			if($(window).width() >= 768) {
+				$('#block-{{ blockCount }} .MB02-carousel').slick({
+					dots: false,
+					arrows: true,
+					autoplay: false,
+					nextArrow: '<button class="slick-next slick-arrow"><svg width="15" height="27" viewBox="0 0 15 27" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L14 13.5L1 26" stroke="#6D6F71"/></svg></button>',
+					prevArrow: '<button class="slick-prev slick-arrow"><svg width="15" height="27" viewBox="0 0 15 27" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 1L1 13.5L14 26" stroke="#6D6F71"/></svg></button>'
+				});			
+			}			
 		}
+
+		block{{ blockCount }}Carousels();
+
+		$(window).resize(function() {
+			block{{ blockCount }}Carousels();
+		});
 	});
 </script>

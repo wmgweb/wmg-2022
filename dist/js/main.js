@@ -8287,6 +8287,12 @@ function blockShortcodes(block) {
 			case "triangle":
 				scOutput = '<span class="brand-triangle brand-triangle--' + scAttr.colour + '"><svg width="14" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L-1.90735e-06 19L-2.46316e-07 6.83429e-07L14 19Z" fill="#EE3124"/></svg></span>';
 				break;
+			case "youtube":
+				scOutput = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + scAttr.id + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
+				break;
+			case "vimeo":
+				scOutput = '<iframe src="https://player.vimeo.com/video/' + scAttr.id + '" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
+				break;
 		}
 
 		// Remove shortcode and replace
@@ -8315,6 +8321,11 @@ function blockEdit(block) {
 function blockOptionsClasses(block, blockOptions) {
 	for (const [key, value] of Object.entries(blockOptions)) {
 		jQuery('.block', block).addClass(key + '--' + value);
+
+		// Add triangle SVG if class is set
+		if(key == 'block-triangle') {
+			jQuery('.block', block).append('<svg width="70" height="148" viewBox="0 0 70 148" fill="none" xmlns="http://www.w3.org/2000/svg" class="block-triangle theme-fill-path"><path d="M0 0L73 1.27637e-05L73 148L0 0Z" fill="#EE3124"/></svg>');
+		}
 	}
 }
 

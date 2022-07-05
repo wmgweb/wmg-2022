@@ -23,6 +23,29 @@
 	}
 
 	.MB02-carousel {
+		.slick-arrow {
+			position: absolute;
+			left: -40px;
+			top: 50%;
+			margin-top: -12.5px;
+			border: 0;
+			background: transparent;
+			cursor: pointer;
+			z-index: 10;
+
+			svg {
+				width: 13px;
+				height: 25px;
+			}
+
+			&.slick-next {
+				left: auto;
+				right: -40px;
+			}
+		}
+	}
+
+	.MB02-mobile-carousel {
 		position: relative;
 
 		.slick-dots {

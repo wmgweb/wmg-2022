@@ -35,4 +35,45 @@
 			margin-right: 1rem;
 		}
 	}
+
+	.block-triangle {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+	@include lg {
+		&.block-triangle--bottom-left {
+			.block-triangle {
+				transform: rotate(180deg);
+				right: auto;
+				top: auto;
+				left: 0;
+				bottom: 0;
+			}
+		}
+
+		&.block-triangle--bottom-right {
+			.block-triangle {
+				transform: scaleY(-1);
+				top: auto;
+				bottom: 0;
+			}
+		}
+
+		&.block-triangle--top-left {
+			.block-triangle {
+				transform: scaleX(-1);
+				right: auto;
+				left: 0;
+			}
+		}
+	}
+
+	@media(min-width: 1500px) {
+		.block-triangle {
+			width: 150px;
+			height: 305px;
+		}
+	}
 }

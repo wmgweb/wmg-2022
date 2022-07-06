@@ -13,15 +13,6 @@
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
 
-		$('#block-{{ blockCount }} iframe').each(function() {
-			$(this).unwrap('p');
-			$(this).wrap('<div class="video-wrapper"></div>');
-		});
-
-		$('#block-{{ blockCount }} video').each(function() {
-			$(this).unwrap('p');
-		});
-
 		$('#block-{{ blockCount }} img').each(function() {
 			$(this).unwrap('p');
 		});

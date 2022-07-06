@@ -7,6 +7,7 @@
 	transition: all .3s;
 	font-weight: bold;
 	font-size: 15px;
+	position: relative;
 
 	&:hover {
 		opacity: .4;
@@ -60,8 +61,25 @@
 			background: transparent !important;
 		}
 
+		&.btn-arrow--true {
+			margin-right: 40px;
+
+			svg {
+				position: absolute;
+				right: -20px;
+			    top: 50%;
+			    margin-top: -7.5px;
+			    width: 8px;
+			    height: 15px;
+			}
+		}
+
 		&.btn--text--white {
 			border-color: $color-white;
+
+			svg path {
+				fill: $color-white;
+			}
 		}
 	}
 

@@ -1,16 +1,45 @@
 <div id="block-{{ blockCount }}" class="block block-FB block-FB06">
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>FB06</h2>
+		<div class="block__content">
+			<div class="row align-items-center">
+				<div class="col-12 col-lg-6">
+					<div class="half-container half-container--lg half-container--left">
+						<div class="FB06-main">
+							{{{content.[0].content}}}
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-lg-6">
+					<div class="FB06-carousel">
+						{{#each content}}
+							{{#if @index includeZero=false}}
+								<div class="FB06-carousel__item">
+									{{{ this.content }}}
+								</div>
+							{{/if}}
+						{{/each}}
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		$('#block-{{ blockCount }} .FB06-carousel__item').each(function() {
+			$('img', $(this)).unwrap('p').wrap('<div class="FB06-carousel__item-image"></div>');
+			$('.FB06-carousel__item-image', $(this)).prepend('<svg width="57" height="69" viewBox="0 0 57 69" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M56.7634 68.1979L0 68.1979L6.61655e-06 0.242188L56.7634 68.1979Z" fill="#D9DDE0"/></svg>');
+			$(this).children().not('.FB06-carousel__item-image').wrapAll('<div class="FB06-carousel__item-content"><div class="half-container half-container--lg half-container--right"></div></div>');
+		});
+
+		$('#block-{{ blockCount }} .FB06-carousel').slick({
+			arrows: false,
+			dots: true,
+			draggable: false,
+			customPaging : function(slider, i) {
+				var thumb = $(slider.$slides[i]).data();
+				return '<a>0' + parseInt(i+1) + '</a>';
+			}
+		});
 	});
 </script>

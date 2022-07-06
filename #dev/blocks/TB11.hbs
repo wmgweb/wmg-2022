@@ -40,11 +40,6 @@
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
 
-		if($('#block-{{ blockCount }} .TB__media-main iframe').length) {
-			$('#block-{{ blockCount }} .TB__media-main iframe').unwrap('p');
-			$('#block-{{ blockCount }} .TB__media-main iframe').wrap('<div class="video-wrapper"></div>');
-		}
-
 		$('#block-{{ blockCount }} .TB11__carousel').slick({
 			autoplay: false,
 			dots: true,

@@ -8243,6 +8243,7 @@ function blockFunctions(blockID, optionalFunctions) {
 	blockEdit(block);
 	blockImageFix(block);
 	blockShortcodes(block);
+	blockIframe(block);
 
 	if(jQuery.inArray('blockBG', optionalFunctions) !== -1) {
 		blockBG(block);
@@ -8282,7 +8283,10 @@ function blockShortcodes(block) {
 		// If shortcode is button
 		switch(scAttr.type) {
 			case "button":
-				scOutput = '<a href="' + scAttr.link + '" class="btn btn--' + scAttr.style + '">' + scAttr.text + '</a>';
+				if(scAttr.arrow == 'true') {
+					scAttr.text = scAttr.text + '<svg width="8" height="15" viewBox="0 0 8 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.72761 8.55602L2.46362 14.5042C2.09979 14.9153 1.51146 14.9153 1.1515 14.5042L0.276745 13.5157C-0.0870884 13.1046 -0.0870884 12.4398 0.276746 12.0331L4.00411 7.8125L0.272876 3.59632C-0.0909585 3.1852 -0.0909585 2.5204 0.272876 2.11366L1.14763 1.12084C1.51146 0.70972 2.09979 0.70972 2.45975 1.12084L7.72374 7.06898C8.09144 7.4801 8.09144 8.1449 7.72761 8.55602Z" fill="#272729"/></svg>';
+				}
+				scOutput = '<a href="' + scAttr.link + '" class="btn btn--' + scAttr.style + ' btn-arrow--' + scAttr.arrow + '">' + scAttr.text + '</a>';
 				break;
 			case "triangle":
 				scOutput = '<span class="brand-triangle brand-triangle--' + scAttr.colour + '"><svg width="14" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L-1.90735e-06 19L-2.46316e-07 6.83429e-07L14 19Z" fill="#EE3124"/></svg></span>';
@@ -8314,6 +8318,12 @@ function blockEdit(block) {
 		  	}
 		});
 	}
+}
+
+// Add wrappers around iframes
+function blockIframe(block) {
+	jQuery('iframe', block).unwrap('p').wrap('<div class="video-wrapper"></div>');
+	jQuery('video', block).unwrap('p');
 }
 
 

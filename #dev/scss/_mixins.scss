@@ -35,6 +35,14 @@ $theme-colors: ('dark': $color-dark, 'dark-2': $color-dark-2, 'red': $color-red,
     }
 }
 
+@mixin bg($property, $element : '', $type : '') {
+    @each $name, $color in $theme-colors {
+        #{$type}.bg--#{$name} #{$element} {
+            #{$property}: $color !important;
+        }
+    }
+}
+
 @mixin colors($property, $class, $subElement : '') {
     @each $name, $color in $theme-colors {
         .#{$class}--#{$name} #{$subElement} {

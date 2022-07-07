@@ -8,3 +8,5 @@
 @include colors('background-color', 'bg');
 @include colors('color', 'color');
 @include colors('fill', 'brand-triangle', 'path');
+
+@include bg('fill', '.bg-fill-path path');

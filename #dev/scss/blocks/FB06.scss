@@ -17,6 +17,29 @@
 			color: $color-grey;
 			font-size: 19px;
 		}
+
+		.FB06-main__image {
+			margin-top: 30px;
+		}
+
+		.FB06-main__image {
+			height: 260px;
+			position: relative;
+			overflow: hidden;
+
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+
+			svg {
+				position: absolute;
+				top: -1px;
+				right: -1px;
+			}
+
+		}
 	}
 
 	.FB06-carousel {
@@ -79,8 +102,12 @@
 	}
 
 	@include lg {
-		.FB06-main {
+		.FB06-main__content {
 			padding-right: 50px;
+		}
+
+		.FB06-carousel {
+			height: 100%;
 		}
 	}
 }

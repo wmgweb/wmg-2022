@@ -1,0 +1,28 @@
+.IG05-grid {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	margin: 0 -16px;
+	width: calc(100% + 32px);
+
+	.IG05-grid__item {
+		padding: 0 16px;
+		width: 100%;
+	}
+
+	@media(min-width: 500px) {
+		.IG05-grid__item {
+			width: 50%;
+		}
+	}
+
+	@media(min-width: 767px) {
+		.IG05-grid__item {
+			width: 33.3%;
+		}
+	}
+
+	@include lg {
+		flex-wrap: unset;
+	}
+}

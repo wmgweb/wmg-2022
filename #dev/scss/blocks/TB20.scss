@@ -1,0 +1,36 @@
+.block-TB20 {
+	.TB20-media {
+		.TB20-media__image {
+			height: 180px;
+			overflow: hidden;
+
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+		}
+
+		.TB20-media__content {
+			padding: 30px 5%;
+		}
+	}
+
+	@include md {
+		.TB20-media {
+			display: flex;
+
+			.TB20-media__image {
+				order: 2;
+				height: auto;
+				flex: 1;
+			}
+
+			.TB20-media__content {
+				order: 1;
+				padding: 52px;
+				flex: 0 0 400px;
+			}
+		}
+	}
+}

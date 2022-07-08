@@ -1,7 +1,10 @@
 <div id="block-{{ blockCount }}" class="block block-IG block-IG05">
 	<div class="container">
 		<div class="block__content">
-			IG05
+			<div class="IG05-grid">
+			{{#each content}}
+				<div class="IG05-grid__item"><span class="large-stat strong-color--theme">{{{ this.content }}}</span></div>
+			{{/each}}
 		</div>
 	</div>
 </div>

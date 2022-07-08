@@ -4,6 +4,8 @@
 
 @include theme('background-color', '.bg--theme');
 @include theme('border-color', '.border-color--theme');
+@include theme('color', '.strong-color--theme strong');
+@include theme('color', '.color--theme');
 
 @include colors('background-color', 'bg');
 @include colors('color', 'color');

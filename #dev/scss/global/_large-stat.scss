@@ -1,0 +1,13 @@
+.large-stat {
+	font-size: 19px;
+	display: block;
+	text-align: center;
+
+	strong {
+		display: block;
+		color: $color-red;
+		margin: 0 0 10px;
+		font-size: 55px;
+		line-height: 1;
+	}
+}

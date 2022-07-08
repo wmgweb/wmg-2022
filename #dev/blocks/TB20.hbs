@@ -1,12 +1,24 @@
 <div id="block-{{ blockCount }}" class="block block-TB block-TB20">
-	<div class="container">
-		<div class="block__content">
-			TB20
+	<div class="block__content">
+		<div class="row">
+			<div class="col-12 col-lg-6">
+				<div class="half-container half-container--lg half-container--left">
+					{{{content.[0].content}}}
+				</div>
+			</div>
+			<div class="col-12 col-lg-6">
+				<div class="TB20-media bg--theme">
+					{{{content.[1].content}}}
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		$('#block-{{ blockCount }} .TB20-media img').unwrap('p').wrap('<div class="TB20-media__image"></div>');
+		$('#block-{{ blockCount }} .TB20-media').children().not('.TB20-media__image').wrapAll('<div class="TB20-media__content"></div>');
 	});
 </script>

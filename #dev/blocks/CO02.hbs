@@ -1,10 +1,15 @@
 <div id="block-{{ blockCount }}" class="block block-CO block-CO02">
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>CO02</h2>
-				</div>
+		<div class="block__content">
+			<div class="CO02-intro">{{{content.[0].content}}}</div>
+			<div class="row">
+				{{#each content}}
+					{{#if @index includeZero=false}}
+						<div class="col-12 col-md-6 col-lg-3">
+							<div class="transparent-card">{{{content}}}</div>
+						</div>
+					{{/if}}
+				{{/each}}
 			</div>
 		</div>
 	</div>

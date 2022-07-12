@@ -1,0 +1,25 @@
+.co-features {
+	h1,
+	.h1,
+	h2,
+	.h2,
+	h3,
+	.h3,
+	h4,
+	.h4,
+	h5,
+	.h5,
+	h6,
+	.h6 {
+		border-bottom: 3px solid;
+		padding-bottom: 5px;
+		margin-bottom: 10px;
+	}
+}
+
+@include theme('border-color', '.co-features h1');
+@include theme('border-color', '.co-features h2');
+@include theme('border-color', '.co-features h3');
+@include theme('border-color', '.co-features h4');
+@include theme('border-color', '.co-features h5');
+@include theme('border-color', '.co-features h6');

@@ -1,10 +1,15 @@
 <div id="block-{{ blockCount }}" class="block block-CO block-CO06">
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>CO06</h2>
-				</div>
+		<div class="block__content">
+			<div class="block-intro CO06-intro">{{{content.[0].content}}}</div>
+			<div class="row">
+				{{#each content}}
+					{{#if @index includeZero=false}}
+						<div class="col-12 col-lg-4">
+							<div class="co-features">{{{content}}}</div>
+						</div>
+					{{/if}}
+				{{/each}}
 			</div>
 		</div>
 	</div>

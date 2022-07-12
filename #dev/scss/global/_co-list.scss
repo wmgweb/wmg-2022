@@ -1,0 +1,26 @@
+.co-list {
+	padding: 0 20px;
+
+	.co-list__heading {
+		background: $color-lightgrey-3;
+		padding: 20px;
+		width: calc(100% + 40px);
+		margin: 0 -20px 17px;
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6,
+		p {
+			margin: 0;
+		}
+	}
+
+	ul,
+	ol {
+		list-style: none;
+		padding: 0;
+	}
+}

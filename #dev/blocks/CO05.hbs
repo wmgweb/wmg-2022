@@ -1,12 +1,25 @@
 <div id="block-{{ blockCount }}" class="block block-CO block-CO05">
 	<div class="container">
 		<div class="block__content">
-			CO05
+			<div class="row">
+				{{#each content}}
+					<div class="col-12 col-md-6 col-lg-3">
+						<div class="co-list">{{{content}}}</div>
+					</div>
+				{{/each}}
+			</div>
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		$('#block-{{ blockCount }} .co-list').each(function() {
+			
+			// Move triangle and heading into own block
+			$('.brand-triangle', $(this)).wrap('<div class="co-list__heading"></div>');
+			$('.co-list__heading', $(this)).next().appendTo($('.co-list__heading', $(this)));
+		});
 	});
 </script>

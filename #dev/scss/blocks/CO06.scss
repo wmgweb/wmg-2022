@@ -1,0 +1,14 @@
+.block-CO06 {
+	.CO06-intro {
+		margin-bottom: 30px;
+	}
+
+	.row {
+		margin: 0 -16px;
+		width: calc(100% + 32px);
+
+		> div {
+			padding: 0 16px 30px;
+		}
+	}
+}

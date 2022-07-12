@@ -1,12 +1,65 @@
 <div id="block-{{ blockCount }}" class="block block-MB block-MB12">
 	<div class="container">
 		<div class="block__content">
-			MB12
+			<div class="MB12-filters">
+				<label class="MB12-search">
+					Quick search
+					<input type="text" name="MB12-search">
+				</label>
+			</div>
+			<div class="row">
+				{{#each content}}
+					<div class="col-12 col-md-6 col-lg-4">
+						<div class="media-panel">{{{content}}}</div>
+					</div>
+				{{/each}}
+			</div>
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		function block{{ blockCount }}Search() {
+			var searchString = $('#block-{{ blockCount }} .MB12-search input').val();
+			var currentActiveCount = 0;
+			console.log(searchString);
+			// If content in search
+			if(searchString.length > 0) {
+				// Hide active blocks
+				$('#block-{{ blockCount }} .row .active').removeClass('active');
+
+				// Loop through all panels
+				$('#block-{{ blockCount }} .media-panel').each(function() {
+					// Get content as string
+					var panelContent = $(this).text();
+
+					// If search string is contained in panel content, add active class
+					if(panelContent.toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
+						$(this).parent().addClass('active');
+						currentActiveCount = currentActiveCount + 1;
+
+						// If 6 are already showing, stop
+						if(currentActiveCount >= 6) {
+							return false;
+						}
+					}
+				});
+
+			} else {
+				// Else if no content show first 6
+				$('#block-{{ blockCount }} .row').children().slice(0,6).addClass('active');
+			}
+
+		}
+
+		// Run search on load
+		block{{ blockCount }}Search();
+
+		// Run search after input change
+		$('#block-{{ blockCount }} .MB12-search input').keyup(function() {
+			block{{ blockCount }}Search();
+		});
 	});
 </script>

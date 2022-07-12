@@ -50,3 +50,16 @@ $theme-colors: ('dark': $color-dark, 'dark-2': $color-dark-2, 'red': $color-red,
         }
     }
 }
+
+
+@mixin spacing($property) {
+    $count: 0;
+
+    @while $count < 200 {
+        .#{$property}--#{$count} {
+            #{$property}: #{$count}px !important;
+        }
+
+        $count: $count + 5;
+    }
+}

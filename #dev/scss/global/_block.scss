@@ -42,6 +42,24 @@
 		right: 0;
 	}
 
+	&.vertical-align--center {
+		.row {
+			align-items: center;
+		}
+	}
+
+	&.vertical-align--top {
+		.row {
+			align-items: flex-start;
+		}
+	}
+
+	&.vertical-align--bottom {
+		.row {
+			align-items: flex-end;
+		}
+	}
+
 	@include lg {
 		&.block-triangle--bottom-left {
 			.block-triangle {

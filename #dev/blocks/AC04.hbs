@@ -1,12 +1,67 @@
 <div id="block-{{ blockCount }}" class="block block-AC block-AC04">
-	<div class="container">
-		<div class="block__content">
-			AC04
+	<div class="block__content">
+		<div class="block-intro AC04-intro bg--theme">
+			{{{content.[0].content}}}
+		</div>
+		<div class="container">
+			<div class="AC04-carousel">
+				{{#each content}}
+					{{#if @index includeZero=false}}
+						<div class="AC04-carousel__item">
+							{{{content}}}
+						</div>
+					{{/if}}
+				{{/each}}
+			</div>
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		$('#block-{{ blockCount }} .AC04-intro img').unwrap('p').wrap('<div class="AC04-intro__image"></div>');
+		$('#block-{{ blockCount }} .AC04-intro').children().not('.AC04-intro__image').wrapAll('<div class="AC04-intro__content"><div class="half-container half-container--lg half-container--left"></div></div>');
+		$('#block-{{ blockCount }} .AC04-intro__content').append('<svg width="33" height="351" viewBox="0 0 33 351" fill="none" xmlns="http://www.w3.org/2000/svg" class="d-none d-md-block image-box-border theme-fill-path-alt"><g style="mix-blend-mode:multiply"><path d="M0.632812 36.436L32.018 0V351H0.632812V36.436Z" fill="#de0905"/></g></svg>');
+
+		$('#block-{{ blockCount }} .AC04-carousel').slick({
+			autoplay: false,
+			dots: true,
+			arrows: false,
+			fade: true,
+			customPaging : function(slider, i) {
+        		var title = $(slider.$slides[i].innerHTML).find('.AC04-carousel__item').children().first().html();
+        		return '<span>' + title + '</span>';
+    		},
+		});
+
+		$('#block-{{ blockCount }} .AC04-carousel__item').each(function() {
+			// Remove pagination heading
+			$(this).children().first().remove();
+
+			// Wrap media
+			$('.video-wrapper', $(this)).unwrap('p').wrap('<div class="AC04-carousel__item-media"></div>');
+			$('img', $(this)).unwrap('p').wrap('<div class="AC04-carousel__item-media"></div>');
+
+			// Add media description to div
+			var $mediaElement = $('.AC04-carousel__item-media', $(this));
+			$mediaElement.nextAll().appendTo($mediaElement);
+
+			// Add everything else to another wrapper
+			$(this).children().not('.AC04-carousel__item-media').wrapAll('<div class="AC04-carousel__item-content"></div>');
+		});
+
+		function block{{ blockCount }}DotsPosition() {
+			if($(window).width() < 992) {
+				var dotsHeight = $('#block-{{ blockCount }} .slick-dots').height() + 40;
+				$('#block-{{ blockCount }} .AC04-carousel').css('padding-top', dotsHeight + 'px')
+			}
+		}
+
+		block{{ blockCount }}DotsPosition();
+
+		$(window).resize(function() {
+			block{{ blockCount }}DotsPosition();
+		});
 	});
 </script>

@@ -24,11 +24,12 @@
 		function block{{ blockCount }}Search() {
 			var searchString = $('#block-{{ blockCount }} .MB12-search input').val();
 			var currentActiveCount = 0;
-			console.log(searchString);
+
+			// Hide active blocks
+			$('#block-{{ blockCount }} .row .active').removeClass('active');
+			
 			// If content in search
 			if(searchString.length > 0) {
-				// Hide active blocks
-				$('#block-{{ blockCount }} .row .active').removeClass('active');
 
 				// Loop through all panels
 				$('#block-{{ blockCount }} .media-panel').each(function() {

@@ -1,12 +1,21 @@
 <div id="block-{{ blockCount }}" class="block block-SB block-SB04">
 	<div class="container">
 		<div class="block__content">
-			SB04
+			{{#each content}}
+				<div class="SB04-block">
+					{{{ this.content }}}
+				</div>
+			{{/each}}
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		// Loop through each block list (parents only) and initialise masonry
+		$('#block-{{ blockCount }} .SB04-block > ul').each(function() {
+			$(this).masonry();
+		});
 	});
 </script>

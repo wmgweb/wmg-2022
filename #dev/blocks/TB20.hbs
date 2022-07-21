@@ -18,7 +18,10 @@
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
 
+		// Wrap image
 		$('#block-{{ blockCount }} .TB20-media img').unwrap('p').wrap('<div class="TB20-media__image"></div>');
+
+		// Wrap everything else
 		$('#block-{{ blockCount }} .TB20-media').children().not('.TB20-media__image').wrapAll('<div class="TB20-media__content"></div>');
 	});
 </script>

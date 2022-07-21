@@ -1,0 +1,124 @@
+.block-SB04 {
+	@include theme('background-color', '.SB04-block > ul > li > a:before', '&');
+
+	.SB04-block {
+		margin: 0 0 44px;
+
+		ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+
+			li {
+				padding: 0 0 15px;
+				width: 100%;
+				margin: 0;
+				box-sizing: border-box;
+
+				a {
+					min-height: 30px;
+					vertical-align: middle;
+					display: flex;
+					align-items: center;
+					width: 100%;
+					padding: 15px 36px 15px 51px;
+					background: $color-white;
+					color: $color-black;
+					position: relative;
+
+					&:focus,
+					&:active {
+						background: $color-white;
+					}
+				}
+			}
+		}
+
+		> ul {
+
+			> li {
+
+				> a {
+					&:before {
+						content: '';
+						width: 15px;
+						height: 100%;
+						background-color: $color-red;
+						position: absolute;
+						top: 0;
+						left: 0;
+					}
+				}
+
+				> ul {
+					padding: 15px 0 0 45px;
+					position: relative;
+
+					&:before {
+						content: '';
+						width: 1px;
+						height: 15px;
+						background: $color-black;
+						position: absolute;
+						top: 0;
+						left: 15px;
+						z-index: 1;
+						display: block;
+					}
+
+					> li {
+						position: relative;
+
+						&:before {
+							content: '';
+							width: 30px;
+							height: 1px;
+							background: $color-black;
+							position: absolute;
+							left: -30px;
+							top: 50%;
+							z-index: 1;
+							display: block;
+						}
+
+						&:after {
+							content: '';
+							width: 1px;
+							height: 100%;
+							background: $color-black;
+							position: absolute;
+							left: -30px;
+							top: 0;
+							z-index: 1;
+							display: block;
+						}
+
+						&:last-child {
+							&:after {
+								height: 50%;
+							}
+						}
+
+						a {
+							padding: 15px;
+							z-index: 2;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@include md {
+		.SB04-block {
+			> ul {
+				margin: 0 -15px;
+
+				> li {
+					width: 50%;
+					padding: 0 15px 15px;
+				}
+			}
+		}		
+	}
+}

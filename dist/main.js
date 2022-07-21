@@ -5208,6 +5208,2511 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
+/*!
+ * Masonry PACKAGED v4.2.2
+ * Cascading grid layout library
+ * https://masonry.desandro.com
+ * MIT License
+ * by David DeSandro
+ */
+
+/**
+ * Bridget makes jQuery widgets
+ * v2.0.1
+ * MIT license
+ */
+
+/* jshint browser: true, strict: true, undef: true, unused: true */
+
+( function( window, factory ) {
+  // universal module definition
+  /*jshint strict: false */ /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( 'jquery-bridget/jquery-bridget',[ 'jquery' ], function( jQuery ) {
+      return factory( window, jQuery );
+    });
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory(
+      window,
+      require('jquery')
+    );
+  } else {
+    // browser global
+    window.jQueryBridget = factory(
+      window,
+      window.jQuery
+    );
+  }
+
+}( window, function factory( window, jQuery ) {
+'use strict';
+
+// ----- utils ----- //
+
+var arraySlice = Array.prototype.slice;
+
+// helper function for logging errors
+// $.error breaks jQuery chaining
+var console = window.console;
+var logError = typeof console == 'undefined' ? function() {} :
+  function( message ) {
+    console.error( message );
+  };
+
+// ----- jQueryBridget ----- //
+
+function jQueryBridget( namespace, PluginClass, $ ) {
+  $ = $ || jQuery || window.jQuery;
+  if ( !$ ) {
+    return;
+  }
+
+  // add option method -> $().plugin('option', {...})
+  if ( !PluginClass.prototype.option ) {
+    // option setter
+    PluginClass.prototype.option = function( opts ) {
+      // bail out if not an object
+      if ( !$.isPlainObject( opts ) ){
+        return;
+      }
+      this.options = $.extend( true, this.options, opts );
+    };
+  }
+
+  // make jQuery plugin
+  $.fn[ namespace ] = function( arg0 /*, arg1 */ ) {
+    if ( typeof arg0 == 'string' ) {
+      // method call $().plugin( 'methodName', { options } )
+      // shift arguments by 1
+      var args = arraySlice.call( arguments, 1 );
+      return methodCall( this, arg0, args );
+    }
+    // just $().plugin({ options })
+    plainCall( this, arg0 );
+    return this;
+  };
+
+  // $().plugin('methodName')
+  function methodCall( $elems, methodName, args ) {
+    var returnValue;
+    var pluginMethodStr = '$().' + namespace + '("' + methodName + '")';
+
+    $elems.each( function( i, elem ) {
+      // get instance
+      var instance = $.data( elem, namespace );
+      if ( !instance ) {
+        logError( namespace + ' not initialized. Cannot call methods, i.e. ' +
+          pluginMethodStr );
+        return;
+      }
+
+      var method = instance[ methodName ];
+      if ( !method || methodName.charAt(0) == '_' ) {
+        logError( pluginMethodStr + ' is not a valid method' );
+        return;
+      }
+
+      // apply method, get return value
+      var value = method.apply( instance, args );
+      // set return value if value is returned, use only first value
+      returnValue = returnValue === undefined ? value : returnValue;
+    });
+
+    return returnValue !== undefined ? returnValue : $elems;
+  }
+
+  function plainCall( $elems, options ) {
+    $elems.each( function( i, elem ) {
+      var instance = $.data( elem, namespace );
+      if ( instance ) {
+        // set options & init
+        instance.option( options );
+        instance._init();
+      } else {
+        // initialize new instance
+        instance = new PluginClass( elem, options );
+        $.data( elem, namespace, instance );
+      }
+    });
+  }
+
+  updateJQuery( $ );
+
+}
+
+// ----- updateJQuery ----- //
+
+// set $.bridget for v1 backwards compatibility
+function updateJQuery( $ ) {
+  if ( !$ || ( $ && $.bridget ) ) {
+    return;
+  }
+  $.bridget = jQueryBridget;
+}
+
+updateJQuery( jQuery || window.jQuery );
+
+// -----  ----- //
+
+return jQueryBridget;
+
+}));
+
+/**
+ * EvEmitter v1.1.0
+ * Lil' event emitter
+ * MIT License
+ */
+
+/* jshint unused: true, undef: true, strict: true */
+
+( function( global, factory ) {
+  // universal module definition
+  /* jshint strict: false */ /* globals define, module, window */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD - RequireJS
+    define( 'ev-emitter/ev-emitter',factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS - Browserify, Webpack
+    module.exports = factory();
+  } else {
+    // Browser globals
+    global.EvEmitter = factory();
+  }
+
+}( typeof window != 'undefined' ? window : this, function() {
+
+
+
+function EvEmitter() {}
+
+var proto = EvEmitter.prototype;
+
+proto.on = function( eventName, listener ) {
+  if ( !eventName || !listener ) {
+    return;
+  }
+  // set events hash
+  var events = this._events = this._events || {};
+  // set listeners array
+  var listeners = events[ eventName ] = events[ eventName ] || [];
+  // only add once
+  if ( listeners.indexOf( listener ) == -1 ) {
+    listeners.push( listener );
+  }
+
+  return this;
+};
+
+proto.once = function( eventName, listener ) {
+  if ( !eventName || !listener ) {
+    return;
+  }
+  // add event
+  this.on( eventName, listener );
+  // set once flag
+  // set onceEvents hash
+  var onceEvents = this._onceEvents = this._onceEvents || {};
+  // set onceListeners object
+  var onceListeners = onceEvents[ eventName ] = onceEvents[ eventName ] || {};
+  // set flag
+  onceListeners[ listener ] = true;
+
+  return this;
+};
+
+proto.off = function( eventName, listener ) {
+  var listeners = this._events && this._events[ eventName ];
+  if ( !listeners || !listeners.length ) {
+    return;
+  }
+  var index = listeners.indexOf( listener );
+  if ( index != -1 ) {
+    listeners.splice( index, 1 );
+  }
+
+  return this;
+};
+
+proto.emitEvent = function( eventName, args ) {
+  var listeners = this._events && this._events[ eventName ];
+  if ( !listeners || !listeners.length ) {
+    return;
+  }
+  // copy over to avoid interference if .off() in listener
+  listeners = listeners.slice(0);
+  args = args || [];
+  // once stuff
+  var onceListeners = this._onceEvents && this._onceEvents[ eventName ];
+
+  for ( var i=0; i < listeners.length; i++ ) {
+    var listener = listeners[i]
+    var isOnce = onceListeners && onceListeners[ listener ];
+    if ( isOnce ) {
+      // remove listener
+      // remove before trigger to prevent recursion
+      this.off( eventName, listener );
+      // unset once flag
+      delete onceListeners[ listener ];
+    }
+    // trigger listener
+    listener.apply( this, args );
+  }
+
+  return this;
+};
+
+proto.allOff = function() {
+  delete this._events;
+  delete this._onceEvents;
+};
+
+return EvEmitter;
+
+}));
+
+/*!
+ * getSize v2.0.3
+ * measure size of elements
+ * MIT license
+ */
+
+/* jshint browser: true, strict: true, undef: true, unused: true */
+/* globals console: false */
+
+( function( window, factory ) {
+  /* jshint strict: false */ /* globals define, module */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( 'get-size/get-size',factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory();
+  } else {
+    // browser global
+    window.getSize = factory();
+  }
+
+})( window, function factory() {
+'use strict';
+
+// -------------------------- helpers -------------------------- //
+
+// get a number from a string, not a percentage
+function getStyleSize( value ) {
+  var num = parseFloat( value );
+  // not a percent like '100%', and a number
+  var isValid = value.indexOf('%') == -1 && !isNaN( num );
+  return isValid && num;
+}
+
+function noop() {}
+
+var logError = typeof console == 'undefined' ? noop :
+  function( message ) {
+    console.error( message );
+  };
+
+// -------------------------- measurements -------------------------- //
+
+var measurements = [
+  'paddingLeft',
+  'paddingRight',
+  'paddingTop',
+  'paddingBottom',
+  'marginLeft',
+  'marginRight',
+  'marginTop',
+  'marginBottom',
+  'borderLeftWidth',
+  'borderRightWidth',
+  'borderTopWidth',
+  'borderBottomWidth'
+];
+
+var measurementsLength = measurements.length;
+
+function getZeroSize() {
+  var size = {
+    width: 0,
+    height: 0,
+    innerWidth: 0,
+    innerHeight: 0,
+    outerWidth: 0,
+    outerHeight: 0
+  };
+  for ( var i=0; i < measurementsLength; i++ ) {
+    var measurement = measurements[i];
+    size[ measurement ] = 0;
+  }
+  return size;
+}
+
+// -------------------------- getStyle -------------------------- //
+
+/**
+ * getStyle, get style of element, check for Firefox bug
+ * https://bugzilla.mozilla.org/show_bug.cgi?id=548397
+ */
+function getStyle( elem ) {
+  var style = getComputedStyle( elem );
+  if ( !style ) {
+    logError( 'Style returned ' + style +
+      '. Are you running this code in a hidden iframe on Firefox? ' +
+      'See https://bit.ly/getsizebug1' );
+  }
+  return style;
+}
+
+// -------------------------- setup -------------------------- //
+
+var isSetup = false;
+
+var isBoxSizeOuter;
+
+/**
+ * setup
+ * check isBoxSizerOuter
+ * do on first getSize() rather than on page load for Firefox bug
+ */
+function setup() {
+  // setup once
+  if ( isSetup ) {
+    return;
+  }
+  isSetup = true;
+
+  // -------------------------- box sizing -------------------------- //
+
+  /**
+   * Chrome & Safari measure the outer-width on style.width on border-box elems
+   * IE11 & Firefox<29 measures the inner-width
+   */
+  var div = document.createElement('div');
+  div.style.width = '200px';
+  div.style.padding = '1px 2px 3px 4px';
+  div.style.borderStyle = 'solid';
+  div.style.borderWidth = '1px 2px 3px 4px';
+  div.style.boxSizing = 'border-box';
+
+  var body = document.body || document.documentElement;
+  body.appendChild( div );
+  var style = getStyle( div );
+  // round value for browser zoom. desandro/masonry#928
+  isBoxSizeOuter = Math.round( getStyleSize( style.width ) ) == 200;
+  getSize.isBoxSizeOuter = isBoxSizeOuter;
+
+  body.removeChild( div );
+}
+
+// -------------------------- getSize -------------------------- //
+
+function getSize( elem ) {
+  setup();
+
+  // use querySeletor if elem is string
+  if ( typeof elem == 'string' ) {
+    elem = document.querySelector( elem );
+  }
+
+  // do not proceed on non-objects
+  if ( !elem || typeof elem != 'object' || !elem.nodeType ) {
+    return;
+  }
+
+  var style = getStyle( elem );
+
+  // if hidden, everything is 0
+  if ( style.display == 'none' ) {
+    return getZeroSize();
+  }
+
+  var size = {};
+  size.width = elem.offsetWidth;
+  size.height = elem.offsetHeight;
+
+  var isBorderBox = size.isBorderBox = style.boxSizing == 'border-box';
+
+  // get all measurements
+  for ( var i=0; i < measurementsLength; i++ ) {
+    var measurement = measurements[i];
+    var value = style[ measurement ];
+    var num = parseFloat( value );
+    // any 'auto', 'medium' value will be 0
+    size[ measurement ] = !isNaN( num ) ? num : 0;
+  }
+
+  var paddingWidth = size.paddingLeft + size.paddingRight;
+  var paddingHeight = size.paddingTop + size.paddingBottom;
+  var marginWidth = size.marginLeft + size.marginRight;
+  var marginHeight = size.marginTop + size.marginBottom;
+  var borderWidth = size.borderLeftWidth + size.borderRightWidth;
+  var borderHeight = size.borderTopWidth + size.borderBottomWidth;
+
+  var isBorderBoxSizeOuter = isBorderBox && isBoxSizeOuter;
+
+  // overwrite width and height if we can get it from style
+  var styleWidth = getStyleSize( style.width );
+  if ( styleWidth !== false ) {
+    size.width = styleWidth +
+      // add padding and border unless it's already including it
+      ( isBorderBoxSizeOuter ? 0 : paddingWidth + borderWidth );
+  }
+
+  var styleHeight = getStyleSize( style.height );
+  if ( styleHeight !== false ) {
+    size.height = styleHeight +
+      // add padding and border unless it's already including it
+      ( isBorderBoxSizeOuter ? 0 : paddingHeight + borderHeight );
+  }
+
+  size.innerWidth = size.width - ( paddingWidth + borderWidth );
+  size.innerHeight = size.height - ( paddingHeight + borderHeight );
+
+  size.outerWidth = size.width + marginWidth;
+  size.outerHeight = size.height + marginHeight;
+
+  return size;
+}
+
+return getSize;
+
+});
+
+/**
+ * matchesSelector v2.0.2
+ * matchesSelector( element, '.selector' )
+ * MIT license
+ */
+
+/*jshint browser: true, strict: true, undef: true, unused: true */
+
+( function( window, factory ) {
+  /*global define: false, module: false */
+  'use strict';
+  // universal module definition
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( 'desandro-matches-selector/matches-selector',factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory();
+  } else {
+    // browser global
+    window.matchesSelector = factory();
+  }
+
+}( window, function factory() {
+  'use strict';
+
+  var matchesMethod = ( function() {
+    var ElemProto = window.Element.prototype;
+    // check for the standard method name first
+    if ( ElemProto.matches ) {
+      return 'matches';
+    }
+    // check un-prefixed
+    if ( ElemProto.matchesSelector ) {
+      return 'matchesSelector';
+    }
+    // check vendor prefixes
+    var prefixes = [ 'webkit', 'moz', 'ms', 'o' ];
+
+    for ( var i=0; i < prefixes.length; i++ ) {
+      var prefix = prefixes[i];
+      var method = prefix + 'MatchesSelector';
+      if ( ElemProto[ method ] ) {
+        return method;
+      }
+    }
+  })();
+
+  return function matchesSelector( elem, selector ) {
+    return elem[ matchesMethod ]( selector );
+  };
+
+}));
+
+/**
+ * Fizzy UI utils v2.0.7
+ * MIT license
+ */
+
+/*jshint browser: true, undef: true, unused: true, strict: true */
+
+( function( window, factory ) {
+  // universal module definition
+  /*jshint strict: false */ /*globals define, module, require */
+
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( 'fizzy-ui-utils/utils',[
+      'desandro-matches-selector/matches-selector'
+    ], function( matchesSelector ) {
+      return factory( window, matchesSelector );
+    });
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory(
+      window,
+      require('desandro-matches-selector')
+    );
+  } else {
+    // browser global
+    window.fizzyUIUtils = factory(
+      window,
+      window.matchesSelector
+    );
+  }
+
+}( window, function factory( window, matchesSelector ) {
+
+
+
+var utils = {};
+
+// ----- extend ----- //
+
+// extends objects
+utils.extend = function( a, b ) {
+  for ( var prop in b ) {
+    a[ prop ] = b[ prop ];
+  }
+  return a;
+};
+
+// ----- modulo ----- //
+
+utils.modulo = function( num, div ) {
+  return ( ( num % div ) + div ) % div;
+};
+
+// ----- makeArray ----- //
+
+var arraySlice = Array.prototype.slice;
+
+// turn element or nodeList into an array
+utils.makeArray = function( obj ) {
+  if ( Array.isArray( obj ) ) {
+    // use object if already an array
+    return obj;
+  }
+  // return empty array if undefined or null. #6
+  if ( obj === null || obj === undefined ) {
+    return [];
+  }
+
+  var isArrayLike = typeof obj == 'object' && typeof obj.length == 'number';
+  if ( isArrayLike ) {
+    // convert nodeList to array
+    return arraySlice.call( obj );
+  }
+
+  // array of single index
+  return [ obj ];
+};
+
+// ----- removeFrom ----- //
+
+utils.removeFrom = function( ary, obj ) {
+  var index = ary.indexOf( obj );
+  if ( index != -1 ) {
+    ary.splice( index, 1 );
+  }
+};
+
+// ----- getParent ----- //
+
+utils.getParent = function( elem, selector ) {
+  while ( elem.parentNode && elem != document.body ) {
+    elem = elem.parentNode;
+    if ( matchesSelector( elem, selector ) ) {
+      return elem;
+    }
+  }
+};
+
+// ----- getQueryElement ----- //
+
+// use element as selector string
+utils.getQueryElement = function( elem ) {
+  if ( typeof elem == 'string' ) {
+    return document.querySelector( elem );
+  }
+  return elem;
+};
+
+// ----- handleEvent ----- //
+
+// enable .ontype to trigger from .addEventListener( elem, 'type' )
+utils.handleEvent = function( event ) {
+  var method = 'on' + event.type;
+  if ( this[ method ] ) {
+    this[ method ]( event );
+  }
+};
+
+// ----- filterFindElements ----- //
+
+utils.filterFindElements = function( elems, selector ) {
+  // make array of elems
+  elems = utils.makeArray( elems );
+  var ffElems = [];
+
+  elems.forEach( function( elem ) {
+    // check that elem is an actual element
+    if ( !( elem instanceof HTMLElement ) ) {
+      return;
+    }
+    // add elem if no selector
+    if ( !selector ) {
+      ffElems.push( elem );
+      return;
+    }
+    // filter & find items if we have a selector
+    // filter
+    if ( matchesSelector( elem, selector ) ) {
+      ffElems.push( elem );
+    }
+    // find children
+    var childElems = elem.querySelectorAll( selector );
+    // concat childElems to filterFound array
+    for ( var i=0; i < childElems.length; i++ ) {
+      ffElems.push( childElems[i] );
+    }
+  });
+
+  return ffElems;
+};
+
+// ----- debounceMethod ----- //
+
+utils.debounceMethod = function( _class, methodName, threshold ) {
+  threshold = threshold || 100;
+  // original method
+  var method = _class.prototype[ methodName ];
+  var timeoutName = methodName + 'Timeout';
+
+  _class.prototype[ methodName ] = function() {
+    var timeout = this[ timeoutName ];
+    clearTimeout( timeout );
+
+    var args = arguments;
+    var _this = this;
+    this[ timeoutName ] = setTimeout( function() {
+      method.apply( _this, args );
+      delete _this[ timeoutName ];
+    }, threshold );
+  };
+};
+
+// ----- docReady ----- //
+
+utils.docReady = function( callback ) {
+  var readyState = document.readyState;
+  if ( readyState == 'complete' || readyState == 'interactive' ) {
+    // do async to allow for other scripts to run. metafizzy/flickity#441
+    setTimeout( callback );
+  } else {
+    document.addEventListener( 'DOMContentLoaded', callback );
+  }
+};
+
+// ----- htmlInit ----- //
+
+// http://jamesroberts.name/blog/2010/02/22/string-functions-for-javascript-trim-to-camel-case-to-dashed-and-to-underscore/
+utils.toDashed = function( str ) {
+  return str.replace( /(.)([A-Z])/g, function( match, $1, $2 ) {
+    return $1 + '-' + $2;
+  }).toLowerCase();
+};
+
+var console = window.console;
+/**
+ * allow user to initialize classes via [data-namespace] or .js-namespace class
+ * htmlInit( Widget, 'widgetName' )
+ * options are parsed from data-namespace-options
+ */
+utils.htmlInit = function( WidgetClass, namespace ) {
+  utils.docReady( function() {
+    var dashedNamespace = utils.toDashed( namespace );
+    var dataAttr = 'data-' + dashedNamespace;
+    var dataAttrElems = document.querySelectorAll( '[' + dataAttr + ']' );
+    var jsDashElems = document.querySelectorAll( '.js-' + dashedNamespace );
+    var elems = utils.makeArray( dataAttrElems )
+      .concat( utils.makeArray( jsDashElems ) );
+    var dataOptionsAttr = dataAttr + '-options';
+    var jQuery = window.jQuery;
+
+    elems.forEach( function( elem ) {
+      var attr = elem.getAttribute( dataAttr ) ||
+        elem.getAttribute( dataOptionsAttr );
+      var options;
+      try {
+        options = attr && JSON.parse( attr );
+      } catch ( error ) {
+        // log error, do not initialize
+        if ( console ) {
+          console.error( 'Error parsing ' + dataAttr + ' on ' + elem.className +
+          ': ' + error );
+        }
+        return;
+      }
+      // initialize
+      var instance = new WidgetClass( elem, options );
+      // make available via $().data('namespace')
+      if ( jQuery ) {
+        jQuery.data( elem, namespace, instance );
+      }
+    });
+
+  });
+};
+
+// -----  ----- //
+
+return utils;
+
+}));
+
+/**
+ * Outlayer Item
+ */
+
+( function( window, factory ) {
+  // universal module definition
+  /* jshint strict: false */ /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD - RequireJS
+    define( 'outlayer/item',[
+        'ev-emitter/ev-emitter',
+        'get-size/get-size'
+      ],
+      factory
+    );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS - Browserify, Webpack
+    module.exports = factory(
+      require('ev-emitter'),
+      require('get-size')
+    );
+  } else {
+    // browser global
+    window.Outlayer = {};
+    window.Outlayer.Item = factory(
+      window.EvEmitter,
+      window.getSize
+    );
+  }
+
+}( window, function factory( EvEmitter, getSize ) {
+'use strict';
+
+// ----- helpers ----- //
+
+function isEmptyObj( obj ) {
+  for ( var prop in obj ) {
+    return false;
+  }
+  prop = null;
+  return true;
+}
+
+// -------------------------- CSS3 support -------------------------- //
+
+
+var docElemStyle = document.documentElement.style;
+
+var transitionProperty = typeof docElemStyle.transition == 'string' ?
+  'transition' : 'WebkitTransition';
+var transformProperty = typeof docElemStyle.transform == 'string' ?
+  'transform' : 'WebkitTransform';
+
+var transitionEndEvent = {
+  WebkitTransition: 'webkitTransitionEnd',
+  transition: 'transitionend'
+}[ transitionProperty ];
+
+// cache all vendor properties that could have vendor prefix
+var vendorProperties = {
+  transform: transformProperty,
+  transition: transitionProperty,
+  transitionDuration: transitionProperty + 'Duration',
+  transitionProperty: transitionProperty + 'Property',
+  transitionDelay: transitionProperty + 'Delay'
+};
+
+// -------------------------- Item -------------------------- //
+
+function Item( element, layout ) {
+  if ( !element ) {
+    return;
+  }
+
+  this.element = element;
+  // parent layout class, i.e. Masonry, Isotope, or Packery
+  this.layout = layout;
+  this.position = {
+    x: 0,
+    y: 0
+  };
+
+  this._create();
+}
+
+// inherit EvEmitter
+var proto = Item.prototype = Object.create( EvEmitter.prototype );
+proto.constructor = Item;
+
+proto._create = function() {
+  // transition objects
+  this._transn = {
+    ingProperties: {},
+    clean: {},
+    onEnd: {}
+  };
+
+  this.css({
+    position: 'absolute'
+  });
+};
+
+// trigger specified handler for event type
+proto.handleEvent = function( event ) {
+  var method = 'on' + event.type;
+  if ( this[ method ] ) {
+    this[ method ]( event );
+  }
+};
+
+proto.getSize = function() {
+  this.size = getSize( this.element );
+};
+
+/**
+ * apply CSS styles to element
+ * @param {Object} style
+ */
+proto.css = function( style ) {
+  var elemStyle = this.element.style;
+
+  for ( var prop in style ) {
+    // use vendor property if available
+    var supportedProp = vendorProperties[ prop ] || prop;
+    elemStyle[ supportedProp ] = style[ prop ];
+  }
+};
+
+ // measure position, and sets it
+proto.getPosition = function() {
+  var style = getComputedStyle( this.element );
+  var isOriginLeft = this.layout._getOption('originLeft');
+  var isOriginTop = this.layout._getOption('originTop');
+  var xValue = style[ isOriginLeft ? 'left' : 'right' ];
+  var yValue = style[ isOriginTop ? 'top' : 'bottom' ];
+  var x = parseFloat( xValue );
+  var y = parseFloat( yValue );
+  // convert percent to pixels
+  var layoutSize = this.layout.size;
+  if ( xValue.indexOf('%') != -1 ) {
+    x = ( x / 100 ) * layoutSize.width;
+  }
+  if ( yValue.indexOf('%') != -1 ) {
+    y = ( y / 100 ) * layoutSize.height;
+  }
+  // clean up 'auto' or other non-integer values
+  x = isNaN( x ) ? 0 : x;
+  y = isNaN( y ) ? 0 : y;
+  // remove padding from measurement
+  x -= isOriginLeft ? layoutSize.paddingLeft : layoutSize.paddingRight;
+  y -= isOriginTop ? layoutSize.paddingTop : layoutSize.paddingBottom;
+
+  this.position.x = x;
+  this.position.y = y;
+};
+
+// set settled position, apply padding
+proto.layoutPosition = function() {
+  var layoutSize = this.layout.size;
+  var style = {};
+  var isOriginLeft = this.layout._getOption('originLeft');
+  var isOriginTop = this.layout._getOption('originTop');
+
+  // x
+  var xPadding = isOriginLeft ? 'paddingLeft' : 'paddingRight';
+  var xProperty = isOriginLeft ? 'left' : 'right';
+  var xResetProperty = isOriginLeft ? 'right' : 'left';
+
+  var x = this.position.x + layoutSize[ xPadding ];
+  // set in percentage or pixels
+  style[ xProperty ] = this.getXValue( x );
+  // reset other property
+  style[ xResetProperty ] = '';
+
+  // y
+  var yPadding = isOriginTop ? 'paddingTop' : 'paddingBottom';
+  var yProperty = isOriginTop ? 'top' : 'bottom';
+  var yResetProperty = isOriginTop ? 'bottom' : 'top';
+
+  var y = this.position.y + layoutSize[ yPadding ];
+  // set in percentage or pixels
+  style[ yProperty ] = this.getYValue( y );
+  // reset other property
+  style[ yResetProperty ] = '';
+
+  this.css( style );
+  this.emitEvent( 'layout', [ this ] );
+};
+
+proto.getXValue = function( x ) {
+  var isHorizontal = this.layout._getOption('horizontal');
+  return this.layout.options.percentPosition && !isHorizontal ?
+    ( ( x / this.layout.size.width ) * 100 ) + '%' : x + 'px';
+};
+
+proto.getYValue = function( y ) {
+  var isHorizontal = this.layout._getOption('horizontal');
+  return this.layout.options.percentPosition && isHorizontal ?
+    ( ( y / this.layout.size.height ) * 100 ) + '%' : y + 'px';
+};
+
+proto._transitionTo = function( x, y ) {
+  this.getPosition();
+  // get current x & y from top/left
+  var curX = this.position.x;
+  var curY = this.position.y;
+
+  var didNotMove = x == this.position.x && y == this.position.y;
+
+  // save end position
+  this.setPosition( x, y );
+
+  // if did not move and not transitioning, just go to layout
+  if ( didNotMove && !this.isTransitioning ) {
+    this.layoutPosition();
+    return;
+  }
+
+  var transX = x - curX;
+  var transY = y - curY;
+  var transitionStyle = {};
+  transitionStyle.transform = this.getTranslate( transX, transY );
+
+  this.transition({
+    to: transitionStyle,
+    onTransitionEnd: {
+      transform: this.layoutPosition
+    },
+    isCleaning: true
+  });
+};
+
+proto.getTranslate = function( x, y ) {
+  // flip cooridinates if origin on right or bottom
+  var isOriginLeft = this.layout._getOption('originLeft');
+  var isOriginTop = this.layout._getOption('originTop');
+  x = isOriginLeft ? x : -x;
+  y = isOriginTop ? y : -y;
+  return 'translate3d(' + x + 'px, ' + y + 'px, 0)';
+};
+
+// non transition + transform support
+proto.goTo = function( x, y ) {
+  this.setPosition( x, y );
+  this.layoutPosition();
+};
+
+proto.moveTo = proto._transitionTo;
+
+proto.setPosition = function( x, y ) {
+  this.position.x = parseFloat( x );
+  this.position.y = parseFloat( y );
+};
+
+// ----- transition ----- //
+
+/**
+ * @param {Object} style - CSS
+ * @param {Function} onTransitionEnd
+ */
+
+// non transition, just trigger callback
+proto._nonTransition = function( args ) {
+  this.css( args.to );
+  if ( args.isCleaning ) {
+    this._removeStyles( args.to );
+  }
+  for ( var prop in args.onTransitionEnd ) {
+    args.onTransitionEnd[ prop ].call( this );
+  }
+};
+
+/**
+ * proper transition
+ * @param {Object} args - arguments
+ *   @param {Object} to - style to transition to
+ *   @param {Object} from - style to start transition from
+ *   @param {Boolean} isCleaning - removes transition styles after transition
+ *   @param {Function} onTransitionEnd - callback
+ */
+proto.transition = function( args ) {
+  // redirect to nonTransition if no transition duration
+  if ( !parseFloat( this.layout.options.transitionDuration ) ) {
+    this._nonTransition( args );
+    return;
+  }
+
+  var _transition = this._transn;
+  // keep track of onTransitionEnd callback by css property
+  for ( var prop in args.onTransitionEnd ) {
+    _transition.onEnd[ prop ] = args.onTransitionEnd[ prop ];
+  }
+  // keep track of properties that are transitioning
+  for ( prop in args.to ) {
+    _transition.ingProperties[ prop ] = true;
+    // keep track of properties to clean up when transition is done
+    if ( args.isCleaning ) {
+      _transition.clean[ prop ] = true;
+    }
+  }
+
+  // set from styles
+  if ( args.from ) {
+    this.css( args.from );
+    // force redraw. http://blog.alexmaccaw.com/css-transitions
+    var h = this.element.offsetHeight;
+    // hack for JSHint to hush about unused var
+    h = null;
+  }
+  // enable transition
+  this.enableTransition( args.to );
+  // set styles that are transitioning
+  this.css( args.to );
+
+  this.isTransitioning = true;
+
+};
+
+// dash before all cap letters, including first for
+// WebkitTransform => -webkit-transform
+function toDashedAll( str ) {
+  return str.replace( /([A-Z])/g, function( $1 ) {
+    return '-' + $1.toLowerCase();
+  });
+}
+
+var transitionProps = 'opacity,' + toDashedAll( transformProperty );
+
+proto.enableTransition = function(/* style */) {
+  // HACK changing transitionProperty during a transition
+  // will cause transition to jump
+  if ( this.isTransitioning ) {
+    return;
+  }
+
+  // make `transition: foo, bar, baz` from style object
+  // HACK un-comment this when enableTransition can work
+  // while a transition is happening
+  // var transitionValues = [];
+  // for ( var prop in style ) {
+  //   // dash-ify camelCased properties like WebkitTransition
+  //   prop = vendorProperties[ prop ] || prop;
+  //   transitionValues.push( toDashedAll( prop ) );
+  // }
+  // munge number to millisecond, to match stagger
+  var duration = this.layout.options.transitionDuration;
+  duration = typeof duration == 'number' ? duration + 'ms' : duration;
+  // enable transition styles
+  this.css({
+    transitionProperty: transitionProps,
+    transitionDuration: duration,
+    transitionDelay: this.staggerDelay || 0
+  });
+  // listen for transition end event
+  this.element.addEventListener( transitionEndEvent, this, false );
+};
+
+// ----- events ----- //
+
+proto.onwebkitTransitionEnd = function( event ) {
+  this.ontransitionend( event );
+};
+
+proto.onotransitionend = function( event ) {
+  this.ontransitionend( event );
+};
+
+// properties that I munge to make my life easier
+var dashedVendorProperties = {
+  '-webkit-transform': 'transform'
+};
+
+proto.ontransitionend = function( event ) {
+  // disregard bubbled events from children
+  if ( event.target !== this.element ) {
+    return;
+  }
+  var _transition = this._transn;
+  // get property name of transitioned property, convert to prefix-free
+  var propertyName = dashedVendorProperties[ event.propertyName ] || event.propertyName;
+
+  // remove property that has completed transitioning
+  delete _transition.ingProperties[ propertyName ];
+  // check if any properties are still transitioning
+  if ( isEmptyObj( _transition.ingProperties ) ) {
+    // all properties have completed transitioning
+    this.disableTransition();
+  }
+  // clean style
+  if ( propertyName in _transition.clean ) {
+    // clean up style
+    this.element.style[ event.propertyName ] = '';
+    delete _transition.clean[ propertyName ];
+  }
+  // trigger onTransitionEnd callback
+  if ( propertyName in _transition.onEnd ) {
+    var onTransitionEnd = _transition.onEnd[ propertyName ];
+    onTransitionEnd.call( this );
+    delete _transition.onEnd[ propertyName ];
+  }
+
+  this.emitEvent( 'transitionEnd', [ this ] );
+};
+
+proto.disableTransition = function() {
+  this.removeTransitionStyles();
+  this.element.removeEventListener( transitionEndEvent, this, false );
+  this.isTransitioning = false;
+};
+
+/**
+ * removes style property from element
+ * @param {Object} style
+**/
+proto._removeStyles = function( style ) {
+  // clean up transition styles
+  var cleanStyle = {};
+  for ( var prop in style ) {
+    cleanStyle[ prop ] = '';
+  }
+  this.css( cleanStyle );
+};
+
+var cleanTransitionStyle = {
+  transitionProperty: '',
+  transitionDuration: '',
+  transitionDelay: ''
+};
+
+proto.removeTransitionStyles = function() {
+  // remove transition
+  this.css( cleanTransitionStyle );
+};
+
+// ----- stagger ----- //
+
+proto.stagger = function( delay ) {
+  delay = isNaN( delay ) ? 0 : delay;
+  this.staggerDelay = delay + 'ms';
+};
+
+// ----- show/hide/remove ----- //
+
+// remove element from DOM
+proto.removeElem = function() {
+  this.element.parentNode.removeChild( this.element );
+  // remove display: none
+  this.css({ display: '' });
+  this.emitEvent( 'remove', [ this ] );
+};
+
+proto.remove = function() {
+  // just remove element if no transition support or no transition
+  if ( !transitionProperty || !parseFloat( this.layout.options.transitionDuration ) ) {
+    this.removeElem();
+    return;
+  }
+
+  // start transition
+  this.once( 'transitionEnd', function() {
+    this.removeElem();
+  });
+  this.hide();
+};
+
+proto.reveal = function() {
+  delete this.isHidden;
+  // remove display: none
+  this.css({ display: '' });
+
+  var options = this.layout.options;
+
+  var onTransitionEnd = {};
+  var transitionEndProperty = this.getHideRevealTransitionEndProperty('visibleStyle');
+  onTransitionEnd[ transitionEndProperty ] = this.onRevealTransitionEnd;
+
+  this.transition({
+    from: options.hiddenStyle,
+    to: options.visibleStyle,
+    isCleaning: true,
+    onTransitionEnd: onTransitionEnd
+  });
+};
+
+proto.onRevealTransitionEnd = function() {
+  // check if still visible
+  // during transition, item may have been hidden
+  if ( !this.isHidden ) {
+    this.emitEvent('reveal');
+  }
+};
+
+/**
+ * get style property use for hide/reveal transition end
+ * @param {String} styleProperty - hiddenStyle/visibleStyle
+ * @returns {String}
+ */
+proto.getHideRevealTransitionEndProperty = function( styleProperty ) {
+  var optionStyle = this.layout.options[ styleProperty ];
+  // use opacity
+  if ( optionStyle.opacity ) {
+    return 'opacity';
+  }
+  // get first property
+  for ( var prop in optionStyle ) {
+    return prop;
+  }
+};
+
+proto.hide = function() {
+  // set flag
+  this.isHidden = true;
+  // remove display: none
+  this.css({ display: '' });
+
+  var options = this.layout.options;
+
+  var onTransitionEnd = {};
+  var transitionEndProperty = this.getHideRevealTransitionEndProperty('hiddenStyle');
+  onTransitionEnd[ transitionEndProperty ] = this.onHideTransitionEnd;
+
+  this.transition({
+    from: options.visibleStyle,
+    to: options.hiddenStyle,
+    // keep hidden stuff hidden
+    isCleaning: true,
+    onTransitionEnd: onTransitionEnd
+  });
+};
+
+proto.onHideTransitionEnd = function() {
+  // check if still hidden
+  // during transition, item may have been un-hidden
+  if ( this.isHidden ) {
+    this.css({ display: 'none' });
+    this.emitEvent('hide');
+  }
+};
+
+proto.destroy = function() {
+  this.css({
+    position: '',
+    left: '',
+    right: '',
+    top: '',
+    bottom: '',
+    transition: '',
+    transform: ''
+  });
+};
+
+return Item;
+
+}));
+
+/*!
+ * Outlayer v2.1.1
+ * the brains and guts of a layout library
+ * MIT license
+ */
+
+( function( window, factory ) {
+  'use strict';
+  // universal module definition
+  /* jshint strict: false */ /* globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD - RequireJS
+    define( 'outlayer/outlayer',[
+        'ev-emitter/ev-emitter',
+        'get-size/get-size',
+        'fizzy-ui-utils/utils',
+        './item'
+      ],
+      function( EvEmitter, getSize, utils, Item ) {
+        return factory( window, EvEmitter, getSize, utils, Item);
+      }
+    );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS - Browserify, Webpack
+    module.exports = factory(
+      window,
+      require('ev-emitter'),
+      require('get-size'),
+      require('fizzy-ui-utils'),
+      require('./item')
+    );
+  } else {
+    // browser global
+    window.Outlayer = factory(
+      window,
+      window.EvEmitter,
+      window.getSize,
+      window.fizzyUIUtils,
+      window.Outlayer.Item
+    );
+  }
+
+}( window, function factory( window, EvEmitter, getSize, utils, Item ) {
+'use strict';
+
+// ----- vars ----- //
+
+var console = window.console;
+var jQuery = window.jQuery;
+var noop = function() {};
+
+// -------------------------- Outlayer -------------------------- //
+
+// globally unique identifiers
+var GUID = 0;
+// internal store of all Outlayer intances
+var instances = {};
+
+
+/**
+ * @param {Element, String} element
+ * @param {Object} options
+ * @constructor
+ */
+function Outlayer( element, options ) {
+  var queryElement = utils.getQueryElement( element );
+  if ( !queryElement ) {
+    if ( console ) {
+      console.error( 'Bad element for ' + this.constructor.namespace +
+        ': ' + ( queryElement || element ) );
+    }
+    return;
+  }
+  this.element = queryElement;
+  // add jQuery
+  if ( jQuery ) {
+    this.$element = jQuery( this.element );
+  }
+
+  // options
+  this.options = utils.extend( {}, this.constructor.defaults );
+  this.option( options );
+
+  // add id for Outlayer.getFromElement
+  var id = ++GUID;
+  this.element.outlayerGUID = id; // expando
+  instances[ id ] = this; // associate via id
+
+  // kick it off
+  this._create();
+
+  var isInitLayout = this._getOption('initLayout');
+  if ( isInitLayout ) {
+    this.layout();
+  }
+}
+
+// settings are for internal use only
+Outlayer.namespace = 'outlayer';
+Outlayer.Item = Item;
+
+// default options
+Outlayer.defaults = {
+  containerStyle: {
+    position: 'relative'
+  },
+  initLayout: true,
+  originLeft: true,
+  originTop: true,
+  resize: true,
+  resizeContainer: true,
+  // item options
+  transitionDuration: '0.4s',
+  hiddenStyle: {
+    opacity: 0,
+    transform: 'scale(0.001)'
+  },
+  visibleStyle: {
+    opacity: 1,
+    transform: 'scale(1)'
+  }
+};
+
+var proto = Outlayer.prototype;
+// inherit EvEmitter
+utils.extend( proto, EvEmitter.prototype );
+
+/**
+ * set options
+ * @param {Object} opts
+ */
+proto.option = function( opts ) {
+  utils.extend( this.options, opts );
+};
+
+/**
+ * get backwards compatible option value, check old name
+ */
+proto._getOption = function( option ) {
+  var oldOption = this.constructor.compatOptions[ option ];
+  return oldOption && this.options[ oldOption ] !== undefined ?
+    this.options[ oldOption ] : this.options[ option ];
+};
+
+Outlayer.compatOptions = {
+  // currentName: oldName
+  initLayout: 'isInitLayout',
+  horizontal: 'isHorizontal',
+  layoutInstant: 'isLayoutInstant',
+  originLeft: 'isOriginLeft',
+  originTop: 'isOriginTop',
+  resize: 'isResizeBound',
+  resizeContainer: 'isResizingContainer'
+};
+
+proto._create = function() {
+  // get items from children
+  this.reloadItems();
+  // elements that affect layout, but are not laid out
+  this.stamps = [];
+  this.stamp( this.options.stamp );
+  // set container style
+  utils.extend( this.element.style, this.options.containerStyle );
+
+  // bind resize method
+  var canBindResize = this._getOption('resize');
+  if ( canBindResize ) {
+    this.bindResize();
+  }
+};
+
+// goes through all children again and gets bricks in proper order
+proto.reloadItems = function() {
+  // collection of item elements
+  this.items = this._itemize( this.element.children );
+};
+
+
+/**
+ * turn elements into Outlayer.Items to be used in layout
+ * @param {Array or NodeList or HTMLElement} elems
+ * @returns {Array} items - collection of new Outlayer Items
+ */
+proto._itemize = function( elems ) {
+
+  var itemElems = this._filterFindItemElements( elems );
+  var Item = this.constructor.Item;
+
+  // create new Outlayer Items for collection
+  var items = [];
+  for ( var i=0; i < itemElems.length; i++ ) {
+    var elem = itemElems[i];
+    var item = new Item( elem, this );
+    items.push( item );
+  }
+
+  return items;
+};
+
+/**
+ * get item elements to be used in layout
+ * @param {Array or NodeList or HTMLElement} elems
+ * @returns {Array} items - item elements
+ */
+proto._filterFindItemElements = function( elems ) {
+  return utils.filterFindElements( elems, this.options.itemSelector );
+};
+
+/**
+ * getter method for getting item elements
+ * @returns {Array} elems - collection of item elements
+ */
+proto.getItemElements = function() {
+  return this.items.map( function( item ) {
+    return item.element;
+  });
+};
+
+// ----- init & layout ----- //
+
+/**
+ * lays out all items
+ */
+proto.layout = function() {
+  this._resetLayout();
+  this._manageStamps();
+
+  // don't animate first layout
+  var layoutInstant = this._getOption('layoutInstant');
+  var isInstant = layoutInstant !== undefined ?
+    layoutInstant : !this._isLayoutInited;
+  this.layoutItems( this.items, isInstant );
+
+  // flag for initalized
+  this._isLayoutInited = true;
+};
+
+// _init is alias for layout
+proto._init = proto.layout;
+
+/**
+ * logic before any new layout
+ */
+proto._resetLayout = function() {
+  this.getSize();
+};
+
+
+proto.getSize = function() {
+  this.size = getSize( this.element );
+};
+
+/**
+ * get measurement from option, for columnWidth, rowHeight, gutter
+ * if option is String -> get element from selector string, & get size of element
+ * if option is Element -> get size of element
+ * else use option as a number
+ *
+ * @param {String} measurement
+ * @param {String} size - width or height
+ * @private
+ */
+proto._getMeasurement = function( measurement, size ) {
+  var option = this.options[ measurement ];
+  var elem;
+  if ( !option ) {
+    // default to 0
+    this[ measurement ] = 0;
+  } else {
+    // use option as an element
+    if ( typeof option == 'string' ) {
+      elem = this.element.querySelector( option );
+    } else if ( option instanceof HTMLElement ) {
+      elem = option;
+    }
+    // use size of element, if element
+    this[ measurement ] = elem ? getSize( elem )[ size ] : option;
+  }
+};
+
+/**
+ * layout a collection of item elements
+ * @api public
+ */
+proto.layoutItems = function( items, isInstant ) {
+  items = this._getItemsForLayout( items );
+
+  this._layoutItems( items, isInstant );
+
+  this._postLayout();
+};
+
+/**
+ * get the items to be laid out
+ * you may want to skip over some items
+ * @param {Array} items
+ * @returns {Array} items
+ */
+proto._getItemsForLayout = function( items ) {
+  return items.filter( function( item ) {
+    return !item.isIgnored;
+  });
+};
+
+/**
+ * layout items
+ * @param {Array} items
+ * @param {Boolean} isInstant
+ */
+proto._layoutItems = function( items, isInstant ) {
+  this._emitCompleteOnItems( 'layout', items );
+
+  if ( !items || !items.length ) {
+    // no items, emit event with empty array
+    return;
+  }
+
+  var queue = [];
+
+  items.forEach( function( item ) {
+    // get x/y object from method
+    var position = this._getItemLayoutPosition( item );
+    // enqueue
+    position.item = item;
+    position.isInstant = isInstant || item.isLayoutInstant;
+    queue.push( position );
+  }, this );
+
+  this._processLayoutQueue( queue );
+};
+
+/**
+ * get item layout position
+ * @param {Outlayer.Item} item
+ * @returns {Object} x and y position
+ */
+proto._getItemLayoutPosition = function( /* item */ ) {
+  return {
+    x: 0,
+    y: 0
+  };
+};
+
+/**
+ * iterate over array and position each item
+ * Reason being - separating this logic prevents 'layout invalidation'
+ * thx @paul_irish
+ * @param {Array} queue
+ */
+proto._processLayoutQueue = function( queue ) {
+  this.updateStagger();
+  queue.forEach( function( obj, i ) {
+    this._positionItem( obj.item, obj.x, obj.y, obj.isInstant, i );
+  }, this );
+};
+
+// set stagger from option in milliseconds number
+proto.updateStagger = function() {
+  var stagger = this.options.stagger;
+  if ( stagger === null || stagger === undefined ) {
+    this.stagger = 0;
+    return;
+  }
+  this.stagger = getMilliseconds( stagger );
+  return this.stagger;
+};
+
+/**
+ * Sets position of item in DOM
+ * @param {Outlayer.Item} item
+ * @param {Number} x - horizontal position
+ * @param {Number} y - vertical position
+ * @param {Boolean} isInstant - disables transitions
+ */
+proto._positionItem = function( item, x, y, isInstant, i ) {
+  if ( isInstant ) {
+    // if not transition, just set CSS
+    item.goTo( x, y );
+  } else {
+    item.stagger( i * this.stagger );
+    item.moveTo( x, y );
+  }
+};
+
+/**
+ * Any logic you want to do after each layout,
+ * i.e. size the container
+ */
+proto._postLayout = function() {
+  this.resizeContainer();
+};
+
+proto.resizeContainer = function() {
+  var isResizingContainer = this._getOption('resizeContainer');
+  if ( !isResizingContainer ) {
+    return;
+  }
+  var size = this._getContainerSize();
+  if ( size ) {
+    this._setContainerMeasure( size.width, true );
+    this._setContainerMeasure( size.height, false );
+  }
+};
+
+/**
+ * Sets width or height of container if returned
+ * @returns {Object} size
+ *   @param {Number} width
+ *   @param {Number} height
+ */
+proto._getContainerSize = noop;
+
+/**
+ * @param {Number} measure - size of width or height
+ * @param {Boolean} isWidth
+ */
+proto._setContainerMeasure = function( measure, isWidth ) {
+  if ( measure === undefined ) {
+    return;
+  }
+
+  var elemSize = this.size;
+  // add padding and border width if border box
+  if ( elemSize.isBorderBox ) {
+    measure += isWidth ? elemSize.paddingLeft + elemSize.paddingRight +
+      elemSize.borderLeftWidth + elemSize.borderRightWidth :
+      elemSize.paddingBottom + elemSize.paddingTop +
+      elemSize.borderTopWidth + elemSize.borderBottomWidth;
+  }
+
+  measure = Math.max( measure, 0 );
+  this.element.style[ isWidth ? 'width' : 'height' ] = measure + 'px';
+};
+
+/**
+ * emit eventComplete on a collection of items events
+ * @param {String} eventName
+ * @param {Array} items - Outlayer.Items
+ */
+proto._emitCompleteOnItems = function( eventName, items ) {
+  var _this = this;
+  function onComplete() {
+    _this.dispatchEvent( eventName + 'Complete', null, [ items ] );
+  }
+
+  var count = items.length;
+  if ( !items || !count ) {
+    onComplete();
+    return;
+  }
+
+  var doneCount = 0;
+  function tick() {
+    doneCount++;
+    if ( doneCount == count ) {
+      onComplete();
+    }
+  }
+
+  // bind callback
+  items.forEach( function( item ) {
+    item.once( eventName, tick );
+  });
+};
+
+/**
+ * emits events via EvEmitter and jQuery events
+ * @param {String} type - name of event
+ * @param {Event} event - original event
+ * @param {Array} args - extra arguments
+ */
+proto.dispatchEvent = function( type, event, args ) {
+  // add original event to arguments
+  var emitArgs = event ? [ event ].concat( args ) : args;
+  this.emitEvent( type, emitArgs );
+
+  if ( jQuery ) {
+    // set this.$element
+    this.$element = this.$element || jQuery( this.element );
+    if ( event ) {
+      // create jQuery event
+      var $event = jQuery.Event( event );
+      $event.type = type;
+      this.$element.trigger( $event, args );
+    } else {
+      // just trigger with type if no event available
+      this.$element.trigger( type, args );
+    }
+  }
+};
+
+// -------------------------- ignore & stamps -------------------------- //
+
+
+/**
+ * keep item in collection, but do not lay it out
+ * ignored items do not get skipped in layout
+ * @param {Element} elem
+ */
+proto.ignore = function( elem ) {
+  var item = this.getItem( elem );
+  if ( item ) {
+    item.isIgnored = true;
+  }
+};
+
+/**
+ * return item to layout collection
+ * @param {Element} elem
+ */
+proto.unignore = function( elem ) {
+  var item = this.getItem( elem );
+  if ( item ) {
+    delete item.isIgnored;
+  }
+};
+
+/**
+ * adds elements to stamps
+ * @param {NodeList, Array, Element, or String} elems
+ */
+proto.stamp = function( elems ) {
+  elems = this._find( elems );
+  if ( !elems ) {
+    return;
+  }
+
+  this.stamps = this.stamps.concat( elems );
+  // ignore
+  elems.forEach( this.ignore, this );
+};
+
+/**
+ * removes elements to stamps
+ * @param {NodeList, Array, or Element} elems
+ */
+proto.unstamp = function( elems ) {
+  elems = this._find( elems );
+  if ( !elems ){
+    return;
+  }
+
+  elems.forEach( function( elem ) {
+    // filter out removed stamp elements
+    utils.removeFrom( this.stamps, elem );
+    this.unignore( elem );
+  }, this );
+};
+
+/**
+ * finds child elements
+ * @param {NodeList, Array, Element, or String} elems
+ * @returns {Array} elems
+ */
+proto._find = function( elems ) {
+  if ( !elems ) {
+    return;
+  }
+  // if string, use argument as selector string
+  if ( typeof elems == 'string' ) {
+    elems = this.element.querySelectorAll( elems );
+  }
+  elems = utils.makeArray( elems );
+  return elems;
+};
+
+proto._manageStamps = function() {
+  if ( !this.stamps || !this.stamps.length ) {
+    return;
+  }
+
+  this._getBoundingRect();
+
+  this.stamps.forEach( this._manageStamp, this );
+};
+
+// update boundingLeft / Top
+proto._getBoundingRect = function() {
+  // get bounding rect for container element
+  var boundingRect = this.element.getBoundingClientRect();
+  var size = this.size;
+  this._boundingRect = {
+    left: boundingRect.left + size.paddingLeft + size.borderLeftWidth,
+    top: boundingRect.top + size.paddingTop + size.borderTopWidth,
+    right: boundingRect.right - ( size.paddingRight + size.borderRightWidth ),
+    bottom: boundingRect.bottom - ( size.paddingBottom + size.borderBottomWidth )
+  };
+};
+
+/**
+ * @param {Element} stamp
+**/
+proto._manageStamp = noop;
+
+/**
+ * get x/y position of element relative to container element
+ * @param {Element} elem
+ * @returns {Object} offset - has left, top, right, bottom
+ */
+proto._getElementOffset = function( elem ) {
+  var boundingRect = elem.getBoundingClientRect();
+  var thisRect = this._boundingRect;
+  var size = getSize( elem );
+  var offset = {
+    left: boundingRect.left - thisRect.left - size.marginLeft,
+    top: boundingRect.top - thisRect.top - size.marginTop,
+    right: thisRect.right - boundingRect.right - size.marginRight,
+    bottom: thisRect.bottom - boundingRect.bottom - size.marginBottom
+  };
+  return offset;
+};
+
+// -------------------------- resize -------------------------- //
+
+// enable event handlers for listeners
+// i.e. resize -> onresize
+proto.handleEvent = utils.handleEvent;
+
+/**
+ * Bind layout to window resizing
+ */
+proto.bindResize = function() {
+  window.addEventListener( 'resize', this );
+  this.isResizeBound = true;
+};
+
+/**
+ * Unbind layout to window resizing
+ */
+proto.unbindResize = function() {
+  window.removeEventListener( 'resize', this );
+  this.isResizeBound = false;
+};
+
+proto.onresize = function() {
+  this.resize();
+};
+
+utils.debounceMethod( Outlayer, 'onresize', 100 );
+
+proto.resize = function() {
+  // don't trigger if size did not change
+  // or if resize was unbound. See #9
+  if ( !this.isResizeBound || !this.needsResizeLayout() ) {
+    return;
+  }
+
+  this.layout();
+};
+
+/**
+ * check if layout is needed post layout
+ * @returns Boolean
+ */
+proto.needsResizeLayout = function() {
+  var size = getSize( this.element );
+  // check that this.size and size are there
+  // IE8 triggers resize on body size change, so they might not be
+  var hasSizes = this.size && size;
+  return hasSizes && size.innerWidth !== this.size.innerWidth;
+};
+
+// -------------------------- methods -------------------------- //
+
+/**
+ * add items to Outlayer instance
+ * @param {Array or NodeList or Element} elems
+ * @returns {Array} items - Outlayer.Items
+**/
+proto.addItems = function( elems ) {
+  var items = this._itemize( elems );
+  // add items to collection
+  if ( items.length ) {
+    this.items = this.items.concat( items );
+  }
+  return items;
+};
+
+/**
+ * Layout newly-appended item elements
+ * @param {Array or NodeList or Element} elems
+ */
+proto.appended = function( elems ) {
+  var items = this.addItems( elems );
+  if ( !items.length ) {
+    return;
+  }
+  // layout and reveal just the new items
+  this.layoutItems( items, true );
+  this.reveal( items );
+};
+
+/**
+ * Layout prepended elements
+ * @param {Array or NodeList or Element} elems
+ */
+proto.prepended = function( elems ) {
+  var items = this._itemize( elems );
+  if ( !items.length ) {
+    return;
+  }
+  // add items to beginning of collection
+  var previousItems = this.items.slice(0);
+  this.items = items.concat( previousItems );
+  // start new layout
+  this._resetLayout();
+  this._manageStamps();
+  // layout new stuff without transition
+  this.layoutItems( items, true );
+  this.reveal( items );
+  // layout previous items
+  this.layoutItems( previousItems );
+};
+
+/**
+ * reveal a collection of items
+ * @param {Array of Outlayer.Items} items
+ */
+proto.reveal = function( items ) {
+  this._emitCompleteOnItems( 'reveal', items );
+  if ( !items || !items.length ) {
+    return;
+  }
+  var stagger = this.updateStagger();
+  items.forEach( function( item, i ) {
+    item.stagger( i * stagger );
+    item.reveal();
+  });
+};
+
+/**
+ * hide a collection of items
+ * @param {Array of Outlayer.Items} items
+ */
+proto.hide = function( items ) {
+  this._emitCompleteOnItems( 'hide', items );
+  if ( !items || !items.length ) {
+    return;
+  }
+  var stagger = this.updateStagger();
+  items.forEach( function( item, i ) {
+    item.stagger( i * stagger );
+    item.hide();
+  });
+};
+
+/**
+ * reveal item elements
+ * @param {Array}, {Element}, {NodeList} items
+ */
+proto.revealItemElements = function( elems ) {
+  var items = this.getItems( elems );
+  this.reveal( items );
+};
+
+/**
+ * hide item elements
+ * @param {Array}, {Element}, {NodeList} items
+ */
+proto.hideItemElements = function( elems ) {
+  var items = this.getItems( elems );
+  this.hide( items );
+};
+
+/**
+ * get Outlayer.Item, given an Element
+ * @param {Element} elem
+ * @param {Function} callback
+ * @returns {Outlayer.Item} item
+ */
+proto.getItem = function( elem ) {
+  // loop through items to get the one that matches
+  for ( var i=0; i < this.items.length; i++ ) {
+    var item = this.items[i];
+    if ( item.element == elem ) {
+      // return item
+      return item;
+    }
+  }
+};
+
+/**
+ * get collection of Outlayer.Items, given Elements
+ * @param {Array} elems
+ * @returns {Array} items - Outlayer.Items
+ */
+proto.getItems = function( elems ) {
+  elems = utils.makeArray( elems );
+  var items = [];
+  elems.forEach( function( elem ) {
+    var item = this.getItem( elem );
+    if ( item ) {
+      items.push( item );
+    }
+  }, this );
+
+  return items;
+};
+
+/**
+ * remove element(s) from instance and DOM
+ * @param {Array or NodeList or Element} elems
+ */
+proto.remove = function( elems ) {
+  var removeItems = this.getItems( elems );
+
+  this._emitCompleteOnItems( 'remove', removeItems );
+
+  // bail if no items to remove
+  if ( !removeItems || !removeItems.length ) {
+    return;
+  }
+
+  removeItems.forEach( function( item ) {
+    item.remove();
+    // remove item from collection
+    utils.removeFrom( this.items, item );
+  }, this );
+};
+
+// ----- destroy ----- //
+
+// remove and disable Outlayer instance
+proto.destroy = function() {
+  // clean up dynamic styles
+  var style = this.element.style;
+  style.height = '';
+  style.position = '';
+  style.width = '';
+  // destroy items
+  this.items.forEach( function( item ) {
+    item.destroy();
+  });
+
+  this.unbindResize();
+
+  var id = this.element.outlayerGUID;
+  delete instances[ id ]; // remove reference to instance by id
+  delete this.element.outlayerGUID;
+  // remove data for jQuery
+  if ( jQuery ) {
+    jQuery.removeData( this.element, this.constructor.namespace );
+  }
+
+};
+
+// -------------------------- data -------------------------- //
+
+/**
+ * get Outlayer instance from element
+ * @param {Element} elem
+ * @returns {Outlayer}
+ */
+Outlayer.data = function( elem ) {
+  elem = utils.getQueryElement( elem );
+  var id = elem && elem.outlayerGUID;
+  return id && instances[ id ];
+};
+
+
+// -------------------------- create Outlayer class -------------------------- //
+
+/**
+ * create a layout class
+ * @param {String} namespace
+ */
+Outlayer.create = function( namespace, options ) {
+  // sub-class Outlayer
+  var Layout = subclass( Outlayer );
+  // apply new options and compatOptions
+  Layout.defaults = utils.extend( {}, Outlayer.defaults );
+  utils.extend( Layout.defaults, options );
+  Layout.compatOptions = utils.extend( {}, Outlayer.compatOptions  );
+
+  Layout.namespace = namespace;
+
+  Layout.data = Outlayer.data;
+
+  // sub-class Item
+  Layout.Item = subclass( Item );
+
+  // -------------------------- declarative -------------------------- //
+
+  utils.htmlInit( Layout, namespace );
+
+  // -------------------------- jQuery bridge -------------------------- //
+
+  // make into jQuery plugin
+  if ( jQuery && jQuery.bridget ) {
+    jQuery.bridget( namespace, Layout );
+  }
+
+  return Layout;
+};
+
+function subclass( Parent ) {
+  function SubClass() {
+    Parent.apply( this, arguments );
+  }
+
+  SubClass.prototype = Object.create( Parent.prototype );
+  SubClass.prototype.constructor = SubClass;
+
+  return SubClass;
+}
+
+// ----- helpers ----- //
+
+// how many milliseconds are in each unit
+var msUnits = {
+  ms: 1,
+  s: 1000
+};
+
+// munge time-like parameter into millisecond number
+// '0.4s' -> 40
+function getMilliseconds( time ) {
+  if ( typeof time == 'number' ) {
+    return time;
+  }
+  var matches = time.match( /(^\d*\.?\d*)(\w*)/ );
+  var num = matches && matches[1];
+  var unit = matches && matches[2];
+  if ( !num.length ) {
+    return 0;
+  }
+  num = parseFloat( num );
+  var mult = msUnits[ unit ] || 1;
+  return num * mult;
+}
+
+// ----- fin ----- //
+
+// back in global
+Outlayer.Item = Item;
+
+return Outlayer;
+
+}));
+
+/*!
+ * Masonry v4.2.2
+ * Cascading grid layout library
+ * https://masonry.desandro.com
+ * MIT License
+ * by David DeSandro
+ */
+
+( function( window, factory ) {
+  // universal module definition
+  /* jshint strict: false */ /*globals define, module, require */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD
+    define( [
+        'outlayer/outlayer',
+        'get-size/get-size'
+      ],
+      factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS
+    module.exports = factory(
+      require('outlayer'),
+      require('get-size')
+    );
+  } else {
+    // browser global
+    window.Masonry = factory(
+      window.Outlayer,
+      window.getSize
+    );
+  }
+
+}( window, function factory( Outlayer, getSize ) {
+
+
+
+// -------------------------- masonryDefinition -------------------------- //
+
+  // create an Outlayer layout class
+  var Masonry = Outlayer.create('masonry');
+  // isFitWidth -> fitWidth
+  Masonry.compatOptions.fitWidth = 'isFitWidth';
+
+  var proto = Masonry.prototype;
+
+  proto._resetLayout = function() {
+    this.getSize();
+    this._getMeasurement( 'columnWidth', 'outerWidth' );
+    this._getMeasurement( 'gutter', 'outerWidth' );
+    this.measureColumns();
+
+    // reset column Y
+    this.colYs = [];
+    for ( var i=0; i < this.cols; i++ ) {
+      this.colYs.push( 0 );
+    }
+
+    this.maxY = 0;
+    this.horizontalColIndex = 0;
+  };
+
+  proto.measureColumns = function() {
+    this.getContainerWidth();
+    // if columnWidth is 0, default to outerWidth of first item
+    if ( !this.columnWidth ) {
+      var firstItem = this.items[0];
+      var firstItemElem = firstItem && firstItem.element;
+      // columnWidth fall back to item of first element
+      this.columnWidth = firstItemElem && getSize( firstItemElem ).outerWidth ||
+        // if first elem has no width, default to size of container
+        this.containerWidth;
+    }
+
+    var columnWidth = this.columnWidth += this.gutter;
+
+    // calculate columns
+    var containerWidth = this.containerWidth + this.gutter;
+    var cols = containerWidth / columnWidth;
+    // fix rounding errors, typically with gutters
+    var excess = columnWidth - containerWidth % columnWidth;
+    // if overshoot is less than a pixel, round up, otherwise floor it
+    var mathMethod = excess && excess < 1 ? 'round' : 'floor';
+    cols = Math[ mathMethod ]( cols );
+    this.cols = Math.max( cols, 1 );
+  };
+
+  proto.getContainerWidth = function() {
+    // container is parent if fit width
+    var isFitWidth = this._getOption('fitWidth');
+    var container = isFitWidth ? this.element.parentNode : this.element;
+    // check that this.size and size are there
+    // IE8 triggers resize on body size change, so they might not be
+    var size = getSize( container );
+    this.containerWidth = size && size.innerWidth;
+  };
+
+  proto._getItemLayoutPosition = function( item ) {
+    item.getSize();
+    // how many columns does this brick span
+    var remainder = item.size.outerWidth % this.columnWidth;
+    var mathMethod = remainder && remainder < 1 ? 'round' : 'ceil';
+    // round if off by 1 pixel, otherwise use ceil
+    var colSpan = Math[ mathMethod ]( item.size.outerWidth / this.columnWidth );
+    colSpan = Math.min( colSpan, this.cols );
+    // use horizontal or top column position
+    var colPosMethod = this.options.horizontalOrder ?
+      '_getHorizontalColPosition' : '_getTopColPosition';
+    var colPosition = this[ colPosMethod ]( colSpan, item );
+    // position the brick
+    var position = {
+      x: this.columnWidth * colPosition.col,
+      y: colPosition.y
+    };
+    // apply setHeight to necessary columns
+    var setHeight = colPosition.y + item.size.outerHeight;
+    var setMax = colSpan + colPosition.col;
+    for ( var i = colPosition.col; i < setMax; i++ ) {
+      this.colYs[i] = setHeight;
+    }
+
+    return position;
+  };
+
+  proto._getTopColPosition = function( colSpan ) {
+    var colGroup = this._getTopColGroup( colSpan );
+    // get the minimum Y value from the columns
+    var minimumY = Math.min.apply( Math, colGroup );
+
+    return {
+      col: colGroup.indexOf( minimumY ),
+      y: minimumY,
+    };
+  };
+
+  /**
+   * @param {Number} colSpan - number of columns the element spans
+   * @returns {Array} colGroup
+   */
+  proto._getTopColGroup = function( colSpan ) {
+    if ( colSpan < 2 ) {
+      // if brick spans only one column, use all the column Ys
+      return this.colYs;
+    }
+
+    var colGroup = [];
+    // how many different places could this brick fit horizontally
+    var groupCount = this.cols + 1 - colSpan;
+    // for each group potential horizontal position
+    for ( var i = 0; i < groupCount; i++ ) {
+      colGroup[i] = this._getColGroupY( i, colSpan );
+    }
+    return colGroup;
+  };
+
+  proto._getColGroupY = function( col, colSpan ) {
+    if ( colSpan < 2 ) {
+      return this.colYs[ col ];
+    }
+    // make an array of colY values for that one group
+    var groupColYs = this.colYs.slice( col, col + colSpan );
+    // and get the max value of the array
+    return Math.max.apply( Math, groupColYs );
+  };
+
+  // get column position based on horizontal index. #873
+  proto._getHorizontalColPosition = function( colSpan, item ) {
+    var col = this.horizontalColIndex % this.cols;
+    var isOver = colSpan > 1 && col + colSpan > this.cols;
+    // shift to next row if item can't fit on current row
+    col = isOver ? 0 : col;
+    // don't let zero-size items take up space
+    var hasSize = item.size.outerWidth && item.size.outerHeight;
+    this.horizontalColIndex = hasSize ? col + colSpan : this.horizontalColIndex;
+
+    return {
+      col: col,
+      y: this._getColGroupY( col, colSpan ),
+    };
+  };
+
+  proto._manageStamp = function( stamp ) {
+    var stampSize = getSize( stamp );
+    var offset = this._getElementOffset( stamp );
+    // get the columns that this stamp affects
+    var isOriginLeft = this._getOption('originLeft');
+    var firstX = isOriginLeft ? offset.left : offset.right;
+    var lastX = firstX + stampSize.outerWidth;
+    var firstCol = Math.floor( firstX / this.columnWidth );
+    firstCol = Math.max( 0, firstCol );
+    var lastCol = Math.floor( lastX / this.columnWidth );
+    // lastCol should not go over if multiple of columnWidth #425
+    lastCol -= lastX % this.columnWidth ? 0 : 1;
+    lastCol = Math.min( this.cols - 1, lastCol );
+    // set colYs to bottom of the stamp
+
+    var isOriginTop = this._getOption('originTop');
+    var stampMaxY = ( isOriginTop ? offset.top : offset.bottom ) +
+      stampSize.outerHeight;
+    for ( var i = firstCol; i <= lastCol; i++ ) {
+      this.colYs[i] = Math.max( stampMaxY, this.colYs[i] );
+    }
+  };
+
+  proto._getContainerSize = function() {
+    this.maxY = Math.max.apply( Math, this.colYs );
+    var size = {
+      height: this.maxY
+    };
+
+    if ( this._getOption('fitWidth') ) {
+      size.width = this._getContainerFitWidth();
+    }
+
+    return size;
+  };
+
+  proto._getContainerFitWidth = function() {
+    var unusedCols = 0;
+    // count unused columns
+    var i = this.cols;
+    while ( --i ) {
+      if ( this.colYs[i] !== 0 ) {
+        break;
+      }
+      unusedCols++;
+    }
+    // fit container to columns that have been used
+    return ( this.cols - unusedCols ) * this.columnWidth - this.gutter;
+  };
+
+  proto.needsResizeLayout = function() {
+    var previousWidth = this.containerWidth;
+    this.getContainerWidth();
+    return previousWidth != this.containerWidth;
+  };
+
+  return Masonry;
+
+}));
+
+
 /*
      _ _      _       _
  ___| (_) ___| | __  (_)___
@@ -8229,7 +10734,7 @@ if(pagePath.slice(pagePath.length - 1) != '/') {
 	pagePath = pagePath + '/';
 }
 
-// Functions to run inside a block
+// Functions to run inside a block - this function is run at every block call
 function blockFunctions(blockID, optionalFunctions) {
 	let blockChild = jQuery('#block-' + blockID);
 	let block = blockChild.parent('.wmg-block');
@@ -8243,7 +10748,7 @@ function blockFunctions(blockID, optionalFunctions) {
 	blockEdit(block);
 	blockImageFix(block);
 	blockShortcodes(block);
-	blockIframe(block);
+	blockWrappers(block);
 
 	if(jQuery.inArray('blockBG', optionalFunctions) !== -1) {
 		blockBG(block);
@@ -8253,10 +10758,10 @@ function blockFunctions(blockID, optionalFunctions) {
 // Shortcodes
 function blockShortcodes(block) {
 	let shortcodeLimit = 10; // Only allow 10 shortcodes per block
-	let shortcodeCount = 1;
-	let shortcodeOutput = '';
-	let blockContent = jQuery('.block__content', block);
-	let blockContentHTML = blockContent.html();
+	let shortcodeCount = 1; // Current shortcode count
+	let shortcodeOutput = ''; // Empty output variable
+	let blockContent = jQuery('.block__content', block); // Get the '.block_content' element - this is the wrapper where we check for shortcodes
+	let blockContentHTML = blockContent.html(); // Get all the block HTML
 
 	// Loop through all instances of shortcode
 	while(blockContentHTML.indexOf('[!') >= 0 && shortcodeCount <= shortcodeLimit) {
@@ -8320,14 +10825,18 @@ function blockEdit(block) {
 	}
 }
 
-// Add wrappers around iframes
-function blockIframe(block) {
+// Add/remove wrappers around elements inside of a block
+function blockWrappers(block) {
+	// Add ".video-wrapper" around every iframe to allow for auto-sizing. Remove <p> tags.
 	jQuery('iframe', block).unwrap('p').wrap('<div class="video-wrapper"></div>');
+
+	// Remove <p> tags from all images and videos
+	jQuery('img', block).unwrap('p');
 	jQuery('video', block).unwrap('p');
 }
 
 
-// Set options classes
+// Set options classes - this sets a class on the block element for each option set
 function blockOptionsClasses(block, blockOptions) {
 	for (const [key, value] of Object.entries(blockOptions)) {
 		jQuery('.block', block).addClass(key + '--' + value);
@@ -8339,7 +10848,7 @@ function blockOptionsClasses(block, blockOptions) {
 	}
 }
 
-// Image pathing check and fix
+// Image pathing check and fix - checks if a relative url is set and if so adds the content url
 function blockImageFix(block) {
 	jQuery('img', block).each(function() {
 		var src = jQuery(this).attr('src');
@@ -8449,10 +10958,10 @@ this["WMG"]["blocks"]["AC01"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":12,"column":6},"end":{"line":18,"column":15}}})) != null ? stack1 : "")
     + "					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":27,"column":18},"end":{"line":27,"column":34}}}) : helper)))
-    + "');	\r\n\r\n		// Looop through all accordion items\r\n		$('#block-"
+    + "');	\r\n\r\n		// Loop through all accordion items\r\n		$('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":30,"column":12},"end":{"line":30,"column":28}}}) : helper)))
-    + " .AC-accordion').each(function() {\r\n\r\n			// Create wrapper for heading\r\n			$(this).children().first().wrap('<div class=\"AC-accordion__heading\"></div>');\r\n			// Create wrapper for content\r\n			$(this).children().not(':first-child').wrapAll('<div class=\"AC-accordion__content\"></div>');\r\n\r\n			// Append chevron SVG\r\n			$('.AC-accordion__heading', $(this)).append('<svg width=\"15\" height=\"11\" viewBox=\"0 0 15 11\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M6.70337 10.1595L0.330365 3.57953C-0.110122 3.12474 -0.110122 2.38933 0.330365 1.93937L1.38941 0.845933C1.8299 0.39114 2.54217 0.39114 2.97798 0.845933L7.5 5.50514L12.0173 0.841094C12.4578 0.386301 13.1701 0.386301 13.6059 0.841094L14.6696 1.93453C15.1101 2.38932 15.1101 3.12473 14.6696 3.57469L8.29663 10.1547C7.85614 10.6143 7.14386 10.6143 6.70337 10.1595Z\" fill=\"#6A6A6A\"/></svg>');\r\n		});\r\n\r\n		// Add on-click function to show/hide content\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":42,"column":12},"end":{"line":42,"column":28}}}) : helper)))
+    + " .AC-accordion').each(function() {\r\n\r\n			// Create wrapper for heading\r\n			$(this).children().first().wrap('<div class=\"AC-accordion__heading\"></div>');\r\n			\r\n			// Create wrapper for content\r\n			$(this).children().not(':first-child').wrapAll('<div class=\"AC-accordion__content\"></div>');\r\n\r\n			// Append chevron SVG\r\n			$('.AC-accordion__heading', $(this)).append('<svg width=\"15\" height=\"11\" viewBox=\"0 0 15 11\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M6.70337 10.1595L0.330365 3.57953C-0.110122 3.12474 -0.110122 2.38933 0.330365 1.93937L1.38941 0.845933C1.8299 0.39114 2.54217 0.39114 2.97798 0.845933L7.5 5.50514L12.0173 0.841094C12.4578 0.386301 13.1701 0.386301 13.6059 0.841094L14.6696 1.93453C15.1101 2.38932 15.1101 3.12473 14.6696 3.57469L8.29663 10.1547C7.85614 10.6143 7.14386 10.6143 6.70337 10.1595Z\" fill=\"#6A6A6A\"/></svg>');\r\n		});\r\n\r\n		// Add on-click function to show/hide content\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":43,"column":12},"end":{"line":43,"column":28}}}) : helper)))
     + " .AC-accordion__heading').click(function() {\r\n			var $parent = $(this).parent('.AC-accordion');\r\n			$parent.toggleClass('active');\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["AC02"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -8491,24 +11000,24 @@ this["WMG"]["blocks"]["AC02"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":9,"column":5},"end":{"line":22,"column":14}}})) != null ? stack1 : "")
     + "				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":30,"column":18},"end":{"line":30,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":32,"column":12},"end":{"line":32,"column":28}}}) : helper)))
-    + " .AC02__intro .btn').wrap('<div class=\"AC02__intro-btn\"></div>');\r\n		$('#block-"
+    + "');\r\n\r\n		// Add wrapper to button\r\n		$('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":33,"column":12},"end":{"line":33,"column":28}}}) : helper)))
-    + " .AC02__intro').children().not('.AC02__intro-btn').wrapAll('<div class=\"AC02__intro-content\"></div>');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":35,"column":12},"end":{"line":35,"column":28}}}) : helper)))
+    + " .AC02__intro .btn').wrap('<div class=\"AC02__intro-btn\"></div>');\r\n\r\n		// Add wrapper around everything else\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":36,"column":12},"end":{"line":36,"column":28}}}) : helper)))
+    + " .AC02__intro').children().not('.AC02__intro-btn').wrapAll('<div class=\"AC02__intro-content\"></div>');\r\n\r\n		// Initilise Slick Carousel with custom paging (grabs first element)\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":39,"column":12},"end":{"line":39,"column":28}}}) : helper)))
     + " .AC02__carousel').slick({\r\n			autoplay: false,\r\n			dots: true,\r\n			arrows: false,\r\n			fade: true,\r\n			customPaging : function(slider, i) {\r\n        		var title = $(slider.$slides[i].innerHTML).find('.AC02__carousel-item-content').children().first().html();\r\n        		return '<span>' + title + '</span>';\r\n    		},\r\n		});\r\n\r\n		// Loop through each slide content\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":47,"column":12},"end":{"line":47,"column":28}}}) : helper)))
-    + " .AC02__carousel-item-content').each(function() {\r\n			var $parent = $(this).parents('.AC02__carousel-item');\r\n\r\n			// Remove pagination heading\r\n			$(this).children().first().remove();\r\n\r\n			// Move image\r\n			var $img = $('img', $(this));\r\n			var imgSrc = $img.attr('src');\r\n			var imgAlt = $img.attr('alt');\r\n			$img.unwrap('p').remove();\r\n\r\n			$('.AC02__carousel-item-image', $parent).prepend('<img src=\"' + imgSrc + '\" alt=\"' + imgAlt + '\">');\r\n\r\n		});\r\n\r\n		function block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":63,"column":16},"end":{"line":63,"column":32}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":51,"column":12},"end":{"line":51,"column":28}}}) : helper)))
+    + " .AC02__carousel-item-content').each(function() {\r\n			var $parent = $(this).parents('.AC02__carousel-item');\r\n\r\n			// Remove pagination heading\r\n			$(this).children().first().remove();\r\n\r\n			// Move image\r\n			var $img = $('img', $(this));\r\n			var imgSrc = $img.attr('src');\r\n			var imgAlt = $img.attr('alt');\r\n			$img.unwrap('p').remove();\r\n\r\n			$('.AC02__carousel-item-image', $parent).prepend('<img src=\"' + imgSrc + '\" alt=\"' + imgAlt + '\">');\r\n\r\n		});\r\n\r\n		// Calculate the position of the dots depending on height\r\n		function block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":68,"column":16},"end":{"line":68,"column":32}}}) : helper)))
     + "DotsPosition() {\r\n			if($(window).width() < 992) {\r\n				var dotsHeight = $('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":65,"column":31},"end":{"line":65,"column":47}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":70,"column":31},"end":{"line":70,"column":47}}}) : helper)))
     + " .slick-dots').height() + 40;\r\n				$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":66,"column":14},"end":{"line":66,"column":30}}}) : helper)))
-    + " .AC02__intro').css('padding-bottom', dotsHeight + 'px')\r\n			}\r\n		}\r\n\r\n		block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":70,"column":7},"end":{"line":70,"column":23}}}) : helper)))
-    + "DotsPosition();\r\n\r\n		$(window).resize(function() {\r\n			block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":73,"column":8},"end":{"line":73,"column":24}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":71,"column":14},"end":{"line":71,"column":30}}}) : helper)))
+    + " .AC02__intro').css('padding-bottom', dotsHeight + 'px')\r\n			}\r\n		}\r\n\r\n		// Run dots function on load\r\n		block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":76,"column":7},"end":{"line":76,"column":23}}}) : helper)))
+    + "DotsPosition();\r\n\r\n		// Run dots function on window resize\r\n		$(window).resize(function() {\r\n			block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":80,"column":8},"end":{"line":80,"column":24}}}) : helper)))
     + "DotsPosition();\r\n		});\r\n		\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["AC04"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -8547,26 +11056,26 @@ this["WMG"]["blocks"]["AC04"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":8,"column":4},"end":{"line":14,"column":13}}})) != null ? stack1 : "")
     + "			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":21,"column":18},"end":{"line":21,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":23,"column":12},"end":{"line":23,"column":28}}}) : helper)))
-    + " .AC04-intro img').unwrap('p').wrap('<div class=\"AC04-intro__image\"></div>');\r\n		$('#block-"
+    + "');\r\n\r\n		// Wrap image\r\n		$('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":24,"column":12},"end":{"line":24,"column":28}}}) : helper)))
-    + " .AC04-intro').children().not('.AC04-intro__image').wrapAll('<div class=\"AC04-intro__content\"><div class=\"half-container half-container--lg half-container--left\"></div></div>');\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":25,"column":12},"end":{"line":25,"column":28}}}) : helper)))
-    + " .AC04-intro__content').append('<svg width=\"33\" height=\"351\" viewBox=\"0 0 33 351\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"d-none d-md-block image-box-border theme-fill-path-alt\"><g style=\"mix-blend-mode:multiply\"><path d=\"M0.632812 36.436L32.018 0V351H0.632812V36.436Z\" fill=\"#de0905\"/></g></svg>');\r\n\r\n		$('#block-"
+    + " .AC04-intro img').unwrap('p').wrap('<div class=\"AC04-intro__image\"></div>');\r\n\r\n		// Wrap everything else\r\n		$('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":27,"column":12},"end":{"line":27,"column":28}}}) : helper)))
-    + " .AC04-carousel').slick({\r\n			autoplay: false,\r\n			dots: true,\r\n			arrows: false,\r\n			fade: true,\r\n			customPaging : function(slider, i) {\r\n        		var title = $(slider.$slides[i].innerHTML).find('.AC04-carousel__item').children().first().html();\r\n        		return '<span>' + title + '</span>';\r\n    		},\r\n		});\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":38,"column":12},"end":{"line":38,"column":28}}}) : helper)))
-    + " .AC04-carousel__item').each(function() {\r\n			// Remove pagination heading\r\n			$(this).children().first().remove();\r\n\r\n			// Wrap media\r\n			$('.video-wrapper', $(this)).unwrap('p').wrap('<div class=\"AC04-carousel__item-media\"></div>');\r\n			$('img', $(this)).unwrap('p').wrap('<div class=\"AC04-carousel__item-media\"></div>');\r\n\r\n			// Add media description to div\r\n			var $mediaElement = $('.AC04-carousel__item-media', $(this));\r\n			$mediaElement.nextAll().appendTo($mediaElement);\r\n\r\n			// Add everything else to another wrapper\r\n			$(this).children().not('.AC04-carousel__item-media').wrapAll('<div class=\"AC04-carousel__item-content\"></div>');\r\n		});\r\n\r\n		function block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":54,"column":16},"end":{"line":54,"column":32}}}) : helper)))
+    + " .AC04-intro').children().not('.AC04-intro__image').wrapAll('<div class=\"AC04-intro__content\"><div class=\"half-container half-container--lg half-container--left\"></div></div>');\r\n\r\n		// Add SVG icon\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":30,"column":12},"end":{"line":30,"column":28}}}) : helper)))
+    + " .AC04-intro__content').append('<svg width=\"33\" height=\"351\" viewBox=\"0 0 33 351\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"d-none d-md-block image-box-border theme-fill-path-alt\"><g style=\"mix-blend-mode:multiply\"><path d=\"M0.632812 36.436L32.018 0V351H0.632812V36.436Z\" fill=\"#de0905\"/></g></svg>');\r\n\r\n		// Initilise Slick Carousel with custom paging (takes first child element)\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":33,"column":12},"end":{"line":33,"column":28}}}) : helper)))
+    + " .AC04-carousel').slick({\r\n			autoplay: false,\r\n			dots: true,\r\n			arrows: false,\r\n			fade: true,\r\n			customPaging : function(slider, i) {\r\n        		var title = $(slider.$slides[i].innerHTML).find('.AC04-carousel__item').children().first().html();\r\n        		return '<span>' + title + '</span>';\r\n    		},\r\n		});\r\n\r\n		// Loop through all carousel items\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":45,"column":12},"end":{"line":45,"column":28}}}) : helper)))
+    + " .AC04-carousel__item').each(function() {\r\n			// Remove pagination heading\r\n			$(this).children().first().remove();\r\n\r\n			// Wrap media\r\n			$('.video-wrapper', $(this)).unwrap('p').wrap('<div class=\"AC04-carousel__item-media\"></div>');\r\n			$('img', $(this)).unwrap('p').wrap('<div class=\"AC04-carousel__item-media\"></div>');\r\n\r\n			// Add media description to div\r\n			var $mediaElement = $('.AC04-carousel__item-media', $(this));\r\n			$mediaElement.nextAll().appendTo($mediaElement);\r\n\r\n			// Add everything else to another wrapper\r\n			$(this).children().not('.AC04-carousel__item-media').wrapAll('<div class=\"AC04-carousel__item-content\"></div>');\r\n		});\r\n\r\n		// Calculate the position of the dots depending on height\r\n		function block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":62,"column":16},"end":{"line":62,"column":32}}}) : helper)))
     + "DotsPosition() {\r\n			if($(window).width() < 992) {\r\n				var dotsHeight = $('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":56,"column":31},"end":{"line":56,"column":47}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":64,"column":31},"end":{"line":64,"column":47}}}) : helper)))
     + " .slick-dots').height() + 40;\r\n				$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":57,"column":14},"end":{"line":57,"column":30}}}) : helper)))
-    + " .AC04-carousel').css('padding-top', dotsHeight + 'px')\r\n			}\r\n		}\r\n\r\n		block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":61,"column":7},"end":{"line":61,"column":23}}}) : helper)))
-    + "DotsPosition();\r\n\r\n		$(window).resize(function() {\r\n			block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":64,"column":8},"end":{"line":64,"column":24}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":65,"column":14},"end":{"line":65,"column":30}}}) : helper)))
+    + " .AC04-carousel').css('padding-top', dotsHeight + 'px')\r\n			}\r\n		}\r\n\r\n		// Run dots function on load\r\n		block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":70,"column":7},"end":{"line":70,"column":23}}}) : helper)))
+    + "DotsPosition();\r\n\r\n		// Run dots function on window resize\r\n		$(window).resize(function() {\r\n			block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":74,"column":8},"end":{"line":74,"column":24}}}) : helper)))
     + "DotsPosition();\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["AC05"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -8594,7 +11103,7 @@ this["WMG"]["blocks"]["AC05"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":4,"column":3},"end":{"line":8,"column":12}}})) != null ? stack1 : "")
     + "		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":14,"column":18},"end":{"line":14,"column":34}}}) : helper)))
-    + "');	\r\n\r\n		// Looop through all accordion items\r\n		$('#block-"
+    + "');	\r\n\r\n		// Loop through all accordion items\r\n		$('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":17,"column":12},"end":{"line":17,"column":28}}}) : helper)))
     + " .AC-accordion').each(function() {\r\n\r\n			// Create wrapper for heading\r\n			$(this).children().first().wrap('<div class=\"AC-accordion__heading\"></div>');\r\n			// Create wrapper for content\r\n			$(this).children().not(':first-child').wrapAll('<div class=\"AC-accordion__content\"></div>');\r\n\r\n			// Append chevron SVG\r\n			$('.AC-accordion__heading', $(this)).append('<svg width=\"15\" height=\"11\" viewBox=\"0 0 15 11\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M6.70337 10.1595L0.330365 3.57953C-0.110122 3.12474 -0.110122 2.38933 0.330365 1.93937L1.38941 0.845933C1.8299 0.39114 2.54217 0.39114 2.97798 0.845933L7.5 5.50514L12.0173 0.841094C12.4578 0.386301 13.1701 0.386301 13.6059 0.841094L14.6696 1.93453C15.1101 2.38932 15.1101 3.12473 14.6696 3.57469L8.29663 10.1547C7.85614 10.6143 7.14386 10.6143 6.70337 10.1595Z\" fill=\"#6A6A6A\"/></svg>');\r\n		});\r\n\r\n		// Add on-click function to show/hide content\r\n		$('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":29,"column":12},"end":{"line":29,"column":28}}}) : helper)))
@@ -8639,8 +11148,8 @@ this["WMG"]["blocks"]["CB01"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":5,"column":4},"end":{"line":9,"column":13}}})) != null ? stack1 : "")
     + "			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":16,"column":18},"end":{"line":16,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":18,"column":12},"end":{"line":18,"column":28}}}) : helper)))
+    + "');\r\n\r\n		// Loop through each card block, check if an image exists and wrap it\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":19,"column":12},"end":{"line":19,"column":28}}}) : helper)))
     + " .card-block').each(function() {\r\n			if($('img', $(this)).length) {\r\n				$('img', $(this)).unwrap('p').wrap('<div class=\"card-block__image\"></div>');\r\n			}\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["CB08"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -8760,8 +11269,8 @@ this["WMG"]["blocks"]["CO05"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":5,"column":4},"end":{"line":9,"column":13}}})) != null ? stack1 : "")
     + "			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":16,"column":18},"end":{"line":16,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":18,"column":12},"end":{"line":18,"column":28}}}) : helper)))
+    + "');\r\n\r\n		// Loop through each list\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":19,"column":12},"end":{"line":19,"column":28}}}) : helper)))
     + " .co-list').each(function() {\r\n			\r\n			// Move triangle and heading into own block\r\n			$('.brand-triangle', $(this)).wrap('<div class=\"co-list__heading\"></div>');\r\n			$('.co-list__heading', $(this)).next().appendTo($('.co-list__heading', $(this)));\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["CO06"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -8838,13 +11347,11 @@ this["WMG"]["blocks"]["FB01"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
     + ((stack1 = alias5(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"3") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
     + "</div>\r\n						</div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":38,"column":18},"end":{"line":38,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":40,"column":12},"end":{"line":40,"column":28}}}) : helper)))
-    + " .FB01__module-top-main img:first-child').appendTo('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":40,"column":87},"end":{"line":40,"column":103}}}) : helper)))
-    + " .FB01__module-top-image');\r\n		$('#block-"
+    + "');\r\n\r\n		// Move first image\r\n		$('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":41,"column":12},"end":{"line":41,"column":28}}}) : helper)))
-    + " .FB01__module-top-main p:first-child').remove();\r\n	});\r\n</script>";
+    + " .FB01__module-top-main img:first-child').unwrap('p').appendTo('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":41,"column":99},"end":{"line":41,"column":115}}}) : helper)))
+    + " .FB01__module-top-image');\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["FB02"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, alias5=container.lambda, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -8907,9 +11414,9 @@ this["WMG"]["blocks"]["FB04"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":4,"column":3},"end":{"line":11,"column":12}}})) != null ? stack1 : "")
     + "		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":17,"column":18},"end":{"line":17,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":19,"column":12},"end":{"line":19,"column":28}}}) : helper)))
-    + " .FB04__article').each(function() {\r\n			$('.FB04__article-content img', $(this)).appendTo($('.FB04__article-img', $(this)));\r\n			$('.FB04__article-content p:first-child', $(this)).remove();\r\n		});\r\n	});\r\n</script>";
+    + "');\r\n\r\n		// Loop through each article\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":20,"column":12},"end":{"line":20,"column":28}}}) : helper)))
+    + " .FB04__article').each(function() {\r\n			// Move image to image wrapper\r\n			$('.FB04__article-content img', $(this)).unwrap('p').appendTo($('.FB04__article-img', $(this)));\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["FB05"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, alias5=container.lambda, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -8967,16 +11474,16 @@ this["WMG"]["blocks"]["FB06"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":11,"column":6},"end":{"line":17,"column":15}}})) != null ? stack1 : "")
     + "					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":25,"column":18},"end":{"line":25,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":27,"column":12},"end":{"line":27,"column":28}}}) : helper)))
-    + " .FB06-carousel__item').each(function() {\r\n			$('img', $(this)).unwrap('p').wrap('<div class=\"FB06-carousel__item-image\"></div>');\r\n			$('.FB06-carousel__item-image', $(this)).prepend('<svg width=\"57\" height=\"69\" viewBox=\"0 0 57 69\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M56.7634 68.1979L0 68.1979L6.61655e-06 0.242188L56.7634 68.1979Z\" fill=\"#D9DDE0\"/></svg>');\r\n			$(this).children().not('.FB06-carousel__item-image').wrapAll('<div class=\"FB06-carousel__item-content\"><div class=\"half-container half-container--lg half-container--right\"></div></div>');\r\n		});\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":33,"column":12},"end":{"line":33,"column":28}}}) : helper)))
-    + " .FB06-main img').unwrap('p').wrap('<div class=\"FB06-main__image\"></div>');\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":34,"column":12},"end":{"line":34,"column":28}}}) : helper)))
-    + " .FB06-main__image').prepend('<svg width=\"57\" height=\"74\" viewBox=\"0 0 57 74\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"bg-fill-path\"><path d=\"M0 0L56.7634 -9.92483e-06L56.7634 73.5887L0 0Z\" fill=\"#E6E8EA\"/></svg>');\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":35,"column":12},"end":{"line":35,"column":28}}}) : helper)))
-    + " .FB06-main').children().not('.FB06-main__image').wrapAll('<div class=\"FB06-main__content\"><div class=\"half-container half-container--lg half-container--left\"></div></div>');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":37,"column":12},"end":{"line":37,"column":28}}}) : helper)))
+    + "');\r\n\r\n		// Loop through each carousel item\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":28,"column":12},"end":{"line":28,"column":28}}}) : helper)))
+    + " .FB06-carousel__item').each(function() {\r\n			// Add wrapper around image\r\n			$('img', $(this)).unwrap('p').wrap('<div class=\"FB06-carousel__item-image\"></div>');\r\n\r\n			// Add SVG to image\r\n			$('.FB06-carousel__item-image', $(this)).prepend('<svg width=\"57\" height=\"69\" viewBox=\"0 0 57 69\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M56.7634 68.1979L0 68.1979L6.61655e-06 0.242188L56.7634 68.1979Z\" fill=\"#D9DDE0\"/></svg>');\r\n			\r\n			// Wrap everything else\r\n			$(this).children().not('.FB06-carousel__item-image').wrapAll('<div class=\"FB06-carousel__item-content\"><div class=\"half-container half-container--lg half-container--right\"></div></div>');\r\n		});\r\n\r\n		// Wrap main image\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":40,"column":12},"end":{"line":40,"column":28}}}) : helper)))
+    + " .FB06-main img').unwrap('p').wrap('<div class=\"FB06-main__image\"></div>');\r\n\r\n		// Add SVG to main image\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":43,"column":12},"end":{"line":43,"column":28}}}) : helper)))
+    + " .FB06-main__image').prepend('<svg width=\"57\" height=\"74\" viewBox=\"0 0 57 74\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"bg-fill-path\"><path d=\"M0 0L56.7634 -9.92483e-06L56.7634 73.5887L0 0Z\" fill=\"#E6E8EA\"/></svg>');\r\n\r\n		// Wrap everything else\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":46,"column":12},"end":{"line":46,"column":28}}}) : helper)))
+    + " .FB06-main').children().not('.FB06-main__image').wrapAll('<div class=\"FB06-main__content\"><div class=\"half-container half-container--lg half-container--left\"></div></div>');\r\n\r\n		// Initilise slick carousel with custom numbered pagination\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":49,"column":12},"end":{"line":49,"column":28}}}) : helper)))
     + " .FB06-carousel').slick({\r\n			arrows: false,\r\n			dots: true,\r\n			draggable: false,\r\n			customPaging : function(slider, i) {\r\n				var thumb = $(slider.$slides[i]).data();\r\n				return '<a>0' + parseInt(i+1) + '</a>';\r\n			}\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["HB01"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -9017,10 +11524,10 @@ this["WMG"]["blocks"]["HB01"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":7,"column":3},"end":{"line":13,"column":12}}})) != null ? stack1 : "")
     + "		</div>\r\n	</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":18,"column":18},"end":{"line":18,"column":34}}}) : helper)))
-    + "', ['blockBG']);\r\n\r\n		var blockParent = $('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":20,"column":30},"end":{"line":20,"column":46}}}) : helper)))
-    + "').parent('.wmg-block');\r\n\r\n		slickSettings = {};\r\n		\r\n		if(blockParent.attr('data-slick')) {\r\n			var slickSettings = blockParent.attr('data-slick');\r\n			slickSettings = JSON.parse(slickSettings.replace(/'/g, '\"'));\r\n		}\r\n\r\n		$('.block-HB01__carousel-item', blockParent).prepend('<span class=\"brand-triangle\"></span>');\r\n\r\n		var slickObject = {\r\n			autoplay: true,\r\n			arrows: false,\r\n			draggable: false,\r\n			customPaging : function(slider, i) {\r\n				var thumb = $(slider.$slides[i]).data();\r\n				return '<a>0' + parseInt(i+1) + '</a>';\r\n			}			\r\n		}\r\n\r\n		if(slickSettings.hasOwnProperty('dots')) {\r\n			slickObject.dots = slickSettings.dots;\r\n		}\r\n\r\n		$(window).on('load', function(){\r\n			$('#slick-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":46,"column":13},"end":{"line":46,"column":29}}}) : helper)))
+    + "', ['blockBG']);\r\n\r\n		// Get parent element\r\n		var blockParent = $('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":21,"column":30},"end":{"line":21,"column":46}}}) : helper)))
+    + "').parent('.wmg-block');\r\n\r\n		slickSettings = {};\r\n		\r\n		// Grab slick settings from data attribute\r\n		if(blockParent.attr('data-slick')) {\r\n			var slickSettings = blockParent.attr('data-slick');\r\n			slickSettings = JSON.parse(slickSettings.replace(/'/g, '\"'));\r\n		}\r\n\r\n		// Add brand triangle to each carousel item\r\n		$('.block-HB01__carousel-item', blockParent).prepend('<span class=\"brand-triangle\"></span>');\r\n\r\n		// Initialise Slick Carousel with custom pagination\r\n		var slickObject = {\r\n			autoplay: true,\r\n			arrows: false,\r\n			draggable: false,\r\n			customPaging : function(slider, i) {\r\n				var thumb = $(slider.$slides[i]).data();\r\n				return '<a>0' + parseInt(i+1) + '</a>';\r\n			}			\r\n		}\r\n\r\n		// Add dots if setting is set\r\n		if(slickSettings.hasOwnProperty('dots')) {\r\n			slickObject.dots = slickSettings.dots;\r\n		}\r\n\r\n		$(window).on('load', function(){\r\n			$('#slick-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":51,"column":13},"end":{"line":51,"column":29}}}) : helper)))
     + "').slick(slickObject);\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["IG01"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -9041,9 +11548,7 @@ this["WMG"]["blocks"]["IG01"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
     + ((stack1 = alias5(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"2") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
     + "\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":20,"column":18},"end":{"line":20,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":22,"column":12},"end":{"line":22,"column":28}}}) : helper)))
-    + " img').each(function() {\r\n			$(this).unwrap('p');\r\n		});\r\n	});\r\n</script>";
+    + "');\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["IG02"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -9070,9 +11575,7 @@ this["WMG"]["blocks"]["IG02"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":5,"column":4},"end":{"line":7,"column":13}}})) != null ? stack1 : "")
     + "			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":14,"column":18},"end":{"line":14,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":16,"column":12},"end":{"line":16,"column":28}}}) : helper)))
-    + " img').each(function() {\r\n			$(this).unwrap('p');\r\n		});\r\n	});\r\n</script>";
+    + "');\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["IG05"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -9218,10 +11721,10 @@ this["WMG"]["blocks"]["MB01"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
     + ((stack1 = container.lambda(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"0") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
     + "\r\n		<div class=\"MB01-img\"></div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":9,"column":18},"end":{"line":9,"column":34}}}) : helper)))
-    + "');\r\n\r\n		var $img = $('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":11,"column":23},"end":{"line":11,"column":39}}}) : helper)))
-    + " img');\r\n		var imgSrc = $img.attr('src');\r\n		$img.unwrap('p').remove();\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":15,"column":12},"end":{"line":15,"column":28}}}) : helper)))
+    + "');\r\n\r\n		// Get image url and remove image element\r\n		var $img = $('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":12,"column":23},"end":{"line":12,"column":39}}}) : helper)))
+    + " img');\r\n		var imgSrc = $img.attr('src');\r\n		$img.unwrap('p').remove();\r\n\r\n		// Add background image\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":17,"column":12},"end":{"line":17,"column":28}}}) : helper)))
     + " .MB01-img').css('background-image', 'url(' + imgSrc + ')');\r\n		 \r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["MB02"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -9262,48 +11765,46 @@ this["WMG"]["blocks"]["MB02"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":10,"column":4},"end":{"line":12,"column":13}}})) != null ? stack1 : "")
     + "			</div>\r\n			<div class=\"d-none d-md-block MB02-carousel\"></div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":20,"column":18},"end":{"line":20,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":22,"column":12},"end":{"line":22,"column":28}}}) : helper)))
-    + " img').each(function() {\r\n			$(this).unwrap('p');\r\n		});\r\n\r\n		var block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":26,"column":11},"end":{"line":26,"column":27}}}) : helper)))
+    + "');\r\n\r\n		var block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":22,"column":11},"end":{"line":22,"column":27}}}) : helper)))
     + "ImageCount = 0;\r\n		var block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":27,"column":11},"end":{"line":27,"column":27}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":23,"column":11},"end":{"line":23,"column":27}}}) : helper)))
     + "Images = [];\r\n		var block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":28,"column":11},"end":{"line":28,"column":27}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":24,"column":11},"end":{"line":24,"column":27}}}) : helper)))
     + "SlideImages = [];\r\n\r\n		// Loop through images and split into array of slides\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":31,"column":12},"end":{"line":31,"column":28}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":27,"column":12},"end":{"line":27,"column":28}}}) : helper)))
     + " .MB02__images img').each(function() {\r\n			block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":32,"column":8},"end":{"line":32,"column":24}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":28,"column":8},"end":{"line":28,"column":24}}}) : helper)))
     + "ImageCount = block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":32,"column":42},"end":{"line":32,"column":58}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":28,"column":42},"end":{"line":28,"column":58}}}) : helper)))
     + "ImageCount + 1;\r\n			block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":33,"column":8},"end":{"line":33,"column":24}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":29,"column":8},"end":{"line":29,"column":24}}}) : helper)))
     + "SlideImages.push($(this).attr('src'));\r\n\r\n			// If slide is finished, set new array\r\n			if(block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":36,"column":11},"end":{"line":36,"column":27}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":32,"column":11},"end":{"line":32,"column":27}}}) : helper)))
     + "ImageCount % 4 === 0) {\r\n				block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":37,"column":9},"end":{"line":37,"column":25}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":33,"column":9},"end":{"line":33,"column":25}}}) : helper)))
     + "Images.push(block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":37,"column":42},"end":{"line":37,"column":58}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":33,"column":42},"end":{"line":33,"column":58}}}) : helper)))
     + "SlideImages);\r\n				block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":38,"column":9},"end":{"line":38,"column":25}}}) : helper)))
-    + "SlideImages = [];\r\n			}\r\n\r\n		});\r\n\r\n		$.each(block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":43,"column":14},"end":{"line":43,"column":30}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":34,"column":9},"end":{"line":34,"column":25}}}) : helper)))
+    + "SlideImages = [];\r\n			}\r\n\r\n		});\r\n\r\n		// Loop through each image and set the grid elements\r\n		$.each(block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":40,"column":14},"end":{"line":40,"column":30}}}) : helper)))
     + "Images, function(index, value) {\r\n		  	var block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":44,"column":14},"end":{"line":44,"column":30}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":41,"column":14},"end":{"line":41,"column":30}}}) : helper)))
     + "SlideHTML = '<div class=\"MB02-grid\"><div class=\"row\"><div class=\"col-12 col-md-6\"><div class=\"MB02-img\"><img src=\"' + value[0] + '\"></div></div><div class=\"col-12 col-md-6\"><div class=\"row\"><div class=\"col-12 col-md-6\"><div class=\"MB02-img MB02-img--half\"><img src=\"' + value[1] + '\"></div></div><div class=\"col-12 col-md-6\"><div class=\"MB02-img MB02-img--half\"><img src=\"' + value[2] + '\"></div></div><div class=\"col-12\"><div class=\"MB02-img MB02-img--half\"><img src=\"' + value[3] + '\"></div></div></div></div></div></div>';\r\n		  	$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":45,"column":15},"end":{"line":45,"column":31}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":42,"column":15},"end":{"line":42,"column":31}}}) : helper)))
     + " .MB02-carousel').prepend(block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":45,"column":62},"end":{"line":45,"column":78}}}) : helper)))
-    + "SlideHTML);\r\n		});\r\n\r\n		function block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":48,"column":16},"end":{"line":48,"column":32}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":42,"column":62},"end":{"line":42,"column":78}}}) : helper)))
+    + "SlideHTML);\r\n		});\r\n\r\n		// Initialise the Slick Carousels - one mobile, one desktop\r\n		function block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":46,"column":16},"end":{"line":46,"column":32}}}) : helper)))
     + "Carousels() {\r\n			if($(window).width() < 768) {\r\n				$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":50,"column":14},"end":{"line":50,"column":30}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":48,"column":14},"end":{"line":48,"column":30}}}) : helper)))
     + " .MB02-mobile-carousel').slick({\r\n					dots: true,\r\n					arrows: true,\r\n					autoplay: false,\r\n					nextArrow: '<button class=\"slick-next slick-arrow\"><svg width=\"15\" height=\"27\" viewBox=\"0 0 15 27\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1 1L14 13.5L1 26\" stroke=\"#6D6F71\"/></svg></button>',\r\n					prevArrow: '<button class=\"slick-prev slick-arrow\"><svg width=\"15\" height=\"27\" viewBox=\"0 0 15 27\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M14 1L1 13.5L14 26\" stroke=\"#6D6F71\"/></svg></button>'\r\n				});			\r\n			}\r\n\r\n			if($(window).width() >= 768) {\r\n				$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":60,"column":14},"end":{"line":60,"column":30}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":58,"column":14},"end":{"line":58,"column":30}}}) : helper)))
     + " .MB02-carousel').slick({\r\n					dots: false,\r\n					arrows: true,\r\n					autoplay: false,\r\n					nextArrow: '<button class=\"slick-next slick-arrow\"><svg width=\"15\" height=\"27\" viewBox=\"0 0 15 27\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1 1L14 13.5L1 26\" stroke=\"#6D6F71\"/></svg></button>',\r\n					prevArrow: '<button class=\"slick-prev slick-arrow\"><svg width=\"15\" height=\"27\" viewBox=\"0 0 15 27\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M14 1L1 13.5L14 26\" stroke=\"#6D6F71\"/></svg></button>'\r\n				});			\r\n			}			\r\n		}\r\n\r\n		block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":70,"column":7},"end":{"line":70,"column":23}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":68,"column":7},"end":{"line":68,"column":23}}}) : helper)))
     + "Carousels();\r\n\r\n		$(window).resize(function() {\r\n			block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":73,"column":8},"end":{"line":73,"column":24}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":71,"column":8},"end":{"line":71,"column":24}}}) : helper)))
     + "Carousels();\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["MB03"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -9331,10 +11832,8 @@ this["WMG"]["blocks"]["MB03"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":5,"column":4},"end":{"line":7,"column":13}}})) != null ? stack1 : "")
     + "			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":14,"column":18},"end":{"line":14,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":16,"column":12},"end":{"line":16,"column":28}}}) : helper)))
-    + " img').each(function() {\r\n			$(this).unwrap('p');\r\n		});\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":20,"column":12},"end":{"line":20,"column":28}}}) : helper)))
+    + "');\r\n\r\n		// Initialise the Slick Carousel with custom arrows\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":17,"column":12},"end":{"line":17,"column":28}}}) : helper)))
     + " .MB03-carousel').slick({\r\n			dots: false,\r\n			arrows: true,\r\n			autoplay: false,\r\n			infinite: true,\r\n			slidesToShow: 3,\r\n			nextArrow: '<button class=\"slick-next slick-arrow\"><svg width=\"15\" height=\"27\" viewBox=\"0 0 15 27\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1 1L14 13.5L1 26\" stroke=\"#6D6F71\"/></svg></button>',\r\n			prevArrow: '<button class=\"slick-prev slick-arrow\"><svg width=\"15\" height=\"27\" viewBox=\"0 0 15 27\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M14 1L1 13.5L14 26\" stroke=\"#6D6F71\"/></svg></button>',\r\n			responsive: [\r\n			    {\r\n			      breakpoint: 991,\r\n			      settings: {\r\n			        slidesToShow: 2\r\n			      }\r\n			    },\r\n			    {\r\n			      breakpoint: 767,\r\n			      settings: {\r\n			        slidesToShow: 1\r\n			      }\r\n			    }\r\n			]\r\n		});		\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["MB04"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -9373,10 +11872,8 @@ this["WMG"]["blocks"]["MB04"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":6,"column":4},"end":{"line":10,"column":13}}})) != null ? stack1 : "")
     + "			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":17,"column":18},"end":{"line":17,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":19,"column":12},"end":{"line":19,"column":28}}}) : helper)))
-    + " img').each(function() {\r\n			$(this).unwrap('p');\r\n		});\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":23,"column":12},"end":{"line":23,"column":28}}}) : helper)))
+    + "');\r\n\r\n		// Initialise the Slick Carousel with custom arrows\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":20,"column":12},"end":{"line":20,"column":28}}}) : helper)))
     + " .MB04-carousel').slick({\r\n			dots: false,\r\n			arrows: true,\r\n			autoplay: false,\r\n			infinite: true,\r\n			slidesToShow: 2,\r\n			nextArrow: '<button class=\"slick-next slick-arrow\"><svg width=\"15\" height=\"27\" viewBox=\"0 0 15 27\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1 1L14 13.5L1 26\" stroke=\"#6D6F71\"/></svg></button>',\r\n			prevArrow: '<button class=\"slick-prev slick-arrow\"><svg width=\"15\" height=\"27\" viewBox=\"0 0 15 27\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M14 1L1 13.5L14 26\" stroke=\"#6D6F71\"/></svg></button>',\r\n			responsive: [\r\n			    {\r\n			      breakpoint: 767,\r\n			      settings: {\r\n			        slidesToShow: 1\r\n			      }\r\n			    }\r\n			]\r\n		});		\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["MB05"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -9415,12 +11912,10 @@ this["WMG"]["blocks"]["MB05"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":6,"column":4},"end":{"line":10,"column":13}}})) != null ? stack1 : "")
     + "			</div>\r\n			<div class=\"MB05__button text-center\"></div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":18,"column":18},"end":{"line":18,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":20,"column":12},"end":{"line":20,"column":28}}}) : helper)))
-    + " img').each(function() {\r\n			$(this).unwrap('p');\r\n		});\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":24,"column":12},"end":{"line":24,"column":28}}}) : helper)))
+    + "');\r\n\r\n		// Move button\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":21,"column":12},"end":{"line":21,"column":28}}}) : helper)))
     + " .MB05__intro .btn').appendTo('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":24,"column":66},"end":{"line":24,"column":82}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":21,"column":66},"end":{"line":21,"column":82}}}) : helper)))
     + " .MB05__button');\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["MB07"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -9459,10 +11954,8 @@ this["WMG"]["blocks"]["MB07"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":8,"column":4},"end":{"line":12,"column":13}}})) != null ? stack1 : "")
     + "			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":19,"column":18},"end":{"line":19,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":21,"column":12},"end":{"line":21,"column":28}}}) : helper)))
-    + " img').each(function() {\r\n			$(this).unwrap('p');\r\n		});\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":25,"column":12},"end":{"line":25,"column":28}}}) : helper)))
+    + "');\r\n\r\n		// Initialise the Slick Carousel with custom arrows\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":22,"column":12},"end":{"line":22,"column":28}}}) : helper)))
     + " .MB07-carousel').slick({\r\n			dots: false,\r\n			arrows: true,\r\n			autoplay: false,\r\n			infinite: true,\r\n			slidesToShow: 5,\r\n			nextArrow: '<button class=\"slick-next slick-arrow\"><svg width=\"15\" height=\"27\" viewBox=\"0 0 15 27\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1 1L14 13.5L1 26\" stroke=\"#6D6F71\"/></svg></button>',\r\n			prevArrow: '<button class=\"slick-prev slick-arrow\"><svg width=\"15\" height=\"27\" viewBox=\"0 0 15 27\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M14 1L1 13.5L14 26\" stroke=\"#6D6F71\"/></svg></button>',\r\n			responsive: [\r\n			    {\r\n			      breakpoint: 991,\r\n			      settings: {\r\n			        slidesToShow: 3\r\n			      }\r\n			    },\r\n			    {\r\n			      breakpoint: 767,\r\n			      settings: {\r\n			        slidesToShow: 2\r\n			      }\r\n			    },\r\n			    {\r\n			      breakpoint: 500,\r\n			      settings: {\r\n			        slidesToShow: 1\r\n			      }\r\n			    }\r\n			]\r\n		});		\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["MB08"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -9481,9 +11974,7 @@ this["WMG"]["blocks"]["MB08"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
     + ((stack1 = alias5(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"1") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
     + "</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":11,"column":18},"end":{"line":11,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":13,"column":12},"end":{"line":13,"column":28}}}) : helper)))
-    + " .MB08-bg img').unwrap('p');\r\n	});\r\n</script>";
+    + "');\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["MB09"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -9499,9 +11990,7 @@ this["WMG"]["blocks"]["MB09"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
     + ((stack1 = container.lambda(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"0") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
     + "\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":10,"column":18},"end":{"line":10,"column":34}}}) : helper)))
-    + "');\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":11,"column":12},"end":{"line":11,"column":28}}}) : helper)))
-    + " img').unwrap('p');		 \r\n	});\r\n</script>";
+    + "');	 \r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["MB11"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -9528,10 +12017,8 @@ this["WMG"]["blocks"]["MB11"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":5,"column":4},"end":{"line":7,"column":13}}})) != null ? stack1 : "")
     + "			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":14,"column":18},"end":{"line":14,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":16,"column":12},"end":{"line":16,"column":28}}}) : helper)))
-    + " img').each(function() {\r\n			$(this).unwrap('p');\r\n		});\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":20,"column":12},"end":{"line":20,"column":28}}}) : helper)))
+    + "');\r\n\r\n		// Initialise the Slick Carousel with custom arrows\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":17,"column":12},"end":{"line":17,"column":28}}}) : helper)))
     + " .MB11-carousel').slick({\r\n			dots: false,\r\n			arrows: true,\r\n			autoplay: false,\r\n			infinite: true,\r\n			slidesToShow: 3,\r\n			nextArrow: '<button class=\"slick-next slick-arrow\"><svg width=\"15\" height=\"27\" viewBox=\"0 0 15 27\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1 1L14 13.5L1 26\" stroke=\"#6D6F71\"/></svg></button>',\r\n			prevArrow: '<button class=\"slick-prev slick-arrow\"><svg width=\"15\" height=\"27\" viewBox=\"0 0 15 27\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M14 1L1 13.5L14 26\" stroke=\"#6D6F71\"/></svg></button>',\r\n			responsive: [\r\n			    {\r\n			      breakpoint: 991,\r\n			      settings: {\r\n			        slidesToShow: 2\r\n			      }\r\n			    },\r\n			    {\r\n			      breakpoint: 767,\r\n			      settings: {\r\n			        slidesToShow: 1\r\n			      }\r\n			    }\r\n			]\r\n		});		\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["MB12"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -9807,7 +12294,7 @@ this["WMG"]["blocks"]["PTB20"] = Handlebars.template({"compiler":[8,">= 4.3.0"],
     + "');\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["SB01"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, alias5=container.lambda, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
           return parent[propertyName];
         }
@@ -9816,12 +12303,30 @@ this["WMG"]["blocks"]["SB01"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
 
   return "<div id=\"block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":31}}}) : helper)))
-    + "\" class=\"block block-SB block-SB01\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			SB01\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":10,"column":18},"end":{"line":10,"column":34}}}) : helper)))
-    + "');\r\n	});\r\n</script>";
+    + "\" class=\"block block-SB block-SB01\">\r\n	<div class=\"block__content\">\r\n		<div class=\"row\">\r\n			<div class=\"col-12 col-md-6\">\r\n				<div class=\"SB01-main\">\r\n					<div class=\"half-container half-container--md half-container--left\">\r\n						<svg width=\"165\" height=\"183\" viewBox=\"0 0 165 183\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"d-none d-md-block SB01-main-icon theme-fill-path\"><g style=\"mix-blend-mode:multiply\"><path d=\"M0 0L165 0L165 183L0 0Z\" fill=\"#EE3124\"/></g></svg>\r\n						<svg width=\"53\" height=\"82\" viewBox=\"0 0 53 82\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"d-md-none SB01-main-icon theme-fill-path\"><g style=\"mix-blend-mode:multiply\"><path d=\"M0 0H53V82L0 0Z\" fill=\"#EE3124\"/></g></svg>\r\n						<a href=\"/courses/\" class=\"btn btn--text SB01-main-topbtn\">< Back to all courses</a>\r\n						"
+    + ((stack1 = alias5(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"0") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
+    + "\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class=\"col-12 col-md-6\">\r\n				<div class=\"SB01-side\">\r\n					<div class=\"SB01-image\">\r\n						<div class=\"SB01-image-block bg--theme\"></div>\r\n						<div class=\"SB01-image-block-overlay\"></div>\r\n						"
+    + ((stack1 = alias5(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"1") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
+    + "\r\n					</div>\r\n					<div class=\"half-container half-container--md half-container--right\">\r\n						<div class=\"SB01-side__content\">"
+    + ((stack1 = alias5(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"2") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
+    + "</div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":31,"column":18},"end":{"line":31,"column":34}}}) : helper)))
+    + "');\r\n\r\n		// Loop through each image\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":34,"column":12},"end":{"line":34,"column":28}}}) : helper)))
+    + " .SB01-side__content img').each(function(index, element) {\r\n\r\n			// Create a wrapper for the content\r\n			$(this).nextUntil('img').wrapAll('<div class=\"icon-short-text\"><div class=\"icon-short-text-main\"></div></div>');\r\n\r\n			// Move the image into wrapper\r\n			$(this).prependTo($(this).next('.icon-short-text'));\r\n\r\n		});\r\n\r\n		function block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":44,"column":16},"end":{"line":44,"column":32}}}) : helper)))
+    + "MoveImage() {\r\n			// If mobile/tablet\r\n			if($(window).width() < 992) {\r\n				$('.SB01-image').prependTo('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":47,"column":39},"end":{"line":47,"column":55}}}) : helper)))
+    + " .SB01-main');\r\n			} else {\r\n				$('.SB01-image').prependTo('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":49,"column":39},"end":{"line":49,"column":55}}}) : helper)))
+    + " .SB01-side');\r\n			}\r\n		}\r\n\r\n		block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":53,"column":7},"end":{"line":53,"column":23}}}) : helper)))
+    + "MoveImage();\r\n\r\n		$(window).resize(function() {\r\n			block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":56,"column":8},"end":{"line":56,"column":24}}}) : helper)))
+    + "MoveImage();\r\n		});\r\n\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["SB02"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
           return parent[propertyName];
         }
@@ -9830,12 +12335,25 @@ this["WMG"]["blocks"]["SB02"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
 
   return "<div id=\"block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":31}}}) : helper)))
-    + "\" class=\"block block-SB block-SB02\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			SB02\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":10,"column":18},"end":{"line":10,"column":34}}}) : helper)))
+    + "\" class=\"block block-SB block-SB02\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			<div class=\"row\">\r\n				<div class=\"col-12 col-md-8\">\r\n					<form>\r\n						<input type=\"text\" placeholder=\"Find courses\">\r\n						<button type=\"submit\">\r\n							<svg width=\"19\" height=\"18\" viewBox=\"0 0 19 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\r\n								<path d=\"M18.2552 15.5622L14.7499 12.0574C14.5917 11.8992 14.3772 11.8113 14.1522 11.8113H13.5791C14.5495 10.5705 15.1261 9.00967 15.1261 7.31179C15.1261 3.27273 11.8528 0 7.81303 0C3.77329 0 0.5 3.27273 0.5 7.31179C0.5 11.3508 3.77329 14.6236 7.81303 14.6236C9.51121 14.6236 11.0723 14.0471 12.3134 13.0768V13.6498C12.3134 13.8748 12.4013 14.0892 12.5595 14.2474L16.0648 17.7522C16.3953 18.0826 16.9297 18.0826 17.2567 17.7522L18.2517 16.7573C18.5822 16.4269 18.5822 15.8926 18.2552 15.5622ZM7.81303 11.8113C5.32731 11.8113 3.31271 9.80061 3.31271 7.31179C3.31271 4.82648 5.32379 2.81223 7.81303 2.81223C10.2988 2.81223 12.3134 4.82297 12.3134 7.31179C12.3134 9.79709 10.3023 11.8113 7.81303 11.8113Z\" fill=\"#F4F4F4\"/>\r\n							</svg>\r\n						</button>\r\n					</form>\r\n				</div>\r\n				<div class=\"col-12 col-md-4\">\r\n					"
+    + ((stack1 = container.lambda(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"0") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
+    + "\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":24,"column":18},"end":{"line":24,"column":34}}}) : helper)))
     + "');\r\n	});\r\n</script>";
 },"useData":true});
-this["WMG"]["blocks"]["SB03"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+this["WMG"]["blocks"]["SB03"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "				<div class=\"SB03-carousel__item\">\r\n					<div class=\"SB03-carousel__item-main\">\r\n						"
+    + ((stack1 = container.lambda((depth0 != null ? lookupProperty(depth0,"content") : depth0), depth0)) != null ? stack1 : "")
+    + "\r\n					</div>\r\n				</div>\r\n";
+},"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
           return parent[propertyName];
         }
@@ -9844,12 +12362,29 @@ this["WMG"]["blocks"]["SB03"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
 
   return "<div id=\"block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":31}}}) : helper)))
-    + "\" class=\"block block-SB block-SB03\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			SB03\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":10,"column":18},"end":{"line":10,"column":34}}}) : helper)))
-    + "');\r\n	});\r\n</script>";
+    + "\" class=\"block block-SB block-SB03\">\r\n	<div class=\"block__content\">\r\n		<div class=\"SB03-carousel\">\r\n"
+    + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":4,"column":3},"end":{"line":10,"column":12}}})) != null ? stack1 : "")
+    + "			\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":17,"column":18},"end":{"line":17,"column":34}}}) : helper)))
+    + "');\r\n\r\n		// Set height variable - this is used to make all intro heights the same height to align timeline\r\n		var introHeight = 0;\r\n\r\n		// Loop through each carousel item\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":23,"column":12},"end":{"line":23,"column":28}}}) : helper)))
+    + " .SB03-carousel__item').each(function() {\r\n			// Wrap first image element in bg class\r\n			$('img', $(this)).first().unwrap('p').wrap('<div class=\"SB03-carousel__item-bg\"></div>');\r\n\r\n			// Move bg image element outside contain\r\n			$('.SB03-carousel__item-bg', $(this)).appendTo($(this));\r\n\r\n			// Wrap second image element in bg class\r\n			$('img', $(this)).first().unwrap('p').wrap('<div class=\"SB03-carousel__item-intro-img\"></div>');\r\n\r\n			// Wrap everything but p\r\n			$('.SB03-carousel__item-main', $(this)).children().not('p').wrapAll('<div class=\"SB03-carousel__item-intro\"></div>');\r\n\r\n			// Add timeline graphic\r\n			$('.SB03-carousel__item-intro', $(this)).after('<div class=\"SB03-carousel__item-timeline\"><span></span></div>');\r\n		});\r\n\r\n		// Initialise Slick Carousel with custom SVG arrows\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":41,"column":12},"end":{"line":41,"column":28}}}) : helper)))
+    + " .SB03-carousel').slick({\r\n			autoplay: false,\r\n			arrows: true,\r\n			dots: false,\r\n			nextArrow: '<button class=\"slick-next slick-arrow\"><svg width=\"20\" height=\"34\" viewBox=\"0 0 20 34\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1 33L18 17L1 0.999998\" stroke=\"#F47920\" stroke-width=\"2\"/></svg></button>',\r\n			prevArrow: '<button class=\"slick-prev slick-arrow\"><svg width=\"20\" height=\"34\" viewBox=\"0 0 20 34\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M19 1L2 17L19 33\" stroke=\"#F47920\" stroke-width=\"2\"/></svg></button>'\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
-this["WMG"]["blocks"]["SB04"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+this["WMG"]["blocks"]["SB04"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "				<div class=\"SB04-block\">\r\n					"
+    + ((stack1 = container.lambda((depth0 != null ? lookupProperty(depth0,"content") : depth0), depth0)) != null ? stack1 : "")
+    + "\r\n				</div>\r\n";
+},"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
           return parent[propertyName];
         }
@@ -9858,9 +12393,13 @@ this["WMG"]["blocks"]["SB04"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
 
   return "<div id=\"block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":31}}}) : helper)))
-    + "\" class=\"block block-SB block-SB04\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			SB04\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":10,"column":18},"end":{"line":10,"column":34}}}) : helper)))
-    + "');\r\n	});\r\n</script>";
+    + "\" class=\"block block-SB block-SB04\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n"
+    + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":4,"column":3},"end":{"line":8,"column":12}}})) != null ? stack1 : "")
+    + "		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":14,"column":18},"end":{"line":14,"column":34}}}) : helper)))
+    + "');\r\n\r\n		// Loop through each block list (parents only) and initialise masonry\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":17,"column":12},"end":{"line":17,"column":28}}}) : helper)))
+    + " .SB04-block > ul').each(function() {\r\n			$(this).masonry();\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["TB01"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -9978,8 +12517,8 @@ this["WMG"]["blocks"]["TB11"] = Handlebars.template({"1":function(container,dept
     + ((stack1 = alias5(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"1") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
     + "</div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":41,"column":18},"end":{"line":41,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":43,"column":12},"end":{"line":43,"column":28}}}) : helper)))
+    + "');\r\n\r\n		// Initialise the Slick Carousel\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":44,"column":12},"end":{"line":44,"column":28}}}) : helper)))
     + " .TB11__carousel').slick({\r\n			autoplay: false,\r\n			dots: true,\r\n			arrows: false,\r\n			slidesToShow: 1\r\n		});\r\n\r\n	});\r\n</script>\r\n";
 },"useData":true});
 this["WMG"]["blocks"]["TB13"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -10032,9 +12571,9 @@ this["WMG"]["blocks"]["TB20"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
     + ((stack1 = alias5(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"1") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
     + "\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":19,"column":18},"end":{"line":19,"column":34}}}) : helper)))
-    + "');\r\n\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":21,"column":12},"end":{"line":21,"column":28}}}) : helper)))
-    + " .TB20-media img').unwrap('p').wrap('<div class=\"TB20-media__image\"></div>');\r\n		$('#block-"
+    + "');\r\n\r\n		// Wrap image\r\n		$('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":22,"column":12},"end":{"line":22,"column":28}}}) : helper)))
+    + " .TB20-media img').unwrap('p').wrap('<div class=\"TB20-media__image\"></div>');\r\n\r\n		// Wrap everything else\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":25,"column":12},"end":{"line":25,"column":28}}}) : helper)))
     + " .TB20-media').children().not('.TB20-media__image').wrapAll('<div class=\"TB20-media__content\"></div>');\r\n	});\r\n</script>";
 },"useData":true});

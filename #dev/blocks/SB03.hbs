@@ -1,12 +1,49 @@
 <div id="block-{{ blockCount }}" class="block block-SB block-SB03">
-	<div class="container">
-		<div class="block__content">
-			SB03
+	<div class="block__content">
+		<div class="SB03-carousel">
+			{{#each content}}
+				<div class="SB03-carousel__item">
+					<div class="SB03-carousel__item-main">
+						{{{ this.content }}}
+					</div>
+				</div>
+			{{/each}}
+			
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		// Set height variable - this is used to make all intro heights the same height to align timeline
+		var introHeight = 0;
+
+		// Loop through each carousel item
+		$('#block-{{ blockCount }} .SB03-carousel__item').each(function() {
+			// Wrap first image element in bg class
+			$('img', $(this)).first().unwrap('p').wrap('<div class="SB03-carousel__item-bg"></div>');
+
+			// Move bg image element outside contain
+			$('.SB03-carousel__item-bg', $(this)).appendTo($(this));
+
+			// Wrap second image element in bg class
+			$('img', $(this)).first().unwrap('p').wrap('<div class="SB03-carousel__item-intro-img"></div>');
+
+			// Wrap everything but p
+			$('.SB03-carousel__item-main', $(this)).children().not('p').wrapAll('<div class="SB03-carousel__item-intro"></div>');
+
+			// Add timeline graphic
+			$('.SB03-carousel__item-intro', $(this)).after('<div class="SB03-carousel__item-timeline"><span></span></div>');
+		});
+
+		// Initialise Slick Carousel with custom SVG arrows
+		$('#block-{{ blockCount }} .SB03-carousel').slick({
+			autoplay: false,
+			arrows: true,
+			dots: false,
+			nextArrow: '<button class="slick-next slick-arrow"><svg width="20" height="34" viewBox="0 0 20 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L18 17L1 0.999998" stroke="#F47920" stroke-width="2"/></svg></button>',
+			prevArrow: '<button class="slick-prev slick-arrow"><svg width="20" height="34" viewBox="0 0 20 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 1L2 17L19 33" stroke="#F47920" stroke-width="2"/></svg></button>'
+		});
 	});
 </script>

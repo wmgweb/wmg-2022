@@ -1,0 +1,46 @@
+.block-SB02 {
+	.row {
+		margin: 0 -27px;
+		width: calc(100% + 54px);
+
+		> div {
+			padding: 0 27px;
+		}
+	}
+
+	form {
+		display: flex;
+		margin-bottom: 20px;
+
+		button {
+			background: $color-dark;
+			padding: 0;
+			flex: 0 0 45px;
+			height: 38px;
+			display: inline-block;
+			vertical-align: middle;
+			transition: background .3s;
+			line-height: 38px;
+
+			&:hover {
+				background: darken($color-dark, 10%);
+			}
+		}
+
+		input {
+			height: 38px;
+			padding: 0 10px;
+			display: inline-block;
+			vertical-align: middle;
+			flex: 1;
+			margin-right: 5px;
+			border: 0;
+		}
+	}
+
+	@include md {
+		form {
+			margin-bottom: 0;
+		}
+	}
+}

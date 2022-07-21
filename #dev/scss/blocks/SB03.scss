@@ -1,0 +1,128 @@
+.block-SB03 {
+	padding: 0;
+
+	.SB03-carousel {
+		text-align: center;
+		background: $color-dark;
+		color: $color-white;
+
+		.SB03-carousel__item {
+			padding: 88px 0;
+			position: relative;
+
+			.SB03-carousel__item-bg {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 1;
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+				}
+			}
+
+			.SB03-carousel__item-main {
+				z-index: 2;
+				position: relative;
+			}
+
+			p {
+				width: 429px;
+				max-width: 100%;
+				margin: 0 auto;
+				font-size: 16px;
+				padding: 0 5vw;
+			}
+
+			.SB03-carousel__item-timeline {
+				width: 100vw;
+				height: 5px;
+				background: $color-white;
+				margin: 50px 0 80px;
+				position: relative;
+
+				&:before {
+					content: '';
+					width: 5px;
+					height: 40px;
+					background: $color-white;
+					position: absolute;
+					left: 50%;
+					margin-left: -2.5px;
+					top: 20px;
+				}
+
+				span {
+					content: '';
+					width: 50px;
+					height: 50px;
+					border: 2px solid $color-white;
+					display: block;
+					border-radius: 50%;
+					position: absolute;
+					top: -24px;
+					left: 50%;
+					margin-left: -25px;
+
+					&:before {
+						content: '';
+						width: 38px;
+						height: 38px;
+						background: $color-white;
+						margin: 4px 0 0 4px;
+						display: block;
+						border-radius: 50%;
+					}
+
+				}
+			}
+
+			.SB03-carousel__item-intro {
+				padding: 0 5vw;
+				
+				h1,
+				h2,
+				h3,
+				h4,
+				h5,
+				h6 {
+					font-weight: 300;
+					font-size: 38px;
+					margin: 0;
+				}
+
+				.SB03-carousel__item-intro-img {
+					height: 244px;
+					margin-bottom: 39px;
+
+					img {
+						height: 100%;
+						margin: 0 auto;
+					}
+				}
+			}
+		}
+
+		.slick-arrow {
+			position: absolute;
+			top: 50%;
+			left: 5vw;
+			z-index: 10;
+			padding: 0;
+			background: none;
+			width: auto;
+			height: auto;
+			border: 0;
+			outline: 0;
+
+			&.slick-next {
+				left: auto;
+				right: 5vw;
+			}
+		}
+	}
+}

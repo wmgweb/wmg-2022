@@ -17,10 +17,7 @@
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
 
-		$('#block-{{ blockCount }} img').each(function() {
-			$(this).unwrap('p');
-		});
-
+		// Move button
 		$('#block-{{ blockCount }} .MB05__intro .btn').appendTo('#block-{{ blockCount }} .MB05__button');
 	});
 </script>

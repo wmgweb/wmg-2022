@@ -37,7 +37,7 @@
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
 
-		$('#block-{{ blockCount }} .FB01__module-top-main img:first-child').appendTo('#block-{{ blockCount }} .FB01__module-top-image');
-		$('#block-{{ blockCount }} .FB01__module-top-main p:first-child').remove();
+		// Move first image
+		$('#block-{{ blockCount }} .FB01__module-top-main img:first-child').unwrap('p').appendTo('#block-{{ blockCount }} .FB01__module-top-image');
 	});
 </script>

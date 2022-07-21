@@ -1,12 +1,60 @@
 <div id="block-{{ blockCount }}" class="block block-SB block-SB01">
-	<div class="container">
-		<div class="block__content">
-			SB01
+	<div class="block__content">
+		<div class="row">
+			<div class="col-12 col-md-6">
+				<div class="SB01-main">
+					<div class="half-container half-container--md half-container--left">
+						<svg width="165" height="183" viewBox="0 0 165 183" fill="none" xmlns="http://www.w3.org/2000/svg" class="d-none d-md-block SB01-main-icon theme-fill-path"><g style="mix-blend-mode:multiply"><path d="M0 0L165 0L165 183L0 0Z" fill="#EE3124"/></g></svg>
+						<svg width="53" height="82" viewBox="0 0 53 82" fill="none" xmlns="http://www.w3.org/2000/svg" class="d-md-none SB01-main-icon theme-fill-path"><g style="mix-blend-mode:multiply"><path d="M0 0H53V82L0 0Z" fill="#EE3124"/></g></svg>
+						<a href="/courses/" class="btn btn--text SB01-main-topbtn">< Back to all courses</a>
+						{{{content.[0].content}}}
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-md-6">
+				<div class="SB01-side">
+					<div class="SB01-image">
+						<div class="SB01-image-block bg--theme"></div>
+						<div class="SB01-image-block-overlay"></div>
+						{{{content.[1].content}}}
+					</div>
+					<div class="half-container half-container--md half-container--right">
+						<div class="SB01-side__content">{{{content.[2].content}}}</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		// Loop through each image
+		$('#block-{{ blockCount }} .SB01-side__content img').each(function(index, element) {
+
+			// Create a wrapper for the content
+			$(this).nextUntil('img').wrapAll('<div class="icon-short-text"><div class="icon-short-text-main"></div></div>');
+
+			// Move the image into wrapper
+			$(this).prependTo($(this).next('.icon-short-text'));
+
+		});
+
+		function block{{ blockCount }}MoveImage() {
+			// If mobile/tablet
+			if($(window).width() < 992) {
+				$('.SB01-image').prependTo('#block-{{ blockCount }} .SB01-main');
+			} else {
+				$('.SB01-image').prependTo('#block-{{ blockCount }} .SB01-side');
+			}
+		}
+
+		block{{ blockCount }}MoveImage();
+
+		$(window).resize(function() {
+			block{{ blockCount }}MoveImage();
+		});
+
 	});
 </script>

@@ -17,17 +17,21 @@
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}', ['blockBG']);
 
+		// Get parent element
 		var blockParent = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		slickSettings = {};
 		
+		// Grab slick settings from data attribute
 		if(blockParent.attr('data-slick')) {
 			var slickSettings = blockParent.attr('data-slick');
 			slickSettings = JSON.parse(slickSettings.replace(/'/g, '"'));
 		}
 
+		// Add brand triangle to each carousel item
 		$('.block-HB01__carousel-item', blockParent).prepend('<span class="brand-triangle"></span>');
 
+		// Initialise Slick Carousel with custom pagination
 		var slickObject = {
 			autoplay: true,
 			arrows: false,
@@ -38,6 +42,7 @@
 			}			
 		}
 
+		// Add dots if setting is set
 		if(slickSettings.hasOwnProperty('dots')) {
 			slickObject.dots = slickSettings.dots;
 		}

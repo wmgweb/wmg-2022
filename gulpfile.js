@@ -27,6 +27,7 @@ const rename 			= require('gulp-rename');
 function dependencies(done) {
     gulp.src(['node_modules/handlebars/dist/handlebars.js']).pipe(gulp.dest(config.devJS + '/vendor/'));
     gulp.src(['node_modules/slick-carousel/slick/slick.js']).pipe(gulp.dest(config.devJS + '/vendor/'));
+    gulp.src(['node_modules/masonry-layout/dist/masonry.pkgd.js']).pipe(gulp.dest(config.devJS + '/vendor/'));
     done();
 }
 

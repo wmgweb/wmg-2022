@@ -8,10 +8,12 @@
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
 
+		// Get image url and remove image element
 		var $img = $('#block-{{ blockCount }} img');
 		var imgSrc = $img.attr('src');
 		$img.unwrap('p').remove();
 
+		// Add background image
 		$('#block-{{ blockCount }} .MB01-img').css('background-image', 'url(' + imgSrc + ')');
 		 
 	});

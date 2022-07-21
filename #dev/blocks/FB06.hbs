@@ -24,16 +24,28 @@
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
 
+		// Loop through each carousel item
 		$('#block-{{ blockCount }} .FB06-carousel__item').each(function() {
+			// Add wrapper around image
 			$('img', $(this)).unwrap('p').wrap('<div class="FB06-carousel__item-image"></div>');
+
+			// Add SVG to image
 			$('.FB06-carousel__item-image', $(this)).prepend('<svg width="57" height="69" viewBox="0 0 57 69" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M56.7634 68.1979L0 68.1979L6.61655e-06 0.242188L56.7634 68.1979Z" fill="#D9DDE0"/></svg>');
+			
+			// Wrap everything else
 			$(this).children().not('.FB06-carousel__item-image').wrapAll('<div class="FB06-carousel__item-content"><div class="half-container half-container--lg half-container--right"></div></div>');
 		});
 
+		// Wrap main image
 		$('#block-{{ blockCount }} .FB06-main img').unwrap('p').wrap('<div class="FB06-main__image"></div>');
+
+		// Add SVG to main image
 		$('#block-{{ blockCount }} .FB06-main__image').prepend('<svg width="57" height="74" viewBox="0 0 57 74" fill="none" xmlns="http://www.w3.org/2000/svg" class="bg-fill-path"><path d="M0 0L56.7634 -9.92483e-06L56.7634 73.5887L0 0Z" fill="#E6E8EA"/></svg>');
+
+		// Wrap everything else
 		$('#block-{{ blockCount }} .FB06-main').children().not('.FB06-main__image').wrapAll('<div class="FB06-main__content"><div class="half-container half-container--lg half-container--left"></div></div>');
 
+		// Initilise slick carousel with custom numbered pagination
 		$('#block-{{ blockCount }} .FB06-carousel').slick({
 			arrows: false,
 			dots: true,

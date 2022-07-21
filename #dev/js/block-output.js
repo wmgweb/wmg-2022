@@ -7,7 +7,7 @@ if(pagePath.slice(pagePath.length - 1) != '/') {
 	pagePath = pagePath + '/';
 }
 
-// Functions to run inside a block
+// Functions to run inside a block - this function is run at every block call
 function blockFunctions(blockID, optionalFunctions) {
 	let blockChild = jQuery('#block-' + blockID);
 	let block = blockChild.parent('.wmg-block');
@@ -21,7 +21,7 @@ function blockFunctions(blockID, optionalFunctions) {
 	blockEdit(block);
 	blockImageFix(block);
 	blockShortcodes(block);
-	blockIframe(block);
+	blockWrappers(block);
 
 	if(jQuery.inArray('blockBG', optionalFunctions) !== -1) {
 		blockBG(block);
@@ -31,10 +31,10 @@ function blockFunctions(blockID, optionalFunctions) {
 // Shortcodes
 function blockShortcodes(block) {
 	let shortcodeLimit = 10; // Only allow 10 shortcodes per block
-	let shortcodeCount = 1;
-	let shortcodeOutput = '';
-	let blockContent = jQuery('.block__content', block);
-	let blockContentHTML = blockContent.html();
+	let shortcodeCount = 1; // Current shortcode count
+	let shortcodeOutput = ''; // Empty output variable
+	let blockContent = jQuery('.block__content', block); // Get the '.block_content' element - this is the wrapper where we check for shortcodes
+	let blockContentHTML = blockContent.html(); // Get all the block HTML
 
 	// Loop through all instances of shortcode
 	while(blockContentHTML.indexOf('[!') >= 0 && shortcodeCount <= shortcodeLimit) {
@@ -98,14 +98,18 @@ function blockEdit(block) {
 	}
 }
 
-// Add wrappers around iframes
-function blockIframe(block) {
+// Add/remove wrappers around elements inside of a block
+function blockWrappers(block) {
+	// Add ".video-wrapper" around every iframe to allow for auto-sizing. Remove <p> tags.
 	jQuery('iframe', block).unwrap('p').wrap('<div class="video-wrapper"></div>');
+
+	// Remove <p> tags from all images and videos
+	jQuery('img', block).unwrap('p');
 	jQuery('video', block).unwrap('p');
 }
 
 
-// Set options classes
+// Set options classes - this sets a class on the block element for each option set
 function blockOptionsClasses(block, blockOptions) {
 	for (const [key, value] of Object.entries(blockOptions)) {
 		jQuery('.block', block).addClass(key + '--' + value);
@@ -117,7 +121,7 @@ function blockOptionsClasses(block, blockOptions) {
 	}
 }
 
-// Image pathing check and fix
+// Image pathing check and fix - checks if a relative url is set and if so adds the content url
 function blockImageFix(block) {
 	jQuery('img', block).each(function() {
 		var src = jQuery(this).attr('src');

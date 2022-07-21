@@ -2,11 +2,16 @@
 	border-top: 8px solid $color-red;
 	background: $color-lightgrey-3;
 	padding: 20px;
+	color: $color-text !important;
 
 	.card-block__image {
 		width: calc(100% + 40px);
 		margin: -20px 0 20px -20px;
 		position: relative;
+
+		img {
+			width: 100%;
+		}
 
 		&:before {
 			content: '';
@@ -22,3 +27,5 @@
 		}
 	}
 }
+
+@include theme('border-color', '.card-block');

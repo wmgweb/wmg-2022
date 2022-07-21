@@ -1158,8 +1158,19 @@ this["WMG"]["blocks"]["MB13"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":10,"column":18},"end":{"line":10,"column":34}}}) : helper)))
     + "');		 \r\n	});\r\n</script>";
 },"useData":true});
-this["WMG"]["blocks"]["PTB01"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+this["WMG"]["blocks"]["PTB01"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "					<div class=\"PTB01-carousel__item\">\r\n						<div class=\"row\">\r\n							<div class=\"col-12 col-md-6\">\r\n								<div class=\"PTB01-carousel__item-image\"></div>\r\n							</div>\r\n							<div class=\"col-12 col-md-6\">\r\n								<div class=\"PTB01-carousel__item-content\">"
+    + ((stack1 = ((helper = (helper = lookupProperty(helpers,"content") || (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"content","hash":{},"data":data,"loc":{"start":{"line":12,"column":50},"end":{"line":12,"column":63}}}) : helper))) != null ? stack1 : "")
+    + "</div>\r\n							</div>\r\n						</div>\r\n					</div>\r\n";
+},"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
           return parent[propertyName];
         }
@@ -1168,12 +1179,38 @@ this["WMG"]["blocks"]["PTB01"] = Handlebars.template({"compiler":[8,">= 4.3.0"],
 
   return "<div id=\"block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":31}}}) : helper)))
-    + "\" class=\"block block-PTB block-PTB01\">\r\n	<div class=\"container\">\r\n		<div class=\"row\">\r\n			<div class=\"col-12\">\r\n				<div class=\"block__content\">\r\n					<h2>PTB01</h2>\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":14,"column":18},"end":{"line":14,"column":34}}}) : helper)))
-    + "');\r\n	});\r\n</script>";
+    + "\" class=\"block block-PTB block-PTB01\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			<div class=\"PTB-carousel PTB01-carousel\">\r\n"
+    + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":5,"column":4},"end":{"line":16,"column":13}}})) != null ? stack1 : "")
+    + "			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":23,"column":18},"end":{"line":23,"column":34}}}) : helper)))
+    + "');\r\n\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":25,"column":12},"end":{"line":25,"column":28}}}) : helper)))
+    + " .PTB01-carousel__item').each(function() {\r\n			$('img', $(this)).appendTo($('.PTB01-carousel__item-image', $(this)));\r\n		});\r\n\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":29,"column":12},"end":{"line":29,"column":28}}}) : helper)))
+    + " .PTB01-carousel').slick({\r\n			autoplay: false,\r\n			arrows: true,\r\n			dots: true,\r\n			draggable: false,\r\n			nextArrow: '<button class=\"slick-next slick-arrow\"><svg width=\"19\" height=\"34\" viewBox=\"0 0 19 34\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1 33L18 17L1 0.999998\" stroke=\"#6D6F71\"/></svg></button>',\r\n			prevArrow: '<button class=\"slick-prev slick-arrow\"><svg width=\"19\" height=\"34\" viewBox=\"0 0 19 34\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M18 1L1 17L18 33\" stroke=\"#6D6F71\"/></svg></button>',\r\n			customPaging : function(slider, i) {\r\n				var thumb = $(slider.$slides[i]).data();\r\n				return '<a>0' + parseInt(i+1) + '</a>';\r\n			}\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
-this["WMG"]["blocks"]["PTB03"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+this["WMG"]["blocks"]["PTB03"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),(data && lookupProperty(data,"index")),{"name":"if","hash":{"includeZero":false},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":7,"column":5},"end":{"line":11,"column":12}}})) != null ? stack1 : "");
+},"2":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "						<div class=\"PTB03-carousel__item\">\r\n							<div class=\"card-block\">"
+    + ((stack1 = ((helper = (helper = lookupProperty(helpers,"content") || (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"content","hash":{},"data":data,"loc":{"start":{"line":9,"column":31},"end":{"line":9,"column":44}}}) : helper))) != null ? stack1 : "")
+    + "</div>\r\n						</div>\r\n";
+},"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
           return parent[propertyName];
         }
@@ -1182,9 +1219,29 @@ this["WMG"]["blocks"]["PTB03"] = Handlebars.template({"compiler":[8,">= 4.3.0"],
 
   return "<div id=\"block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":31}}}) : helper)))
-    + "\" class=\"block block-PTB block-PTB03\">\r\n	<div class=\"container\">\r\n		<div class=\"row\">\r\n			<div class=\"col-12\">\r\n				<div class=\"block__content\">\r\n					<h2>PTB03</h2>\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":14,"column":18},"end":{"line":14,"column":34}}}) : helper)))
-    + "');\r\n	});\r\n</script>";
+    + "\" class=\"block block-PTB block-PTB03\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			<div class=\"PTB03-intro\">"
+    + ((stack1 = container.lambda(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"0") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
+    + "</div>\r\n			<div class=\"PTB-carousel PTB03-carousel\">\r\n"
+    + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":6,"column":4},"end":{"line":12,"column":13}}})) != null ? stack1 : "")
+    + "			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":19,"column":18},"end":{"line":19,"column":34}}}) : helper)))
+    + "');\r\n\r\n		// Loop through each card block, check if an image exists and wrap it\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":22,"column":12},"end":{"line":22,"column":28}}}) : helper)))
+    + " .card-block').each(function() {\r\n			if($('img', $(this)).length) {\r\n				$('img', $(this)).unwrap('p').wrap('<div class=\"card-block__image\"></div>');\r\n			}\r\n		});\r\n\r\n		// Initialise Slick Carousel with custom arrows and dots\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":29,"column":12},"end":{"line":29,"column":28}}}) : helper)))
+    + " .PTB03-carousel').slick({\r\n			autoplay: false,\r\n			draggable: false,\r\n			dots: true,\r\n			arrows: true,\r\n			slidesToShow: 3,\r\n			nextArrow: '<button class=\"slick-next slick-arrow\"><svg width=\"19\" height=\"34\" viewBox=\"0 0 19 34\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M1 33L18 17L1 0.999998\" stroke=\"#6D6F71\"/></svg></button>',\r\n			prevArrow: '<button class=\"slick-prev slick-arrow\"><svg width=\"19\" height=\"34\" viewBox=\"0 0 19 34\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M18 1L1 17L18 33\" stroke=\"#6D6F71\"/></svg></button>',\r\n			customPaging : function(slider, i) {\r\n				var thumb = $(slider.$slides[i]).data();\r\n				return '<a>0' + parseInt(i+1) + '</a>';\r\n			},\r\n			responsive: [\r\n			    {\r\n			      breakpoint: 991,\r\n			      settings: {\r\n			        slidesToShow: 2\r\n			      }\r\n			    },\r\n			    {\r\n			      breakpoint: 767,\r\n			      settings: {\r\n			        slidesToShow: 1\r\n			      }\r\n			    }\r\n			]\r\n		});\r\n\r\n		// Function to calculate desktop dots location\r\n		function block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":58,"column":16},"end":{"line":58,"column":32}}}) : helper)))
+    + "DotsLocation() {\r\n			// If button exists\r\n			if($('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":60,"column":16},"end":{"line":60,"column":32}}}) : helper)))
+    + " .PTB03-intro .btn').length) {\r\n				// If window width is desktop\r\n				if($(window).width() > 991) {\r\n					// Set dots right to button width + 30px\r\n					var btnWidth = $('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":64,"column":30},"end":{"line":64,"column":46}}}) : helper)))
+    + " .PTB03-intro .btn').outerWidth() + 30;\r\n					$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":65,"column":15},"end":{"line":65,"column":31}}}) : helper)))
+    + " .slick-dots').css({'right': btnWidth + 'px'})\r\n				}				\r\n			}\r\n\r\n		}\r\n\r\n		// Run dots calculation on page load\r\n		block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":72,"column":7},"end":{"line":72,"column":23}}}) : helper)))
+    + "DotsLocation();\r\n\r\n		// Run dots calculation on window resize\r\n		$(window).resize(function() {\r\n			block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":76,"column":8},"end":{"line":76,"column":24}}}) : helper)))
+    + "DotsLocation();\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["PTB04"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {

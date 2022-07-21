@@ -1,10 +1,15 @@
 <div id="block-{{ blockCount }}" class="block block-PTB block-PTB03">
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>PTB03</h2>
-				</div>
+		<div class="block__content">
+			<div class="PTB03-intro">{{{content.[0].content}}}</div>
+			<div class="PTB-carousel PTB03-carousel">
+				{{#each content}}
+					{{#if @index includeZero=false}}
+						<div class="PTB03-carousel__item">
+							<div class="card-block">{{{content}}}</div>
+						</div>
+					{{/if}}
+				{{/each}}
 			</div>
 		</div>
 	</div>
@@ -12,5 +17,63 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		// Loop through each card block, check if an image exists and wrap it
+		$('#block-{{ blockCount }} .card-block').each(function() {
+			if($('img', $(this)).length) {
+				$('img', $(this)).unwrap('p').wrap('<div class="card-block__image"></div>');
+			}
+		});
+
+		// Initialise Slick Carousel with custom arrows and dots
+		$('#block-{{ blockCount }} .PTB03-carousel').slick({
+			autoplay: false,
+			draggable: false,
+			dots: true,
+			arrows: true,
+			slidesToShow: 3,
+			nextArrow: '<button class="slick-next slick-arrow"><svg width="19" height="34" viewBox="0 0 19 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L18 17L1 0.999998" stroke="#6D6F71"/></svg></button>',
+			prevArrow: '<button class="slick-prev slick-arrow"><svg width="19" height="34" viewBox="0 0 19 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 1L1 17L18 33" stroke="#6D6F71"/></svg></button>',
+			customPaging : function(slider, i) {
+				var thumb = $(slider.$slides[i]).data();
+				return '<a>0' + parseInt(i+1) + '</a>';
+			},
+			responsive: [
+			    {
+			      breakpoint: 991,
+			      settings: {
+			        slidesToShow: 2
+			      }
+			    },
+			    {
+			      breakpoint: 767,
+			      settings: {
+			        slidesToShow: 1
+			      }
+			    }
+			]
+		});
+
+		// Function to calculate desktop dots location
+		function block{{ blockCount }}DotsLocation() {
+			// If button exists
+			if($('#block-{{ blockCount }} .PTB03-intro .btn').length) {
+				// If window width is desktop
+				if($(window).width() > 991) {
+					// Set dots right to button width + 30px
+					var btnWidth = $('#block-{{ blockCount }} .PTB03-intro .btn').outerWidth() + 30;
+					$('#block-{{ blockCount }} .slick-dots').css({'right': btnWidth + 'px'})
+				}				
+			}
+
+		}
+
+		// Run dots calculation on page load
+		block{{ blockCount }}DotsLocation();
+
+		// Run dots calculation on window resize
+		$(window).resize(function() {
+			block{{ blockCount }}DotsLocation();
+		});
 	});
 </script>

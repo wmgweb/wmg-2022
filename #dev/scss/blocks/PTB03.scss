@@ -1,0 +1,77 @@
+.block-PTB03 {
+	.PTB03-carousel {
+		width: calc(100% + 30px);
+		margin: 0 -15px;
+		padding-bottom: 50px;
+
+		.slick-dots {
+			position: absolute;
+			bottom: 0;
+			left: 5vw;
+		}
+	}
+
+	.PTB03-intro {
+		margin: 0 0 13px;
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			margin: 0;
+		}
+
+		.btn {
+			position: absolute;
+			bottom: 20px;
+			right: 5vw;
+			margin: 0;
+			z-index: 100;
+		}
+	}
+
+	&.bg--dark {
+		.PTB03-carousel {
+			.slick-dots {
+				a {
+					color: $color-white !important;
+				}
+			}
+		}
+	}
+
+	@media(min-width: 500px) {
+		.PTB03-carousel {
+			.PTB03-carousel__item {
+				padding: 0 15px;
+			}
+
+		}
+	}
+
+	@include md {
+		.PTB03-intro {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+
+			.btn {
+				position: relative;
+				bottom: auto;
+				right: auto;
+				align-self: flex-start;
+			}
+		}
+
+		.PTB03-carousel {
+			.slick-dots {
+				top: -50px;
+				right: 0;
+				left: auto;
+				bottom: auto;
+			}
+		}
+	}
+}

@@ -1,0 +1,76 @@
+.block-PTB {
+	.PTB-carousel {
+		padding: 0 30px;
+
+		.slick-dots {
+			list-style: none;
+			margin: 0;
+			padding: 0 0 0 32px;
+			padding: 0;
+			display: block;
+
+			li {
+				display: inline-block;
+				margin: 0 14px 0 0;
+				font-size: 14px;
+
+				a {
+					text-decoration: none;
+					border-bottom: 1px solid transparent;
+					cursor: pointer;
+					font-weight: 600;
+					color: $color-text !important;
+				}
+
+				&.slick-active {
+					a {
+						border-color: $color-text;
+					}
+				}
+			}
+		}
+
+		.slick-arrow {
+			padding: 0;
+			background: none;
+			border: 0;
+			width: auto;
+			height: auto;
+			position: absolute;
+			top: 50%;
+			left: 0;
+			margin-top: -17px;
+
+			&.slick-next {
+				left: auto;
+				right: 0;
+			}
+		}
+	}
+
+	@include md {
+		.PTB-carousel {
+			padding: 0 0 30px;
+
+			.slick-arrow {
+				left: -20px;
+
+				&.slick-next {
+					right: -20px;
+				}
+			}
+		}
+	}
+
+	@media(min-width: 13400px) {
+		.PTB-carousel {
+			.slick-arrow {
+				left: -47px;
+
+				&.slick-next {
+					right: -47px;
+				}
+			}
+		}
+	}
+}

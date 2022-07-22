@@ -1,7 +1,16 @@
 <div id="block-{{ blockCount }}" class="block block-PTB block-PTB16">
-	<div class="container">
-		<div class="block__content">
-			<div class="PTB-headline"><h2>PTB16</h2></div>
+	<div class="block__content">
+		<div class="header-article">
+			{{#if content.[1].content}}
+				<div class="header-article__image border-color--theme">{{{content.[1].content}}}</div>
+			{{/if}}
+			{{#if content.[0].content}}
+				<div class="header-article__content">
+					<div class="container">
+						{{{content.[0].content}}}
+					</div>
+				</div>
+			{{/if}}
 		</div>
 	</div>
 </div>

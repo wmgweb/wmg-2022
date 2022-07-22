@@ -1,12 +1,127 @@
 <div id="block-{{ blockCount }}" class="block block-PTB block-PTB09">
 	<div class="container">
 		<div class="block__content">
-			PTB09
+			<div class="PTB-headline">{{{content.[0].content}}}</div>
+			<!-- Create Category Menu from available categories -->
+			{{#if categories}}
+				<ul class="PTB09-cats">
+					{{#each categories}}
+						<li><button>{{this}}</button></li>
+					{{/each}}
+				</ul>
+			{{/if}}
+			<!-- End Category Menu -->
+			<div class="row PTB09-grid">
+				{{#each content}}
+					{{#if @index includeZero=false}}
+						<div class="col-12 col-md-6 inactive" data-cats="{{categories}}"><div class="person-block">{{{content}}}</div></div>
+					{{/if}}
+				{{/each}}
+			</div>
+			<div class="PTB09-grid__bottom">
+				<button class="PTB09-grid__expand">Load More <svg width="39" height="23" viewBox="0 0 39 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.4288 22.2169L0.85895 7.08292C-0.286317 6.03689 -0.286318 4.34545 0.858949 3.31055L3.61246 0.795647C4.75773 -0.250376 6.60965 -0.250376 7.74274 0.795646L19.5 11.5118L31.2451 0.784518C32.3903 -0.261507 34.2423 -0.261507 35.3753 0.784518L38.141 3.29942C39.2863 4.34545 39.2863 6.03689 38.141 7.07178L21.5712 22.2057C20.426 23.2629 18.574 23.2629 17.4288 22.2169Z" fill="#818181"/></svg></button>
+			</div>
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		// Loop through each person block
+		$('#block-{{ blockCount }} .person-block').each(function() {
+			// Wrap image
+			$('img', $(this)).wrap('<div class="person-block__image"></div>');
+
+			// Wrap everything else
+			$(this).children().not('.person-block__image').wrapAll('<div class="person-block__content"></div>');
+		});
+
+		// Loop through each button
+		$('#block-{{ blockCount }} .PTB09-cats button').each(function() {
+			// Grab the cat id from the text, and sanitize
+			var cat = $(this).text().replace(/\s+/g, '-').toLowerCase();
+
+			// Set the data attribute
+			$(this).attr('data-cat', cat);
+		});
+
+		// Loop through each grid item
+		$('#block-{{ blockCount }} .PTB09-grid > div').each(function() {
+			// Get all categories
+			var cats = $(this).data('cats');
+			// Split them into an array
+			var catArray = cats.split(',');
+			var $self = $(this);
+
+			// Loop through category array
+			$.each(catArray, function(key, value) {
+				// Sanitize category
+				var catVal = value.replace(/\s+/g, '-').toLowerCase();
+
+				// Add Category class
+			  	$self.addClass('cat--' + catVal);
+			});
+		});
+
+		// Function to display 4 blocks at a time
+		function block{{ blockCount }}ShowBlocks() {
+			// If category is set, change loop element to this cat class
+			if($('#block-{{ blockCount }} .PTB09-cats button.active').length) {
+				// Get category from currently active button
+				var activeCat = $('#block-{{ blockCount }} .PTB09-cats button.active').data('cat');
+				// Set element as currently active button class
+				var searchElement = '#block-{{ blockCount }} .PTB09-grid > div.inactive.cat--' + activeCat;
+			} else { // Else loop all blocks
+				var searchElement = '#block-{{ blockCount }} .PTB09-grid > div.inactive';
+			}	
+
+			// Loop through first 4 blocks and remove inactive class and add display class
+			$(searchElement).each(function(index, element) {
+				$(this).removeClass('inactive').addClass('active');
+
+				// Return once we show fourth block
+				return index < 3;
+			});		
+
+			// Check if any more blocks. Hide button if none.
+			if(!$(searchElement).length) {
+				$('#block-{{ blockCount }} .PTB09-grid__expand').hide();
+			}	
+		}
+
+		// Function to reset blocks
+		function block{{ blockCount }}ResetBlocks() {
+			$('#block-{{ blockCount }} .PTB09-grid > div.active').removeClass('active').addClass('inactive');
+			$('#block-{{ blockCount }} .PTB09-grid__expand').show();
+		}
+
+		// Show blocks on load
+		block{{ blockCount }}ShowBlocks();
+
+		// Show blocks on button click
+		$('#block-{{ blockCount }} .PTB09-grid__expand').click(function() {
+			block{{ blockCount }}ShowBlocks();
+		});
+
+		// On category button click
+		$('#block-{{ blockCount }} .PTB09-cats button').click(function() {
+			// If currently active, remove active class
+			if($(this).hasClass('active')) {
+				$(this).removeClass('active');
+			} else {
+				// Remove existing active button
+				$('#block-{{ blockCount }} .PTB09-cats button.active').removeClass('active');
+				// Add active class to this button
+				$(this).addClass('active');
+			}
+			
+
+			// Reset all blocks
+			block{{ blockCount }}ResetBlocks();
+
+			// Run show blocks function
+			block{{ blockCount }}ShowBlocks();
+		});
 	});
 </script>

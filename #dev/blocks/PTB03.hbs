@@ -1,7 +1,7 @@
 <div id="block-{{ blockCount }}" class="block block-PTB block-PTB03">
 	<div class="container">
 		<div class="block__content">
-			<div class="PTB03-intro">{{{content.[0].content}}}</div>
+			<div class="PTB-intro">{{{content.[0].content}}}</div>
 			<div class="PTB-carousel PTB03-carousel">
 				{{#each content}}
 					{{#if @index includeZero=false}}
@@ -57,11 +57,11 @@
 		// Function to calculate desktop dots location
 		function block{{ blockCount }}DotsLocation() {
 			// If button exists
-			if($('#block-{{ blockCount }} .PTB03-intro .btn').length) {
+			if($('#block-{{ blockCount }} .PTB-intro .btn').length) {
 				// If window width is desktop
 				if($(window).width() > 991) {
 					// Set dots right to button width + 30px
-					var btnWidth = $('#block-{{ blockCount }} .PTB03-intro .btn').outerWidth() + 30;
+					var btnWidth = $('#block-{{ blockCount }} .PTB-intro .btn').outerWidth() + 30;
 					$('#block-{{ blockCount }} .slick-dots').css({'right': btnWidth + 'px'})
 				}				
 			}

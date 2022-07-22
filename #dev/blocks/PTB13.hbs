@@ -1,7 +1,14 @@
 <div id="block-{{ blockCount }}" class="block block-PTB block-PTB13">
 	<div class="container">
 		<div class="block__content">
-			PTB13
+			<div class="PTB-headline">{{{content.[0].content}}}</div>
+			<div class="PTB13-grid">
+				{{#each content}}
+					{{#if @index includeZero=false}}
+						<div class="PTB13-item"><div class="position-block">{{{content}}}</div></div>
+					{{/if}}
+				{{/each}}
+			</div>
 		</div>
 	</div>
 </div>

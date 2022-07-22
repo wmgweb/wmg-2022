@@ -1,0 +1,77 @@
+.block-PTB09 {
+	@include theme('background-color', '.PTB09-cats button.active', '&');
+
+	.row {
+		margin: 0 -20px;
+		width: calc(100% + 40px);
+
+		> div {
+			padding: 0 20px;
+
+			&.inactive {
+				display: none;
+			}
+		}
+	}
+
+	.person-block {
+		margin-bottom: 30px;
+	}
+
+	.PTB09-grid__bottom {
+		text-align: center;
+	}
+
+	.PTB09-grid__expand {
+		color: #818181;
+		font-weight: bold;
+		font-size: 14px;
+		background: none;
+		border: 0;
+
+		svg {
+			display: block;
+			margin: 4px auto 0;
+		}
+	}
+
+	.PTB09-cats {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 30px;
+
+		li {
+			display: block;
+			margin: 0 0 10px;
+
+			button {
+				background: rgba(196, 196, 196, 0.5);
+				font-size: 19px;
+				border: 0;
+				width: 100%;
+				padding: 10px;
+				border-radius: 5px 5px 0 0;
+				transition: background-color .3s;
+			}
+		}
+	}
+
+	@include md {
+		.person-block {
+			margin-bottom: 80px;
+		}	
+
+		.PTB09-cats {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			margin: 0 -15px 50px;
+			width: calc(100% + 30px);
+
+			li {
+				width: 33.3%;
+				padding: 0 15px;
+			}
+		}	
+	}
+}

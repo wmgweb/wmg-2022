@@ -1,10 +1,10 @@
 <div id="block-{{ blockCount }}" class="block block-PTB block-PTB14">
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>PTB14</h2>
-				</div>
+		<div class="block__content">
+			<div class="PTB-carousel PTB14-carousel">
+				{{#each content}}
+						<div class="PTB14-carousel__item"><div class="PTB14-carousel__item-inner">{{{content}}}</div></div>
+				{{/each}}
 			</div>
 		</div>
 	</div>
@@ -12,5 +12,23 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		// Initialise Slick Carousel
+		$('#block-{{ blockCount }} .PTB14-carousel').slick({
+			autoplay: false,
+			arrows: true,
+			dots: true,
+			draggable: false,
+			nextArrow: '<button class="slick-next slick-arrow"><svg width="19" height="34" viewBox="0 0 19 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L18 17L1 0.999998" stroke="#6D6F71"/></svg></button>',
+			prevArrow: '<button class="slick-prev slick-arrow"><svg width="19" height="34" viewBox="0 0 19 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 1L1 17L18 33" stroke="#6D6F71"/></svg></button>',
+			responsive: [
+			    {
+			      breakpoint: 991,
+			      settings: {
+			        arrows: false
+			      }
+			    }
+			]
+		});
 	});
 </script>

@@ -11,27 +11,6 @@
 		}
 	}
 
-	.PTB03-intro {
-		margin: 0 0 13px;
-
-		h1,
-		h2,
-		h3,
-		h4,
-		h5,
-		h6 {
-			margin: 0;
-		}
-
-		.btn {
-			position: absolute;
-			bottom: 20px;
-			right: 5vw;
-			margin: 0;
-			z-index: 100;
-		}
-	}
-
 	&.bg--dark {
 		.PTB03-carousel {
 			.slick-dots {
@@ -39,6 +18,16 @@
 					color: $color-white !important;
 				}
 			}
+		}
+	}
+
+	.PTB-intro {
+		.btn {
+			position: absolute;
+			bottom: 20px;
+			right: 5vw;
+			margin: 0;
+			z-index: 100;
 		}
 	}
 
@@ -52,25 +41,20 @@
 	}
 
 	@include md {
-		.PTB03-intro {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-
-			.btn {
-				position: relative;
-				bottom: auto;
-				right: auto;
-				align-self: flex-start;
-			}
-		}
-
 		.PTB03-carousel {
 			.slick-dots {
 				top: -50px;
 				right: 0;
 				left: auto;
 				bottom: auto;
+			}
+		}
+
+		.PTB-intro {
+			.btn {
+				position: relative;
+				bottom: auto;
+				right: auto;
 			}
 		}
 	}

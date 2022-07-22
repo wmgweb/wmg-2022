@@ -170,6 +170,7 @@ jQuery(document).ready(function($) {
   		if($block.data('content_id')) {
   			var wmgBlockContentID = parseInt($block.data('content_id'));
   		}
+
   		$.ajax({
   			async: false,
 	        url : 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/dataentry/entries.json?page=' + wmgBlockContentURL,
@@ -179,6 +180,7 @@ jQuery(document).ready(function($) {
 				var currentItem = data.items;
 				var handlebarsBlockData = {
 					content : data.items,
+					categories: data.categories,
 					blockCount : wmgCurrentBlockCount,
 					options: wmgBlockOptions
 				}

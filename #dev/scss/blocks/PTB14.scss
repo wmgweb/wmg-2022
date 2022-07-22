@@ -1,0 +1,59 @@
+.block-PTB.block-PTB14 {
+	padding: 50px 0; 
+	@include theme('background-color', '.PTB14-carousel .PTB14-carousel__item:after', '&');
+
+	.PTB14-carousel {
+		.PTB14-carousel__item {
+			text-align: center;
+
+			.PTB14-carousel__item-inner {
+				max-width: 988px;
+				width: 100%;
+				margin: 0 auto;
+			}
+
+			blockquote {
+				border: 0;
+				margin: 0 0 30px;
+				padding: 0;
+				font-size: 20px;
+				display: block;
+
+				p {
+					font-size: 20px;
+				}
+			}
+
+			cite {
+				display: block;
+				font-size: 14px;
+			}
+
+			p {
+				font-size: 14px;
+
+				&:last-child {
+					margin: 0;
+				}
+			}
+
+			&:after {
+				content: '';
+				display: block;
+				margin: 35px auto;
+				width: 63px;
+				height: 8px;
+				background-color: $color-red;
+			}
+		}
+
+		.slick-dots {
+			@extend .slick-dots-circle;
+			text-align: center;
+		}
+	}
+
+	@include md {
+		padding: 87px 0;
+	}
+}

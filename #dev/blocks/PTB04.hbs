@@ -1,10 +1,19 @@
 <div id="block-{{ blockCount }}" class="block block-PTB block-PTB04">
 	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="block__content">
-					<h2>PTB04</h2>
-				</div>
+		<div class="block__content">
+			<div class="PTB-carousel PTB04-carousel">
+				{{#each content}}
+					<div class="PTB04-carousel__item">
+						<div class="row">
+							<div class="col-12 col-md-6">
+								<div class="PTB04-carousel__item-image"></div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="PTB04-carousel__item-content"><div class="PTB04-carousel__item-content-wrapper">{{{content}}}</div></div>
+							</div>
+						</div>
+					</div>
+				{{/each}}
 			</div>
 		</div>
 	</div>
@@ -12,5 +21,29 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		// Loop through each carousel item
+		$('#block-{{ blockCount }} .PTB04-carousel__item').each(function() {
+			// Move image to wrapper
+			$('.PTB04-carousel__item-content img', $(this)).appendTo($('.PTB04-carousel__item-image', $(this)));
+		});
+
+		// Initialise Slick Carousel
+		$('#block-{{ blockCount }} .PTB04-carousel').slick({
+			autoplay: false,
+			arrows: true,
+			dots: true,
+			draggable: false,
+			nextArrow: '<button class="slick-next slick-arrow"><svg width="19" height="34" viewBox="0 0 19 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L18 17L1 0.999998" stroke="#6D6F71"/></svg></button>',
+			prevArrow: '<button class="slick-prev slick-arrow"><svg width="19" height="34" viewBox="0 0 19 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 1L1 17L18 33" stroke="#6D6F71"/></svg></button>',
+			responsive: [
+			    {
+			      breakpoint: 991,
+			      settings: {
+			        arrows: false
+			      }
+			    }
+			]
+		});
 	});
 </script>

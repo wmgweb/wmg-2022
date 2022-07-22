@@ -1,12 +1,57 @@
 <div id="block-{{ blockCount }}" class="block block-PTB block-PTB08">
 	<div class="container">
 		<div class="block__content">
-			PTB08
+			<div class="PTB-intro">{{{content.[0].content}}}</div>
+			<div class="PTB-carousel PTB08-carousel">
+				{{#each content}}
+					{{#if @index includeZero=false}}
+						<div class="bordered-text-block border-color--theme">{{{content}}}</div>
+					{{/if}}
+				{{/each}}
+			</div>
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		// Loop through each block - groups 2 together for carousel
+		$('#block-{{ blockCount }} .bordered-text-block').each(function(index, element) {
+			// If desktop
+			if($(window).width() > 991) {
+				// If even add wrapper
+				if(index % 2 === 0) {
+					$(this).wrap('<div class="PTB08-carousel__item"></div>');
+				} else { // If odd move this to last element
+					$(this).appendTo($(this).prev('.PTB08-carousel__item'));
+				}				
+			} else { // Else if mobile
+				// Wrap all individually
+				$(this).wrap('<div class="PTB08-carousel__item"></div>');
+			}
+		});
+
+		// Initialise Slick Carousel
+		$('.PTB08-carousel').slick({
+			slidesToShow: 2,
+			arrows: true,
+			dots: true,
+			draggable: false,
+			nextArrow: '<button class="slick-next slick-arrow"><svg width="19" height="34" viewBox="0 0 19 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L18 17L1 0.999998" stroke="#6D6F71"/></svg></button>',
+			prevArrow: '<button class="slick-prev slick-arrow"><svg width="19" height="34" viewBox="0 0 19 34" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 1L1 17L18 33" stroke="#6D6F71"/></svg></button>',
+			customPaging : function(slider, i) {
+				var thumb = $(slider.$slides[i]).data();
+				return '<a>0' + parseInt(i+1) + '</a>';
+			},
+			responsive: [
+			    {
+			      breakpoint: 991,
+			      settings: {
+			        slidesToShow: 1
+			      }
+			    }
+			]
+		});
 	});
 </script>

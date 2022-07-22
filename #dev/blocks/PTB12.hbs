@@ -1,12 +1,42 @@
 <div id="block-{{ blockCount }}" class="block block-PTB block-PTB12">
 	<div class="container">
 		<div class="block__content">
-			PTB12
+			<div class="PTB-headline">{{{content.[0].content}}}</div>
+			<div class="row">
+				{{#each content}}
+					{{#if @index includeZero=false}}
+						<div class="col-12 col-sm-6 col-md-4">
+							<div class="bio-article">
+								{{{content}}}
+								<div class="bio-article__links"></div>
+							</div>
+						</div>
+					{{/if}}
+				{{/each}}
+			</div>
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		// Loop through all the articles
+		$('#block-{{ blockCount }} .bio-article').each(function() {
+			var $self = $(this);
+
+			// Loop through all the links in the articles
+			$('a', $(this)).each(function() {
+				// Check if Twitter and if so apply classes
+				if($(this).text().toLowerCase() == 'twitter') {
+					$(this).addClass('bio-article__links-social fa fa-twitter').text('');
+				} else if($(this).text().toLowerCase() == 'linkedin') { // Check if LinkedIn and if so apply classes
+					$(this).addClass('bio-article__links-social fa fa-linkedin').text('');
+				}
+
+				// Move to links wrapper
+				$(this).appendTo($('.bio-article__links', $self));
+			});
+		});
 	});
 </script>

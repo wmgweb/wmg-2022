@@ -1,0 +1,21 @@
+.block-PTB08 {
+	.PTB08-carousel {
+		margin: 0 -15px;
+
+		.PTB08-carousel__item {
+			padding: 0 15px 20px;
+
+			.bordered-text-block {
+				margin-bottom: 20px;
+			}
+		}
+	}
+
+	@include md {
+		.slick-dots {
+			position: absolute;
+			top: -45px;
+			right: 0;
+		}
+	}
+}

@@ -28,33 +28,7 @@
 	}
 
 	.slick-dots {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-
-		li {
-			margin: 0;
-			display: inline-block;
-			margin-right: 4px;
-
-			button {
-				width: 11px;
-				height: 11px;
-				background: #C4C4C4;
-				border: 0;
-				padding: 0;
-				overflow: hidden;
-				text-indent: -9999px;
-				border-radius: 50%;
-				opacity: .5;
-			}
-
-			&.slick-active {
-				button {
-					opacity: 1;
-				}
-			}
-		}
+		@extend .slick-dots-circle;
 	}
 
 	@include lg {

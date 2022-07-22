@@ -1,0 +1,13 @@
+.block-PTB12 {
+	background: $color-darkgrey;
+	color: $color-white;
+
+	.row {
+		margin: 0 -21px;
+		width: calc(100% + 42px);
+		
+		> div {
+			padding: 0 21px 30px;
+		}
+	}
+}

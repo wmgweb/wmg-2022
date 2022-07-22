@@ -1,0 +1,16 @@
+.block-PTB06 {
+	.row {
+		width: calc(100% + 32px);
+		margin: 0 -16px;
+
+		> div {
+			padding: 0 16px 32px;
+		}
+	}
+
+	@include md {
+		.event-block {
+			height: 100%;
+		}
+	}
+}

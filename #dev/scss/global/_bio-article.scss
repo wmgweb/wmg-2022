@@ -1,0 +1,37 @@
+.bio-article {
+	img {
+		margin: 0 0 10px;
+		width: 100%;
+	}
+
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		margin: 0;
+		text-decoration: underline;
+	}
+
+	.bio-article__links {
+		a {
+			margin-right: 5px;
+			vertical-align: middle;
+
+			& + .btn {
+				margin-left: 17px;
+			}
+		}
+
+		.bio-article__links-social {
+			background: $color-white;
+			width: 22px;
+			height: 22px;
+			border-radius: 3px;
+			text-align: center;
+			line-height: 22px;
+			color: $color-darkgrey;
+			text-decoration: none;
+		}
+	}
+}

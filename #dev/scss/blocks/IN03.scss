@@ -1,4 +1,10 @@
 .block-IN03 {	
+	form {
+		button {
+			background-color: $color-red;
+		}
+	}
+	
 	@include lg {
 		.IN__main {
 			padding-top: 30px;

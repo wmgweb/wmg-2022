@@ -1,0 +1,125 @@
+.block-AC03 {
+
+	.AC03__content {
+		.AC03__content-item {
+			display: none;
+
+			&.active {
+				display: block;
+			}
+		}
+	}
+
+	.AC03__tabs {
+		background: $color-darkgrey;
+		color: $color-white;
+
+		ul {
+			display: none;
+			list-style: none;
+			padding: 0;
+			margin: 0;
+
+			li {
+				margin: 0;
+				padding: 0;
+
+				&.active {
+					display: none;
+				}
+			}
+		}
+
+		.AC03__tabs-list {
+			button {
+				padding: 5px 10px;
+				background: transparent;
+				border: 0;
+			}
+		}
+
+		.AC03__tabs-menu {
+			display: flex;
+
+			.AC03__tabs-menu-button {
+				.btn {
+					margin: 0;
+				}
+			}
+		}
+
+		.AC03__tabs-dropdown {
+			background: transparent;
+			border: 0;
+			padding: 5px 15px;
+			display: flex;
+			justify-content: space-between;
+			cursor: pointer;
+			width: 100%;
+			align-items: center;
+
+			span {
+				display: inline-block;
+				padding-right: 10px;
+				line-height: 1.1;
+			}
+
+			&.active {
+				svg {
+					transform: rotate(180deg);
+				}
+			}
+		}
+	}
+
+	.AC03__content {
+		padding: 25px 0;
+
+		.AC03__content-item-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			.btn {
+				display: none;
+			}
+		}
+	}
+
+	@include lg {
+		// Set theme colours
+		@include theme('background-color', '.AC03__tabs .AC03__tabs-list li.active', '&');
+
+		.AC03__content {
+			.AC03__content-item-header {
+				.btn {
+					display: block;
+				}
+			}
+		}
+
+		.AC03__tabs {
+			.AC03__tabs-menu {
+				display: none;
+			}
+
+			.AC03__tabs-list {
+				display: flex !important;
+				justify-content: flex-start;
+				flex-wrap: wrap;
+
+				li {
+					padding: 0 25px;
+					height: 50px;
+					display: flex;
+					align-items: center;
+
+					&.active {
+						display: flex;
+						background: $color-red;
+					}
+				}
+			}
+		}
+	}
+}

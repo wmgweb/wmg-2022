@@ -1,0 +1,100 @@
+<div id="block-{{ blockCount }}" class="block block-AC block-AC03">
+	<div class="container">
+		<div class="block__content">
+			<div class="AC03__tabs">
+				<div class="AC03__tabs-menu">
+					<button class="AC03__tabs-dropdown">
+						<span></span>
+						<svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M8.93783 14.4893L0.440487 4.6193C-0.146829 3.93711 -0.146829 2.83399 0.440487 2.15906L1.85255 0.518902C2.43986 -0.163286 3.38957 -0.163286 3.97063 0.518902L10 7.50771L16.0231 0.511643C16.6104 -0.170546 17.5601 -0.170547 18.1412 0.511642L19.5595 2.1518C20.1468 2.83399 20.1468 3.9371 19.5595 4.61203L11.0622 14.482C10.4749 15.1714 9.52515 15.1714 8.93783 14.4893Z" fill="#D9DDE0"/>
+						</svg>
+					</button>
+					<div class="AC03__tabs-menu-button"></div>
+				</div>
+				<ul class="AC03__tabs-list"></ul>
+			</div>
+			<div class="AC03__content">
+				{{#each content}}
+					<div class="AC03__content-item AC03__content-item--{{@index}}">
+						{{{content}}}
+					</div>
+				{{/each}}
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	jQuery(document).ready(function($) {
+		blockFunctions('{{ blockCount }}');		
+
+		// Loop through each content block
+		$('#block-{{ blockCount }} .AC03__content-item').each(function(index) {
+			var buttonClass = '';
+
+			// Get tab heading
+			var tabHeading = $('p:first-child', $(this)).text();
+
+			// If first content block
+			if(index == 0) {
+				// Add active class
+				$(this).addClass('active');
+				buttonClass = ' class="active"';
+
+				// Set mobile tab dropdown to tab heading
+				$('#block-{{ blockCount }} .AC03__tabs-dropdown span').text(tabHeading);
+
+				// Set mobile button
+				$('.btn', $(this)).clone().appendTo($('#block-{{ blockCount }} .AC03__tabs-menu-button')); 
+			}
+
+			// Remove tab heading element
+			$('p:first-child', $(this)).remove();
+
+			// Create tab button
+			$('#block-{{ blockCount }} .AC03__tabs .AC03__tabs-list').append('<li' + buttonClass + ' data-id="' + index + '"><button>' + tabHeading + '</button></li>');
+
+			// Wrap triangle
+			$('.brand-triangle', $(this)).unwrap('p').wrap('<div class="AC03__content-item-header"></div>');
+
+			// Move button
+			$('.btn', $(this)).unwrap('p').appendTo($('.AC03__content-item-header', $(this)));
+		});
+
+		// On tab button click
+		$('#block-{{ blockCount }} .AC03__tabs li').click(function() {
+			block{{ blockCount }}ListSlideToggle();
+
+			// Remove active class from old button
+			$('#block-{{ blockCount }} .AC03__tabs li.active').removeClass('active');
+
+			// Get tab ID
+			var id = $(this).data('id');
+			var heading = $(this).text();
+
+			// Set active class
+			$(this).addClass('active');
+
+			// Set mobile tab dropdown to tab heading
+			$('#block-{{ blockCount }} .AC03__tabs-dropdown span').text(heading);
+
+			// Hide old content block
+			$('#block-{{ blockCount }} .AC03__content-item.active').removeClass('active');
+
+			// Show new content block
+			$('#block-{{ blockCount }} .AC03__content-item.AC03__content-item--' + id).addClass('active');
+		});
+
+		// Function to hide list on mobile
+		function block{{ blockCount }}ListSlideToggle() {
+			if($(window).width() < 1200) {
+				$('#block-{{ blockCount }} .AC03__tabs-dropdown').toggleClass('active');
+				$('#block-{{ blockCount }} .AC03__tabs-list').slideToggle();
+			}
+		}
+
+		// On click of mobile dropdown button
+		$('#block-{{ blockCount }} .AC03__tabs-dropdown').click(function() {
+			block{{ blockCount }}ListSlideToggle();
+		});
+	});
+</script>

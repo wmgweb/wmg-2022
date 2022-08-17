@@ -8,7 +8,7 @@ if(pagePath.slice(pagePath.length - 1) != '/') {
 }
 
 // Functions to run inside a block - this function is run at every block call
-function blockFunctions(blockID, optionalFunctions) {
+function blockFunctions(blockID) {
 	let blockChild = jQuery('#block-' + blockID);
 	let block = blockChild.parent('.wmg-block');
 
@@ -22,10 +22,6 @@ function blockFunctions(blockID, optionalFunctions) {
 	blockImageFix(block);
 	blockShortcodes(block);
 	blockWrappers(block);
-
-	if(jQuery.inArray('blockBG', optionalFunctions) !== -1) {
-		blockBG(block);
-	}
 }
 
 // Shortcodes
@@ -125,6 +121,7 @@ function blockWrappers(block) {
 	// Remove <p> tags from all images and videos
 	jQuery('img', block).unwrap('p');
 	jQuery('video', block).unwrap('p');
+	jQuery('brand-triangle', block).unwrap('p');
 }
 
 
@@ -149,15 +146,6 @@ function blockImageFix(block) {
   			jQuery(this).attr('src', src);
   		}
 	});
-}
-
-// Grabs the first image in a block, gets its src, creates .block__bg and attaches image to it as bg image.
-function blockBG(block) {
-	let blockContent = jQuery('.block__content', block);
-	let blockBGImageElement = jQuery('img:first-child', blockContent);
-	let blockBGImageElementURL = blockBGImageElement.attr('src');
-	jQuery('.block ', block).prepend('<div class="block__bg" style="background-image: url(' + blockBGImageElementURL + ');"></div>');
-	blockBGImageElement.remove();
 }
 	
 jQuery(document).ready(function($) {  

@@ -1,41 +1,31 @@
 <div id="block-{{ blockCount }}" class="block block-HB01">
 	<div class="block__content">
-		<!-- Get first content as background image -->
-		{{{content.[0].content}}}
-		<div id="slick-{{ blockCount }}" class="block-HB01__carousel">
-			<!-- All content except first output as carousel item -->
+		<div id="slick-{{ blockCount }}" class="HB01__carousel">
 			{{#each content}}
-				{{#if @index includeZero=false}}
-					<div class="block-HB01__carousel-item">
+				<div class="HB01__carousel-item">
+					<div class="HB01__carousel-item-bg"></div>
+					<div class="HB01__carousel-item-content">
 						{{{ this.content }}}
 					</div>
-				{{/if}}
+				</div>
 			{{/each}}
 		</div>
 	</div>
 <script>
 	jQuery(document).ready(function($) {
-		blockFunctions('{{ blockCount }}', ['blockBG']);
+		blockFunctions('{{ blockCount }}');
 
-		// Get parent element
-		var blockParent = $('#block-{{ blockCount }}').parent('.wmg-block');
-
-		slickSettings = {};
-		
-		// Grab slick settings from data attribute
-		if(blockParent.attr('data-slick')) {
-			var slickSettings = blockParent.attr('data-slick');
-			slickSettings = JSON.parse(slickSettings.replace(/'/g, '"'));
-		}
-
-		// Add brand triangle to each carousel item
-		$('.block-HB01__carousel-item', blockParent).prepend('<span class="brand-triangle"></span>');
+		$('#block-{{ blockCount }} .HB01__carousel-item').each(function() {
+			$('img', $(this)).appendTo($('.HB01__carousel-item-bg', $(this)));
+		});
 
 		// Initialise Slick Carousel with custom pagination
 		var slickObject = {
 			autoplay: true,
 			arrows: false,
 			draggable: false,
+			dots: false,
+			fade: true,
 			customPaging : function(slider, i) {
 				var thumb = $(slider.$slides[i]).data();
 				return '<a>0' + parseInt(i+1) + '</a>';
@@ -43,8 +33,8 @@
 		}
 
 		// Add dots if setting is set
-		if(slickSettings.hasOwnProperty('dots')) {
-			slickObject.dots = slickSettings.dots;
+		if($('#block-{{ blockCount }}').hasClass('carousel-dots--true')) {
+			slickObject.dots = true;
 		}
 
 		$(window).on('load', function(){

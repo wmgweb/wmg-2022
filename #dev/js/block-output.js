@@ -67,7 +67,14 @@ function blockShortcodes(block) {
 				scOutput = '<a href="' + scAttr.link + '" class="btn btn--' + scAttr.style + ' btn-arrow--' + scAttr.arrow + '">' + scAttr.text + '</a>';
 				break;
 			case "triangle":
-				scOutput = '<span class="brand-triangle brand-triangle--' + scAttr.colour + '"><svg width="14" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L-1.90735e-06 19L-2.46316e-07 6.83429e-07L14 19Z" fill="#EE3124"/></svg></span>';
+				// Allow either spelling of colour to set value. Check if either exists and set class
+				var color = '';
+				if('color' in scAttr) {
+					color = ' brand-triangle--' + scAttr.color;
+				} else if('colour' in scAttr) {
+					color = ' brand-triangle--' + scAttr.colour;
+				}
+				scOutput = '<span class="brand-triangle'+ color + '"><svg width="14" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L-1.90735e-06 19L-2.46316e-07 6.83429e-07L14 19Z" fill="#EE3124"/></svg></span>';
 				break;
 			case "youtube":
 				scOutput = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + scAttr.id + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';

@@ -1,5 +1,15 @@
 .block-FB05 {
+	// Set theme colours
+	@include theme('background-color', '.inner-block', '&');
+	@include themeAlt('background-color', '.inner-block:after', '&');
+
 	background: $color-lightgrey-3;
+	padding: 0;
+
+	// Set default inner block colour
+	.inner-block {
+		background-color: $color-red;
+	}
 
 	.FB05__main {
 		padding-right: 67px;

@@ -27,7 +27,7 @@
 
 // Theme
 $theme-colors: ('dark': $color-dark, 'dark-2': $color-dark-2, 'red': $color-red, 'yellow': $color-yellow, 'gold': $color-gold, 'blue': $color-blue, 'orange': $color-orange, 'darkblue': $color-darkblue, 'green': $color-green, 'lightgrey-1': $color-lightgrey-1, 'lightgrey-2': $color-lightgrey-2, 'lightgrey-3': $color-lightgrey-3, 'grey': $color-grey, 'white': $color-white, 'darkgrey': $color-darkgrey);
-$theme-colors-alt: ('red': #EE3124, 'yellow': darken($color-yellow, 10%), 'gold': darken($color-gold, 10%), 'blue': darken($color-blue, 10%), 'orange': darken($color-orange, 10%), 'darkblue': darken($color-darkblue, 10%), 'green': darken($color-green, 10%), 'lightgrey-1': darken($color-lightgrey-1, 10%), 'lightgrey-2': darken($color-lightgrey-2, 10%), 'lightgrey-3': darken($color-lightgrey-3, 10%), 'grey': darken($color-grey, 10%), 'white': darken($color-white, 10%));
+$theme-colors-alt: ('red': darken($color-red, 10%), 'yellow': darken($color-yellow, 10%), 'gold': darken($color-gold, 10%), 'blue': darken($color-blue, 10%), 'orange': darken($color-orange, 10%), 'darkblue': darken($color-darkblue, 10%), 'green': darken($color-green, 10%), 'lightgrey-1': darken($color-lightgrey-1, 10%), 'lightgrey-2': darken($color-lightgrey-2, 10%), 'lightgrey-3': darken($color-lightgrey-3, 10%), 'grey': darken($color-grey, 10%), 'white': darken($color-white, 10%));
 @mixin theme($property, $element : '', $type : '', $imp : '!important') {
     @each $name, $color in $theme-colors {
         #{$type}.theme--#{$name} #{$element} {

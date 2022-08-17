@@ -26,6 +26,8 @@
 			draggable: true,
 			dots: false,
 			fade: true,
+			speed: 1500,
+			pause: 10000,
 			customPaging : function(slider, i) {
 				var thumb = $(slider.$slides[i]).data();
 				return '<a>0' + parseInt(i+1) + '</a>';

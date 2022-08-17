@@ -45,11 +45,11 @@
 		}
 
 		.HB01__carousel-item {
-			padding: 40px 5%;
 			height: 100%;
 			display: flex !important;
 			flex-direction: column;
 			justify-content: center;
+			position: relative;
 
 			.btn {
 				align-self: flex-start;

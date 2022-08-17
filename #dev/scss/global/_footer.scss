@@ -10,11 +10,24 @@
 		color: #fff !important;
 		padding: 20px 0 30px;
 		border-top:  1px solid #fff;
+		position: relative;
 
 		a, 
 		a:link, 
 		a:visited {
 			color: #fff;
+		}
+
+		&:after {
+			content: '';
+			background: url(https://warwick.ac.uk/fac/sci/wmg-2021/warwick-footer-logo.png) no-repeat center / contain;
+			width: 150px;
+			height: 98px;
+			position: absolute;
+			top: -1px;
+			right: 50%;
+			margin-right: -75px;
+
 		}
 	}
 
@@ -25,6 +38,7 @@
 			max-width: 90%;
 			width: 90%;
 			margin: 0 auto;
+			padding-top: 100px;
 		}
 
 		.id7-logo-bleed {
@@ -94,6 +108,41 @@
 
 		a {
 			margin-right: 5px;
+			text-decoration: none;
+			display: inline-block;
+
+			i {
+				width: 22px;
+				height: 22px;
+				background: $color-white;
+				border-radius: 3px;
+				display: block;		
+				color: $color-dark-2;	
+				font-size: 15px;
+				line-height: 22px;
+				text-align: center;	
+			}
+		}
+	}
+
+	@media(max-width: 767px) {
+		.id7-site-footer-content {
+			.row > div {
+				width: 100%;
+			}
+		}
+	}
+
+	@include md {
+		.id7-app-footer {
+			&:after {
+				right: 5vw;
+				margin: 0;
+			}
+
+			.id7-app-footer-content {
+				padding-top: 0;
+			}
 		}
 	}
 }

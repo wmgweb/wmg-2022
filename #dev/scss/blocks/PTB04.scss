@@ -48,9 +48,11 @@
 				.PTB04-carousel__item-image {
 					border: 0;
 					border-right: 2px solid;
-					display: block;
 					padding: 20px 40px;
 					margin: 0;
+					display: flex;
+					align-items: center;
+					height: 100%;
 				}
 
 				.PTB04-carousel__item-content {

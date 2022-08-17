@@ -205,6 +205,18 @@
 			a:hover {
 				color: #1D1D1D !important;
 			}
+
+			&.active {
+				a {
+					text-decoration: none;
+				}
+
+				&.next-tertiary {
+					&:before {
+						display: none;
+					}
+				}
+			}
 		}
 
 		.dropdown-menu {

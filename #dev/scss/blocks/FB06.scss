@@ -11,15 +11,14 @@
 	}
 
 	.FB06-main {
+		display: flex;
+		flex-direction: column;
+
 		.h3,
 		h3 {
 			margin: 0;
 			color: $color-grey;
 			font-size: 19px;
-		}
-
-		.FB06-main__image {
-			margin-top: 30px;
 		}
 
 		.FB06-main__image {
@@ -107,6 +106,27 @@
 
 			.video-wrapper {
 				margin-bottom: 20px;
+			}
+		}
+	}
+
+	@media(max-width: $bs-lg - 1px) {
+		.FB06-main {
+			.FB06-main__image {
+				order: 1;
+
+				svg {
+					top: auto;
+					bottom: 0;
+					right: 0;
+					transform: rotate(90deg);
+					transform-origin: 100% 0%;
+					bottom: -75px;
+				}
+			}
+
+			.FB06-main__content {
+				order: 2;
 			}
 		}
 	}

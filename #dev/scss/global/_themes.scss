@@ -14,3 +14,6 @@
 @include colors('fill', 'brand-triangle', 'path');
 
 @include bg('fill', '.bg-fill-path path');
+
+// Set default border colour on themes
+@include theme('border-color', '');

@@ -1,4 +1,6 @@
 .block-FB03 {
+	padding: 0;
+
 	.FB03__img {
 		p {
 			margin: 0;
@@ -26,6 +28,7 @@
 			top: 0;
 			right: 0;
 			width: 53px;
+			height: auto;
 		}
 	}
 
@@ -38,6 +41,7 @@
 
 			.corner-arrow {
 				width: 150px;
+				height: 305px;
 			}
 		}
 	}

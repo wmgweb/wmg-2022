@@ -6,4 +6,16 @@
 	.transparent-card {
 		height: 100%;
 	}
+
+	.row {
+		> div {
+			padding-bottom: 24px;
+		}
+	}
+
+	@include md {
+		.transparent-card {
+			margin: 0;
+		}
+	}
 }

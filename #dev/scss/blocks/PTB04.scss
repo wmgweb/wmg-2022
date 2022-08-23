@@ -4,6 +4,7 @@
 
 	.row {
 		margin: 0;
+		width: 100%;
 
 		> div {
 			padding: 0;
@@ -11,6 +12,8 @@
 	}
 
 	.PTB04-carousel {
+		padding: 0;
+
 		.slick-dots {
 			@extend .slick-dots-circle;
 			text-align: center;

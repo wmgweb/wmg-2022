@@ -1,0 +1,98 @@
+.block-PTB22 {
+	.PTB22-carousel {
+		width: calc(100% + 30px);
+		margin: 0 -15px;
+		padding-bottom: 50px;
+
+		.slick-dots {
+			position: absolute;
+			bottom: 0;
+			left: 5vw;
+		}
+	}
+
+	.row {
+		margin: 0 -45px;
+		width: calc(100% + 90px);
+
+		> div {
+			padding: 0 45px 30px;
+		}
+	}
+
+	&.bg--dark {
+		.PTB22-carousel {
+			.slick-dots {
+				a {
+					color: $color-white !important;
+				}
+			}
+		}
+	}
+
+	.PTB-intro {
+		.btn {
+			position: absolute;
+			bottom: 20px;
+			right: 5vw;
+			margin: 0;
+			z-index: 100;
+		}
+	}
+
+	@media(min-width: 500px) {
+		.PTB22-carousel {
+			.PTB22-carousel__item {
+				padding: 0 15px;
+			}
+
+		}
+	}
+
+	@include md {
+		.PTB22-carousel {
+			.slick-dots {
+				top: -50px;
+				right: 0;
+				left: auto;
+				bottom: auto;
+			}
+		}
+
+		.PTB-intro {
+			.btn {
+				position: relative;
+				bottom: auto;
+				right: auto;
+			}
+		}
+	}
+
+	@include lg {
+		.PTB-carousel {
+			height: 100%;
+			padding: 0;
+
+			.slick-list,
+			.slick-track,
+			.slick-slide,
+			.slick-slide > div,
+			.PTB22-carousel__item {
+				height: 100%;
+			}
+		}
+
+		.card-block {
+			height: 100%;
+		}
+
+		.block-PTB .PTB-carousel .slick-arrow {
+			left: -25px;
+
+			&.slick-next {
+				left: auto;
+				right: -25px;
+			}
+		}
+	}
+}

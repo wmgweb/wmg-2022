@@ -25,10 +25,14 @@
 					background: $color-white;
 					color: $color-black;
 					position: relative;
+					transition: all .3s;
+					text-decoration: none;
 
 					&:focus,
-					&:active {
-						background: $color-white;
+					&:active,
+					&:hover {
+						background: $color-black !important;
+						color: $color-white !important;
 					}
 				}
 			}
@@ -122,3 +126,5 @@
 		}		
 	}
 }
+
+@include colors('background-color', 'bg-list', '.SB04-block ul li a');

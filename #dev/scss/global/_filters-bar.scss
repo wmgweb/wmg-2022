@@ -1,0 +1,66 @@
+.filters-bar {
+	background: $color-darkgrey;
+	color: $color-white;
+	padding: 10px;
+	margin: 0 0 30px;
+
+	.filters-bar__selects {
+		width: 100%;
+
+		select {
+			background: transparent;
+			border: 0;
+			padding-right: 10px;
+			width: 100%;
+			margin-bottom: 20px;
+
+			&:active,
+			&:focus {
+				border: 0;
+			}
+
+			option {
+				color: $color-text;
+			}
+		}
+	}
+
+	.filters-bar__search {
+		color: $color-white;
+		font-weight: normal;
+		margin: 0;
+		display: flex;
+
+		input {
+			display: inline-block;
+			vertical-align: middle;
+			margin: 0 0 0 10px;
+			color: $color-text;
+			padding: 0 10px;
+			height: 30px;
+			line-height: 30px;
+			border: 0;
+			flex: 1;
+
+			&:focus {
+				outline: 0;
+				border: 0;
+			}
+		}
+	}
+
+	@include lg {
+		display: flex;
+		justify-content: flex-end;
+
+		.filters-bar__selects {
+			flex: 1;
+
+			select {
+				width: auto;
+				margin: 0 20px 0 0;
+			}
+		}
+
+	}
+}

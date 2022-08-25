@@ -1,12 +1,229 @@
 <div id="block-{{ blockCount }}" class="block block-PTB block-PTB17">
 	<div class="container">
 		<div class="block__content">
-			PTB17
+			<div class="filters-bar">
+				<div class="filters-bar__selects">
+					<select class="PTB17-filter" data-filter="category">
+						<option value="" selected>All Categories</option>
+						{{#each categories}}
+							<option value="{{this}}">{{this}}</option>
+						{{/each}}
+					</select>
+					<select class="PTB17-filter" data-filter="month">
+						<option value="" selected>All Months</option>
+						<option value="0">January</option>
+						<option value="1">February</option>
+						<option value="2">March</option>
+						<option value="3">April</option>
+						<option value="4">May</option>
+						<option value="5">June</option>
+						<option value="6">July</option>
+						<option value="7">August</option>
+						<option value="8">September</option>
+						<option value="9">October</option>
+						<option value="10">November</option>
+						<option value="11">December</option>
+					</select>
+				</div>
+				<label class="filters-bar__search PTB17-search">
+					Search events
+					<input type="text" name="PTB17-search">
+				</label>
+			</div>
+			<div class="PTB17-grid">
+				<div class="row">
+					{{#each content}}
+						<div class="col-12 col-md-6 active" data-cats="{{categories}}">
+							<div class="event-card">
+								<div class="event-card__image"></div>
+								<div class="event-card__content">
+									[!triangle]
+									<h4>{{{this.title}}}</h4>
+									<div class="event-card__content-info">
+										{{#if this.start}}
+											<p><strong><span class="event-card__timestamp" data-timestamp-start="{{{this.start}}}" data-timestamp-end="{{{this.end}}}"></span></strong></p>
+										{{/if}}
+										{{#if this.location}}
+											<p><br><strong>Hosted: {{{this.location}}}</strong></p>
+										{{/if}}
+									</div>
+									{{#if this.summary}}
+										<div class="event-card__summary"><strong>Overview</strong><br>{{{this.summary}}}</div>
+									{{/if}}
+									{{#if this.url.href}}
+										[!button style="red" link="{{{this.url.href}}}" text="Find out more"]
+									{{/if}}
+								</div>
+							</div>
+						</div>
+					{{/each}}
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		/* -- STYLING -- */
+		// Loop through each event card timestamp
+		$('#block-{{ blockCount }} .event-card__timestamp').each(function() {
+			// Get timestamp
+			var startTimestamp = $(this).data('timestamp-start');
+			var endTimestamp = $(this).data('timestamp-end');
+
+			// Convert to date/time
+			var startDateTime = new Date(startTimestamp);
+			var endDateTime = new Date(endTimestamp);
+
+			// Get formatted dates
+			var startFormattedDate = startDateTime.toLocaleString('en-GB', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+			var endFormattedDate = endDateTime.toLocaleString('en-GB', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+
+			var returnedDateTimeString = '';
+			var startFormattedTime = '';
+			var endFormattedTime = '';
+
+			// If it is set to midnight, assumed to be all day event so don't show time
+			if(startDateTime.getHours() != '0') {
+				startFormattedTime = startDateTime.getHours().toLocaleString('en-GB', {minimumIntegerDigits: 2})  + ':' + startDateTime.getMinutes().toLocaleString('en-GB', {minimumIntegerDigits: 2});
+			}
+
+			if(endDateTime.getHours() != '0') {
+				endFormattedTime = endDateTime.getHours().toLocaleString('en-GB', {minimumIntegerDigits: 2})  + ':' + startDateTime.getMinutes().toLocaleString('en-GB', {minimumIntegerDigits: 2});
+			}
+				
+			// If start and end date are the same, only show once
+			if(startFormattedDate == endFormattedDate) {
+				returnedDateTimeString = 'Date: ' + startFormattedDate;
+
+				// Add start time if it exists
+				if(startFormattedTime != '') {
+					returnedDateTimeString = returnedDateTimeString + ' <br>Start: ' + startFormattedTime;
+				}
+
+				// Add end time if it exists
+				if(endFormattedTime != '') {
+					returnedDateTimeString = returnedDateTimeString + ' <br>End: ' + endFormattedTime;
+				}
+			} else { // Else if start and end date are different
+
+				// Add start date
+				returnedDateTimeString = 'Start Date: ' + startFormattedDate;
+
+				// Add start time if it exists
+				if(startFormattedTime != '') {
+					returnedDateTimeString = returnedDateTimeString + ' <br>Start Time: ' + startFormattedTime + '<br>';
+				}
+
+				// Add end date
+				returnedDateTimeString = returnedDateTimeString + ' <br>End Date: ' + endFormattedDate;
+
+				// Add end time if it exists
+				if(endFormattedTime != '') {
+					returnedDateTimeString = returnedDateTimeString + ' <br>End Time: ' + endFormattedTime;
+				}
+			}
+
+			// Set date/time in content
+			$(this).html(returnedDateTimeString);
+
+			// Add month class
+			$(this).parents('.col-12').addClass('filter-month--' + startDateTime.getMonth())
+		});
+
+		// Remove anchors from summary
+		$('#block-{{ blockCount }} .event-card__summary a').each(function() {
+			$(this).replaceWith($(this).text());
+		});
+
+		// Move image
+		$('.event-card__summary img').each(function() {
+			$(this).appendTo($('.event-card__image', $(this).parents('.event-card')));
+		});
+
+		// Function to reset blocks
+		function block{{ blockCount }}ResetBlocks() {
+			$('#block-{{ blockCount }} .row > div').addClass('active');
+			$('#block-{{ blockCount }} .PTB17-search input').val();
+		}
+
+		/* -- CATEGORY FILTER -- */
+		// Loop through each grid item
+		$('#block-{{ blockCount }} .row > div').each(function() {
+			// Get all categories
+			var cats = $(this).data('cats');
+			// Split them into an array
+			var catArray = cats.split(',');
+			var $self = $(this);
+
+			// Loop through category array
+			$.each(catArray, function(key, value) {
+				// Sanitize category
+				var catVal = value.replace(/\s+/g, '-').toLowerCase();
+
+				// Add Category class
+			  	$self.addClass('filter-category--' + catVal);
+			});
+		});
+
+		// On category change
+		$('#block-{{ blockCount }} select.PTB17-filter').change(function() {
+			// Reset all blocks
+			block{{ blockCount }}ResetBlocks();
+
+			// Loop through all filters
+			$('.PTB17-filter').each(function() {
+
+				// Check filter has value
+				if($(this).val() != '') {
+					// Get sanitised value
+					var val = $(this).val().replace(/\s+/g, '-').toLowerCase();
+
+					// Get filter name
+					var filterName = $(this).data('filter');
+
+					// Hide cards that don't have category class
+					$('#block-{{ blockCount }} .row .active').not('.filter-' + filterName + '--' + val).removeClass('active');
+				}
+
+			});
+
+			
+		});
+
+		/* -- SEARCH -- */
+		function block{{ blockCount }}Search() {
+			var searchString = $('#block-{{ blockCount }} .PTB17-search input').val();
+
+			// Hide active blocks
+			$('#block-{{ blockCount }} .row .active').removeClass('active');
+			
+			// If content in search
+			if(searchString.length > 0) {
+
+				// Loop through all panels
+				$('#block-{{ blockCount }} .event-card').each(function() {
+					// Get content as string
+					var panelContent = $(this).text();
+
+					// If search string is contained in panel content, add active class
+					if(panelContent.toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
+						$(this).parent().addClass('active');
+					}
+				});
+
+			} else {
+				// Else if no content reset
+				block{{ blockCount }}ResetBlocks();
+			}
+
+		}
+
+		// Run search after input change
+		$('#block-{{ blockCount }} .PTB17-search input').keyup(function() {
+			block{{ blockCount }}Search();
+		});
 	});
 </script>

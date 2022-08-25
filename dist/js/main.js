@@ -10905,9 +10905,21 @@ jQuery(document).ready(function($) {
   			var wmgBlockContentID = parseInt($block.data('content_id'));
   		}
 
+  		var blockQueryUrl = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/dataentry/entries.json';
+
+  		var blockQueryType = 'default';
+
+  		if($block.data('query_type')) {
+  			blockQueryType = $block.data('query_type');
+
+  			if(blockQueryType == 'events') {
+  				var blockQueryUrl = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/rss/news.json';
+  			}
+  		}
+
   		$.ajax({
   			async: false,
-	        url : 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/dataentry/entries.json?page=' + wmgBlockContentURL,
+	        url : blockQueryUrl + '?page=' + wmgBlockContentURL,
 	        type: 'GET',
 	        dataType: 'json',
 	        success: function(data) {

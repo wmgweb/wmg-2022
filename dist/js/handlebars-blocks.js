@@ -1182,7 +1182,7 @@ this["WMG"]["blocks"]["MB12"] = Handlebars.template({"1":function(container,dept
 
   return "<div id=\"block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":31}}}) : helper)))
-    + "\" class=\"block block-MB block-MB12\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			<div class=\"MB12-filters\">\r\n				<label class=\"MB12-search\">\r\n					Quick search\r\n					<input type=\"text\" name=\"MB12-search\">\r\n				</label>\r\n			</div>\r\n			<div class=\"row\">\r\n"
+    + "\" class=\"block block-MB block-MB12\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			<div class=\"filters-bar\">\r\n				<label class=\"filters-bar__search MB12-search\">\r\n					Quick search\r\n					<input type=\"text\" name=\"MB12-search\">\r\n				</label>\r\n			</div>\r\n			<div class=\"row\">\r\n"
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":11,"column":4},"end":{"line":15,"column":13}}})) != null ? stack1 : "")
     + "			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":22,"column":18},"end":{"line":22,"column":34}}}) : helper)))
@@ -1353,8 +1353,8 @@ this["WMG"]["blocks"]["PTB06"] = Handlebars.template({"1":function(container,dep
         return undefined
     };
 
-  return "						<div class=\"col-12 col-md-6\">\r\n							<div class=\"event-block\">"
-    + ((stack1 = ((helper = (helper = lookupProperty(helpers,"content") || (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"content","hash":{},"data":data,"loc":{"start":{"line":9,"column":32},"end":{"line":9,"column":45}}}) : helper))) != null ? stack1 : "")
+  return "						<div class=\"col-12 col-md-6\">\r\n							<div class=\"event-card\">"
+    + ((stack1 = ((helper = (helper = lookupProperty(helpers,"content") || (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"content","hash":{},"data":data,"loc":{"start":{"line":9,"column":31},"end":{"line":9,"column":44}}}) : helper))) != null ? stack1 : "")
     + "</div>\r\n						</div>\r\n";
 },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -1374,7 +1374,7 @@ this["WMG"]["blocks"]["PTB06"] = Handlebars.template({"1":function(container,dep
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":19,"column":18},"end":{"line":19,"column":34}}}) : helper)))
     + "');\r\n\r\n		// Loop through all blocks\r\n		$('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":22,"column":12},"end":{"line":22,"column":28}}}) : helper)))
-    + " .event-block').each(function() {\r\n			// Wrap image\r\n			$('img', $(this)).wrap('<div class=\"event-block__image\"></div>');\r\n\r\n			// Wrap all other content\r\n			$(this).children().not('.event-block__image').wrapAll('<div class=\"event-block__content\"></div>');\r\n		});\r\n	});\r\n</script>";
+    + " .event-card').each(function() {\r\n			// Wrap image\r\n			$('img', $(this)).wrap('<div class=\"event-card__image\"></div>');\r\n\r\n			// Wrap all other content\r\n			$(this).children().not('.event-card__image').wrapAll('<div class=\"event-card__content\"></div>');\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["PTB08"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -1657,8 +1657,81 @@ this["WMG"]["blocks"]["PTB16"] = Handlebars.template({"1":function(container,dep
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":19,"column":18},"end":{"line":19,"column":34}}}) : helper)))
     + "');\r\n	});\r\n</script>";
 },"useData":true});
-this["WMG"]["blocks"]["PTB17"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+this["WMG"]["blocks"]["PTB17"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "							<option value=\""
+    + alias2(alias1(depth0, depth0))
+    + "\">"
+    + alias2(alias1(depth0, depth0))
+    + "</option>\r\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "						<div class=\"col-12 col-md-6 active\" data-cats=\""
+    + container.escapeExpression(((helper = (helper = lookupProperty(helpers,"categories") || (depth0 != null ? lookupProperty(depth0,"categories") : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"categories","hash":{},"data":data,"loc":{"start":{"line":36,"column":53},"end":{"line":36,"column":67}}}) : helper)))
+    + "\">\r\n							<div class=\"event-card\">\r\n								<div class=\"event-card__image\"></div>\r\n								<div class=\"event-card__content\">\r\n									[!triangle]\r\n									<h4>"
+    + ((stack1 = container.lambda((depth0 != null ? lookupProperty(depth0,"title") : depth0), depth0)) != null ? stack1 : "")
+    + "</h4>\r\n									<div class=\"event-card__content-info\">\r\n"
+    + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"start") : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":43,"column":10},"end":{"line":45,"column":17}}})) != null ? stack1 : "")
+    + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"location") : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":46,"column":10},"end":{"line":48,"column":17}}})) != null ? stack1 : "")
+    + "									</div>\r\n"
+    + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"summary") : depth0),{"name":"if","hash":{},"fn":container.program(8, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":50,"column":9},"end":{"line":52,"column":16}}})) != null ? stack1 : "")
+    + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = (depth0 != null ? lookupProperty(depth0,"url") : depth0)) != null ? lookupProperty(stack1,"href") : stack1),{"name":"if","hash":{},"fn":container.program(10, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":53,"column":9},"end":{"line":55,"column":16}}})) != null ? stack1 : "")
+    + "								</div>\r\n							</div>\r\n						</div>\r\n";
+},"4":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=container.lambda, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "											<p><strong><span class=\"event-card__timestamp\" data-timestamp-start=\""
+    + ((stack1 = alias1((depth0 != null ? lookupProperty(depth0,"start") : depth0), depth0)) != null ? stack1 : "")
+    + "\" data-timestamp-end=\""
+    + ((stack1 = alias1((depth0 != null ? lookupProperty(depth0,"end") : depth0), depth0)) != null ? stack1 : "")
+    + "\"></span></strong></p>\r\n";
+},"6":function(container,depth0,helpers,partials,data) {
+    var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "											<p><br><strong>Hosted: "
+    + ((stack1 = container.lambda((depth0 != null ? lookupProperty(depth0,"location") : depth0), depth0)) != null ? stack1 : "")
+    + "</strong></p>\r\n";
+},"8":function(container,depth0,helpers,partials,data) {
+    var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "										<div class=\"event-card__summary\"><strong>Overview</strong><br>"
+    + ((stack1 = container.lambda((depth0 != null ? lookupProperty(depth0,"summary") : depth0), depth0)) != null ? stack1 : "")
+    + "</div>\r\n";
+},"10":function(container,depth0,helpers,partials,data) {
+    var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "										[!button style=\"red\" link=\""
+    + ((stack1 = container.lambda(((stack1 = (depth0 != null ? lookupProperty(depth0,"url") : depth0)) != null ? lookupProperty(stack1,"href") : stack1), depth0)) != null ? stack1 : "")
+    + "\" text=\"Find out more\"]\r\n";
+},"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
           return parent[propertyName];
         }
@@ -1667,9 +1740,45 @@ this["WMG"]["blocks"]["PTB17"] = Handlebars.template({"compiler":[8,">= 4.3.0"],
 
   return "<div id=\"block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":31}}}) : helper)))
-    + "\" class=\"block block-PTB block-PTB17\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			PTB17\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":10,"column":18},"end":{"line":10,"column":34}}}) : helper)))
-    + "');\r\n	});\r\n</script>";
+    + "\" class=\"block block-PTB block-PTB17\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			<div class=\"filters-bar\">\r\n				<div class=\"filters-bar__selects\">\r\n					<select class=\"PTB17-filter\" data-filter=\"category\">\r\n						<option value=\"\" selected>All Categories</option>\r\n"
+    + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"categories") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":8,"column":6},"end":{"line":10,"column":15}}})) != null ? stack1 : "")
+    + "					</select>\r\n					<select class=\"PTB17-filter\" data-filter=\"month\">\r\n						<option value=\"\" selected>All Months</option>\r\n						<option value=\"0\">January</option>\r\n						<option value=\"1\">February</option>\r\n						<option value=\"2\">March</option>\r\n						<option value=\"3\">April</option>\r\n						<option value=\"4\">May</option>\r\n						<option value=\"5\">June</option>\r\n						<option value=\"6\">July</option>\r\n						<option value=\"7\">August</option>\r\n						<option value=\"8\">September</option>\r\n						<option value=\"9\">October</option>\r\n						<option value=\"10\">November</option>\r\n						<option value=\"11\">December</option>\r\n					</select>\r\n				</div>\r\n				<label class=\"filters-bar__search PTB17-search\">\r\n					Search events\r\n					<input type=\"text\" name=\"PTB17-search\">\r\n				</label>\r\n			</div>\r\n			<div class=\"PTB17-grid\">\r\n				<div class=\"row\">\r\n"
+    + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":35,"column":5},"end":{"line":59,"column":14}}})) != null ? stack1 : "")
+    + "				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":67,"column":18},"end":{"line":67,"column":34}}}) : helper)))
+    + "');\r\n\r\n		/* -- STYLING -- */\r\n		// Loop through each event card timestamp\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":71,"column":12},"end":{"line":71,"column":28}}}) : helper)))
+    + " .event-card__timestamp').each(function() {\r\n			// Get timestamp\r\n			var startTimestamp = $(this).data('timestamp-start');\r\n			var endTimestamp = $(this).data('timestamp-end');\r\n\r\n			// Convert to date/time\r\n			var startDateTime = new Date(startTimestamp);\r\n			var endDateTime = new Date(endTimestamp);\r\n\r\n			// Get formatted dates\r\n			var startFormattedDate = startDateTime.toLocaleString('en-GB', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });\r\n			var endFormattedDate = endDateTime.toLocaleString('en-GB', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });\r\n\r\n			var returnedDateTimeString = '';\r\n			var startFormattedTime = '';\r\n			var endFormattedTime = '';\r\n\r\n			// If it is set to midnight, assumed to be all day event so don't show time\r\n			if(startDateTime.getHours() != '0') {\r\n				startFormattedTime = startDateTime.getHours().toLocaleString('en-GB', {minimumIntegerDigits: 2})  + ':' + startDateTime.getMinutes().toLocaleString('en-GB', {minimumIntegerDigits: 2});\r\n			}\r\n\r\n			if(endDateTime.getHours() != '0') {\r\n				endFormattedTime = endDateTime.getHours().toLocaleString('en-GB', {minimumIntegerDigits: 2})  + ':' + startDateTime.getMinutes().toLocaleString('en-GB', {minimumIntegerDigits: 2});\r\n			}\r\n				\r\n			// If start and end date are the same, only show once\r\n			if(startFormattedDate == endFormattedDate) {\r\n				returnedDateTimeString = 'Date: ' + startFormattedDate;\r\n\r\n				// Add start time if it exists\r\n				if(startFormattedTime != '') {\r\n					returnedDateTimeString = returnedDateTimeString + ' <br>Start: ' + startFormattedTime;\r\n				}\r\n\r\n				// Add end time if it exists\r\n				if(endFormattedTime != '') {\r\n					returnedDateTimeString = returnedDateTimeString + ' <br>End: ' + endFormattedTime;\r\n				}\r\n			} else { // Else if start and end date are different\r\n\r\n				// Add start date\r\n				returnedDateTimeString = 'Start Date: ' + startFormattedDate;\r\n\r\n				// Add start time if it exists\r\n				if(startFormattedTime != '') {\r\n					returnedDateTimeString = returnedDateTimeString + ' <br>Start Time: ' + startFormattedTime + '<br>';\r\n				}\r\n\r\n				// Add end date\r\n				returnedDateTimeString = returnedDateTimeString + ' <br>End Date: ' + endFormattedDate;\r\n\r\n				// Add end time if it exists\r\n				if(endFormattedTime != '') {\r\n					returnedDateTimeString = returnedDateTimeString + ' <br>End Time: ' + endFormattedTime;\r\n				}\r\n			}\r\n\r\n			// Set date/time in content\r\n			$(this).html(returnedDateTimeString);\r\n\r\n			// Add month class\r\n			$(this).parents('.col-12').addClass('filter-month--' + startDateTime.getMonth())\r\n		});\r\n\r\n		// Remove anchors from summary\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":137,"column":12},"end":{"line":137,"column":28}}}) : helper)))
+    + " .event-card__summary a').each(function() {\r\n			$(this).replaceWith($(this).text());\r\n		});\r\n\r\n		// Move image\r\n		$('.event-card__summary img').each(function() {\r\n			$(this).appendTo($('.event-card__image', $(this).parents('.event-card')));\r\n		});\r\n\r\n		// Function to reset blocks\r\n		function block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":147,"column":16},"end":{"line":147,"column":32}}}) : helper)))
+    + "ResetBlocks() {\r\n			$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":148,"column":13},"end":{"line":148,"column":29}}}) : helper)))
+    + " .row > div').addClass('active');\r\n			$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":149,"column":13},"end":{"line":149,"column":29}}}) : helper)))
+    + " .PTB17-search input').val();\r\n		}\r\n\r\n		/* -- CATEGORY FILTER -- */\r\n		// Loop through each grid item\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":154,"column":12},"end":{"line":154,"column":28}}}) : helper)))
+    + " .row > div').each(function() {\r\n			// Get all categories\r\n			var cats = $(this).data('cats');\r\n			// Split them into an array\r\n			var catArray = cats.split(',');\r\n			var $self = $(this);\r\n\r\n			// Loop through category array\r\n			$.each(catArray, function(key, value) {\r\n				// Sanitize category\r\n				var catVal = value.replace(/\\s+/g, '-').toLowerCase();\r\n\r\n				// Add Category class\r\n			  	$self.addClass('filter-category--' + catVal);\r\n			});\r\n		});\r\n\r\n		// On category change\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":172,"column":12},"end":{"line":172,"column":28}}}) : helper)))
+    + " select.PTB17-filter').change(function() {\r\n			// Reset all blocks\r\n			block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":174,"column":8},"end":{"line":174,"column":24}}}) : helper)))
+    + "ResetBlocks();\r\n\r\n			// Loop through all filters\r\n			$('.PTB17-filter').each(function() {\r\n\r\n				// Check filter has value\r\n				if($(this).val() != '') {\r\n					// Get sanitised value\r\n					var val = $(this).val().replace(/\\s+/g, '-').toLowerCase();\r\n\r\n					// Get filter name\r\n					var filterName = $(this).data('filter');\r\n\r\n					// Hide cards that don't have category class\r\n					$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":188,"column":15},"end":{"line":188,"column":31}}}) : helper)))
+    + " .row .active').not('.filter-' + filterName + '--' + val).removeClass('active');\r\n				}\r\n\r\n			});\r\n\r\n			\r\n		});\r\n\r\n		/* -- SEARCH -- */\r\n		function block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":197,"column":16},"end":{"line":197,"column":32}}}) : helper)))
+    + "Search() {\r\n			var searchString = $('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":198,"column":32},"end":{"line":198,"column":48}}}) : helper)))
+    + " .PTB17-search input').val();\r\n\r\n			// Hide active blocks\r\n			$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":201,"column":13},"end":{"line":201,"column":29}}}) : helper)))
+    + " .row .active').removeClass('active');\r\n			\r\n			// If content in search\r\n			if(searchString.length > 0) {\r\n\r\n				// Loop through all panels\r\n				$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":207,"column":14},"end":{"line":207,"column":30}}}) : helper)))
+    + " .event-card').each(function() {\r\n					// Get content as string\r\n					var panelContent = $(this).text();\r\n\r\n					// If search string is contained in panel content, add active class\r\n					if(panelContent.toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {\r\n						$(this).parent().addClass('active');\r\n					}\r\n				});\r\n\r\n			} else {\r\n				// Else if no content reset\r\n				block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":219,"column":9},"end":{"line":219,"column":25}}}) : helper)))
+    + "ResetBlocks();\r\n			}\r\n\r\n		}\r\n\r\n		// Run search after input change\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":225,"column":12},"end":{"line":225,"column":28}}}) : helper)))
+    + " .PTB17-search input').keyup(function() {\r\n			block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":226,"column":8},"end":{"line":226,"column":24}}}) : helper)))
+    + "Search();\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["PTB18"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {

@@ -12,35 +12,4 @@
 			}
 		}
 	}
-
-	.MB12-filters {
-		background: $color-darkgrey;
-		color: $color-white;
-		padding: 10px;
-		display: flex;
-		justify-content: flex-end;
-		margin: 0 0 30px;
-
-		.MB12-search {
-			color: $color-white;
-			font-weight: normal;
-			margin: 0;
-
-			input {
-				display: inline-block;
-				vertical-align: middle;
-				margin: 0 0 0 10px;
-				color: $color-text;
-				padding: 0 10px;
-				height: 30px;
-				line-height: 30px;
-				border: 0;
-
-				&:focus {
-					outline: 0;
-					border: 0;
-				}
-			}
-		}
-	}
 }

@@ -6,7 +6,7 @@
 				{{#each content}}
 					{{#if @index includeZero=false}}
 						<div class="col-12 col-md-6">
-							<div class="event-block">{{{content}}}</div>
+							<div class="event-card">{{{content}}}</div>
 						</div>
 					{{/if}}
 				{{/each}}
@@ -19,12 +19,12 @@
 		blockFunctions('{{ blockCount }}');
 
 		// Loop through all blocks
-		$('#block-{{ blockCount }} .event-block').each(function() {
+		$('#block-{{ blockCount }} .event-card').each(function() {
 			// Wrap image
-			$('img', $(this)).wrap('<div class="event-block__image"></div>');
+			$('img', $(this)).wrap('<div class="event-card__image"></div>');
 
 			// Wrap all other content
-			$(this).children().not('.event-block__image').wrapAll('<div class="event-block__content"></div>');
+			$(this).children().not('.event-card__image').wrapAll('<div class="event-card__content"></div>');
 		});
 	});
 </script>

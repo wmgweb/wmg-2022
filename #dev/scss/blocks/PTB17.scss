@@ -1,0 +1,19 @@
+.block-PTB17 {
+	.event-card {
+		height: 100%;
+	}
+
+	.row {
+		margin: 0 -18px;
+		width: calc(100% + 36px);
+
+		> div {
+			padding: 0 18px 36px;
+			display: none;
+
+			&.active {
+				display: block;
+			}
+		}
+	}
+}

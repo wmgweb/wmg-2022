@@ -6,7 +6,9 @@
 					<div class="PTB04-carousel__item">
 						<div class="row">
 							<div class="col-12 col-md-6">
-								<div class="PTB04-carousel__item-image"></div>
+								<div class="PTB04-carousel__item-image">
+									<div class="PTB04-carousel__item-image-wrapper"></div>
+								</div>
 							</div>
 							<div class="col-12 col-md-6">
 								<div class="PTB04-carousel__item-content"><div class="PTB04-carousel__item-content-wrapper">{{{content}}}</div></div>
@@ -25,7 +27,7 @@
 		// Loop through each carousel item
 		$('#block-{{ blockCount }} .PTB04-carousel__item').each(function() {
 			// Move image to wrapper
-			$('.PTB04-carousel__item-content img', $(this)).appendTo($('.PTB04-carousel__item-image', $(this)));
+			$('.PTB04-carousel__item-content img', $(this)).appendTo($('.PTB04-carousel__item-image-wrapper', $(this)));
 		});
 
 		// Initialise Slick Carousel

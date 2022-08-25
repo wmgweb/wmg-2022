@@ -26,17 +26,24 @@ To begin editing files, you should use the command `gulp watch`. This will watch
 The SASS is found in `#dev/scss`. 
 
 `_mixins.scss` - Contains functions used across all SASS files. Shouldn't be touched.
+
 `_variables.scss` - Contains variables (colours, fonts, breakpoints, filepaths) used across all SASS files. Changes made here will be made globally.
+
 `blocks.scss` - Generates the file /dist/css/blocks.css containing just the block CSS. Not currently used.
+
 `global.scss` - Generates the file /dist/css/global.css containing just the global CSS. Not currently used.
+
 `main.scss` - Generates the file /dist/main.css containing all the CSS. This is the only CSS file in use.
+
 `/blocks/` - This folder contains individual files for each block.
+
 `/global/` - This folder contains individual files for global styling elements.
 
 ## JavaScript Development
 The JavaScript is found in `#dev/js`.
 
 `/vendor/` - Contains vendor (3rd party) JavaScript files. These should not be edited.
+
 `block-output.js` - Contains all the code to compile blocks and imports the HandleBars files.
 
 

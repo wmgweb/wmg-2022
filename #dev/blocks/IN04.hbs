@@ -16,5 +16,12 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		// If Media Width option is set to small
+		if($('#block-{{ blockCount }}').hasClass('media-width--small')) {
+			// Change row widths
+			$('.IN__main', $('#block-{{ blockCount }}')).parent('.col-12').removeClass('col-lg-6').addClass('col-lg-8');
+			$('.IN__media', $('#block-{{ blockCount }}')).parent('.col-12').removeClass('col-lg-6').addClass('col-lg-4');
+		}
 	});
 </script>

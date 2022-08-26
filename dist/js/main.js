@@ -10893,6 +10893,7 @@ jQuery(document).ready(function($) {
   		if(!wmgBlockContentURL.startsWith('/')) {
   			if(pagePath)
   			wmgBlockContentURL = pagePath + wmgBlockContentURL;
+  			$block.attr('data-content_url', wmgBlockContentURL);
   		}
 
   		if(!wmgBlockContentURL.endsWith('/')) {
@@ -10912,7 +10913,7 @@ jQuery(document).ready(function($) {
   		if($block.data('query_type')) {
   			blockQueryType = $block.data('query_type');
 
-  			if(blockQueryType == 'events') {
+  			if(blockQueryType == 'events' || blockQueryType == 'news') {
   				var blockQueryUrl = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/rss/news.json';
   			}
   		}

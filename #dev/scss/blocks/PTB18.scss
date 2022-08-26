@@ -1,0 +1,45 @@
+.block-PTB18 {
+	.post-card {
+		height: 100%;
+	}
+
+	.PTB18-full-post-content {
+		display: none;
+	}	
+
+	.row {
+		margin: 0 -10px;
+		width: calc(100% + 20px);
+
+		> div {
+			padding: 0 10px 16px;
+		}
+	}
+
+	.PTB18-filter {
+		label {
+			display: block;
+			font-weight: normal;
+			font-size: 16px;
+
+			input {
+				margin-right: 5px;
+			}
+		}
+
+		h5 {
+			font-size: 1.9rem;
+			margin: 10px 0;
+
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+
+		h6 {
+			font-size: 16px;
+			margin: 10px 0 5px;
+			font-weight: bold;
+		}
+	}
+}

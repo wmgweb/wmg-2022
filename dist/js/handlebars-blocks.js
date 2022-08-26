@@ -1780,8 +1780,27 @@ this["WMG"]["blocks"]["PTB17"] = Handlebars.template({"1":function(container,dep
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":226,"column":8},"end":{"line":226,"column":24}}}) : helper)))
     + "Search();\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
-this["WMG"]["blocks"]["PTB18"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+this["WMG"]["blocks"]["PTB18"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=container.lambda, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "								<div class=\"col-12 col-sm-6 col-md-4\" data-categories=\""
+    + ((stack1 = alias1((depth0 != null ? lookupProperty(depth0,"categories") : depth0), depth0)) != null ? stack1 : "")
+    + "\">\r\n									<div class=\"PTB18-full-post-content\">"
+    + ((stack1 = alias1((depth0 != null ? lookupProperty(depth0,"content") : depth0), depth0)) != null ? stack1 : "")
+    + "</div>\r\n									<a href=\""
+    + ((stack1 = alias1(((stack1 = (depth0 != null ? lookupProperty(depth0,"url") : depth0)) != null ? lookupProperty(stack1,"href") : stack1), depth0)) != null ? stack1 : "")
+    + "\" class=\"post-card border-color--theme\">\r\n										<div class=\"post-card__image\">\r\n											<svg width=\"35\" height=\"35\" viewBox=\"0 0 35 35\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M34.1855 35L0.867523 35L0.867528 -1.83932e-06L34.1855 35Z\" fill=\"#E6E8EA\"/></svg>\r\n										</div>\r\n										<div class=\"post-card__content\">\r\n											<span class=\"post-card__date\" data-datetime=\""
+    + ((stack1 = ((helper = (helper = lookupProperty(helpers,"publicationDate") || (depth0 != null ? lookupProperty(depth0,"publicationDate") : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"publicationDate","hash":{},"data":data,"loc":{"start":{"line":16,"column":56},"end":{"line":16,"column":77}}}) : helper))) != null ? stack1 : "")
+    + "\"></span>\r\n											<span class=\"post-card__cat\"></span>\r\n											<h4 class=\"post-card__heading\">"
+    + ((stack1 = alias1((depth0 != null ? lookupProperty(depth0,"title") : depth0), depth0)) != null ? stack1 : "")
+    + "</h4>\r\n										</div>\r\n									</a>\r\n								</div>\r\n";
+},"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
           return parent[propertyName];
         }
@@ -1790,9 +1809,15 @@ this["WMG"]["blocks"]["PTB18"] = Handlebars.template({"compiler":[8,">= 4.3.0"],
 
   return "<div id=\"block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":31}}}) : helper)))
-    + "\" class=\"block block-PTB block-PTB18\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			PTB18\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":10,"column":18},"end":{"line":10,"column":34}}}) : helper)))
-    + "');\r\n	});\r\n</script>";
+    + "\" class=\"block block-PTB block-PTB18\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			<div class=\"row\">\r\n				<div class=\"col-12 col-md-9\">\r\n					<div class=\"PTB18-grid\">\r\n						<div class=\"row\">\r\n"
+    + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":8,"column":7},"end":{"line":22,"column":16}}})) != null ? stack1 : "")
+    + "						</div>\r\n					</div>\r\n				</div>\r\n				<div class=\"col-12 col-md-3\">\r\n					<div class=\"PTB18-sidebar\">\r\n						<div class=\"PTB18-filter\">\r\n							<h5>Topic Filter</h5>\r\n							<label data-category=\"Athena Swan\"></label>\r\n							<label data-category=\"Careers\"></label>\r\n							<label data-category=\"Education\"></label>\r\n							<label data-category=\"HVM Catapult\"></label>\r\n							<label data-category=\"NAIC\"></label>\r\n							<label data-category=\"Public Engagement\"></label>\r\n							<label data-category=\"Partnerships\"></label>\r\n							<label data-category=\"VIP Visits\"></label>\r\n							<label data-category=\"WMG Academy\"></label>\r\n							<h5>Research</h5>\r\n							<h6>Research Themes</h6>\r\n							<label data-category=\"Digital\"></label>\r\n							<label data-category=\"Transport\"></label>\r\n							<label data-category=\"Materials\"></label>\r\n							<label data-category=\"Energy\"></label>\r\n							<label data-category=\"Manufacturing\"></label>\r\n							<h6>Research Capabilities</h6>\r\n							<label data-category=\"Aditive Layer Manufacturing\"></label>\r\n							<label data-category=\"Applied Psychology\"></label>\r\n							<label data-category=\"Automation Systems\"></label>\r\n						</div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":59,"column":18},"end":{"line":59,"column":34}}}) : helper)))
+    + "');\r\n\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":61,"column":12},"end":{"line":61,"column":28}}}) : helper)))
+    + " .PTB18-filter label').each(function() {\r\n			var cat = $(this).data('category');\r\n			$(this).html('<input type=\"checkbox\" name=\"' + cat + '\">' + cat);\r\n		});\r\n\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":66,"column":12},"end":{"line":66,"column":28}}}) : helper)))
+    + " .PTB18-grid .row > div').each(function() {\r\n			var $self = $(this);\r\n\r\n			// Get first image from content and move to image div\r\n			$('.PTB18-full-post-content img:first', $self).appendTo($('.post-card__image', $self));\r\n\r\n			// Convert timestamp to post date\r\n			var $postDateElement = $('.post-card__date', $self);\r\n			var postDateTime = new Date($postDateElement.data('datetime'));\r\n			var formattedDate = postDateTime.toLocaleString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });\r\n			$postDateElement.text(formattedDate);\r\n\r\n			// Get all categories\r\n			var cats = $self.data('categories');\r\n\r\n			// Split them into an array\r\n			var catArray = cats.split(',');\r\n\r\n			// Set first category in span\r\n			$('.post-card__cat', $self).html(catArray[0]);\r\n\r\n			// Loop through category array\r\n			$.each(catArray, function(key, value) {\r\n				// Sanitize category\r\n				var catVal = value.replace(/\\s+/g, '-').toLowerCase();\r\n\r\n				// Add Category class\r\n			  	$self.addClass('filter-category--' + catVal);\r\n			});\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["PTB20"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {

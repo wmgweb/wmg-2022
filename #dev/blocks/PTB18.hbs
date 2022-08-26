@@ -1,12 +1,97 @@
 <div id="block-{{ blockCount }}" class="block block-PTB block-PTB18">
 	<div class="container">
 		<div class="block__content">
-			PTB18
+			<div class="row">
+				<div class="col-12 col-md-9">
+					<div class="PTB18-grid">
+						<div class="row">
+							{{#each content}}
+								<div class="col-12 col-sm-6 col-md-4" data-categories="{{{this.categories}}}">
+									<div class="PTB18-full-post-content">{{{this.content}}}</div>
+									<a href="{{{this.url.href}}}" class="post-card border-color--theme">
+										<div class="post-card__image">
+											<svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M34.1855 35L0.867523 35L0.867528 -1.83932e-06L34.1855 35Z" fill="#E6E8EA"/></svg>
+										</div>
+										<div class="post-card__content">
+											<span class="post-card__date" data-datetime="{{{publicationDate}}}"></span>
+											<span class="post-card__cat"></span>
+											<h4 class="post-card__heading">{{{this.title}}}</h4>
+										</div>
+									</a>
+								</div>
+							{{/each}}
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-3">
+					<div class="PTB18-sidebar">
+						<div class="PTB18-filter">
+							<h5>Topic Filter</h5>
+							<label data-category="Athena Swan"></label>
+							<label data-category="Careers"></label>
+							<label data-category="Education"></label>
+							<label data-category="HVM Catapult"></label>
+							<label data-category="NAIC"></label>
+							<label data-category="Public Engagement"></label>
+							<label data-category="Partnerships"></label>
+							<label data-category="VIP Visits"></label>
+							<label data-category="WMG Academy"></label>
+							<h5>Research</h5>
+							<h6>Research Themes</h6>
+							<label data-category="Digital"></label>
+							<label data-category="Transport"></label>
+							<label data-category="Materials"></label>
+							<label data-category="Energy"></label>
+							<label data-category="Manufacturing"></label>
+							<h6>Research Capabilities</h6>
+							<label data-category="Aditive Layer Manufacturing"></label>
+							<label data-category="Applied Psychology"></label>
+							<label data-category="Automation Systems"></label>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		$('#block-{{ blockCount }} .PTB18-filter label').each(function() {
+			var cat = $(this).data('category');
+			$(this).html('<input type="checkbox" name="' + cat + '">' + cat);
+		});
+
+		$('#block-{{ blockCount }} .PTB18-grid .row > div').each(function() {
+			var $self = $(this);
+
+			// Get first image from content and move to image div
+			$('.PTB18-full-post-content img:first', $self).appendTo($('.post-card__image', $self));
+
+			// Convert timestamp to post date
+			var $postDateElement = $('.post-card__date', $self);
+			var postDateTime = new Date($postDateElement.data('datetime'));
+			var formattedDate = postDateTime.toLocaleString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+			$postDateElement.text(formattedDate);
+
+			// Get all categories
+			var cats = $self.data('categories');
+
+			// Split them into an array
+			var catArray = cats.split(',');
+
+			// Set first category in span
+			$('.post-card__cat', $self).html(catArray[0]);
+
+			// Loop through category array
+			$.each(catArray, function(key, value) {
+				// Sanitize category
+				var catVal = value.replace(/\s+/g, '-').toLowerCase();
+
+				// Add Category class
+			  	$self.addClass('filter-category--' + catVal);
+			});
+		});
 	});
 </script>

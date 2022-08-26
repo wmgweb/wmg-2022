@@ -199,6 +199,7 @@ jQuery(document).ready(function($) {
 	        success: function(data) {
 				var currentItem = data.items;
 				var handlebarsBlockData = {
+					title : data.title,
 					content : data.items,
 					categories: data.categories,
 					blockCount : wmgCurrentBlockCount,

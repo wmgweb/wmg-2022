@@ -1,39 +1,22 @@
 <div id="block-{{ blockCount }}" class="block block-PTB block-PTB18">
 	<div class="container">
 		<div class="block__content">
+			<div class="PTB18-intro">
+				[!triangle]
+				<h2>{{{title}}}</h2>
+			</div>
 			<div class="row">
-				<div class="col-12 col-md-9">
+				<div class="col-12 col-md-3 PTB19-col-1">
+					<div class="PTB18-sidebar">
+						<button class="PTB18-filter-button">Filter <svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.7254 14.9893L0.528584 5.11929C-0.176195 4.4371 -0.176195 3.33399 0.528584 2.65905L2.22305 1.0189C2.92783 0.336708 4.06748 0.336708 4.76476 1.0189L12 8.00771L19.2277 1.01164C19.9325 0.32945 21.0722 0.32945 21.7694 1.01164L23.4714 2.6518C24.1762 3.33399 24.1762 4.4371 23.4714 5.11203L13.2746 14.982C12.5698 15.6715 11.4302 15.6715 10.7254 14.9893Z" fill="#E6E8EA"/></svg></button>
+						<div class="PTB18-filter"></div>
+					</div>
+				</div>
+				<div class="col-12 col-md-9 PTB19-col-2">
 					<div class="PTB18-grid" data-count="12">
 						<div class="row"></div>
 					</div>
 					<div class="PTB18-more"><button class="btn btn--theme">View More</button></div>
-				</div>
-				<div class="col-12 col-md-3">
-					<div class="PTB18-sidebar">
-						<div class="PTB18-filter">
-							<h5>Topic Filter</h5>
-							<label data-category="Athena Swan"></label>
-							<label data-category="Careers"></label>
-							<label data-category="Education"></label>
-							<label data-category="HVM Catapult"></label>
-							<label data-category="NAIC"></label>
-							<label data-category="Public Engagement"></label>
-							<label data-category="Partnerships"></label>
-							<label data-category="VIP Visits"></label>
-							<label data-category="WMG Academy"></label>
-							<h5>Research</h5>
-							<h6>Research Themes</h6>
-							<label data-category="Digital"></label>
-							<label data-category="Transport"></label>
-							<label data-category="Materials"></label>
-							<label data-category="Energy"></label>
-							<label data-category="Manufacturing"></label>
-							<h6>Research Capabilities</h6>
-							<label data-category="Aditive Layer Manufacturing"></label>
-							<label data-category="Applied Psychology"></label>
-							<label data-category="Automation Systems"></label>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -102,24 +85,44 @@
 		ajaxPostQuery();
 
 		// On filter change run Ajax query
-	    $('.PTB18-filter').on('change', 'input', function() {
+	    $('#block-{{ blockCount }} .PTB18-filter').on('change', 'input', function() {
 			ajaxPostQuery();
 	    });
 
 	    // Add pagination
-	    $('.PTB18-more .btn').click(function() {
+	    $('#block-{{ blockCount }} .PTB18-more .btn').click(function() {
 	    	var currentCount = parseInt($('.PTB18-grid').attr('data-count'));
 	    	var newCount = currentCount + 12;
 	    	$('.PTB18-grid').attr('data-count', newCount);
 	    	ajaxPostQuery();
 	    });
 
-		// Loop through each filter and create checkbox
-		$('#block-{{ blockCount }} .PTB18-filter label').each(function() {
-			var cat = $(this).data('category');
-			$(this).html('<input type="checkbox" value="' + cat + '">' + cat);
-		});
+	    // Load filters
+	    var filtersContentURL = $block.data('filters_url');
 
-			
+	    $.ajax({
+  			async: false,
+	        url : 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/dataentry/entries.json?page=' + filtersContentURL,
+	        type: 'GET',
+	        dataType: 'json',
+	        success: function(data) {				
+				$('#block-{{ blockCount }} .PTB18-filter').html(data.items[0].content);
+
+				// Loop through each filter and create checkbox
+				$('#block-{{ blockCount }} .PTB18-filter li').each(function() {
+					var cat = $(this).text();
+					$(this).html('<label><input type="checkbox" value="' + cat + '">' + cat + '</label>');
+				});
+	        },
+	        error: function(data) {
+	        	console.log('Could not get filters from ' + filtersContentURL);
+	        }
+	    });			
+
+	    // Mobile filter button
+	    $('#block-{{ blockCount }} .PTB18-filter-button').click(function() {
+	    	$('#block-{{ blockCount }} .PTB18-filter').toggleClass('active');
+	    	$(this).toggleClass('active');
+	    });
 	});
 </script>

@@ -16,11 +16,50 @@
 		}
 	}
 
+	.PTB18-filter-button {
+		background: $color-darkgrey;
+		color: $color-white;
+		cursor: pointer;
+		width: 100%;
+		font-size: 14px;
+		text-align: left;
+		padding: 15px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+
+		&.active {
+			svg {
+				transform: rotate(180deg);
+			}
+		}
+	}
+
 	.PTB18-filter {
+		display: none;
+
+		&.active {
+			display: block;
+		}
+
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+
+			li {
+				padding: 0;
+				margin: 0;
+			}
+		}
+
 		label {
 			display: block;
 			font-weight: normal;
 			font-size: 16px;
+			cursor: pointer;
+			margin: 0;
 
 			input {
 				margin-right: 5px;
@@ -45,5 +84,23 @@
 
 	.PTB18-more {
 		text-align: center;
+	}
+
+	@include md {
+		.PTB18-filter {
+			display: block;
+		}
+
+		.PTB18-filter-button {
+			display: none;
+		}
+
+		.PTB19-col-1 {
+			order: 2;
+		}
+
+		.PTB19-col-2 {
+			order: 1;
+		}
 	}
 }

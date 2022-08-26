@@ -49,6 +49,12 @@
 		}
 	}
 
+	.filters-bar__heading {
+		margin: 0 0 10px 0;
+		flex: 1;
+		font-size: 21px;
+	}
+
 	@include lg {
 		display: flex;
 		justify-content: flex-end;
@@ -60,6 +66,10 @@
 				width: auto;
 				margin: 0 20px 0 0;
 			}
+		}
+
+		.filters-bar__heading {
+			margin: 0 20px 0 0;
 		}
 
 	}

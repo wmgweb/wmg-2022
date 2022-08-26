@@ -3,25 +3,10 @@
 		<div class="block__content">
 			<div class="row">
 				<div class="col-12 col-md-9">
-					<div class="PTB18-grid">
-						<div class="row">
-							{{#each content}}
-								<div class="col-12 col-sm-6 col-md-4" data-categories="{{{this.categories}}}">
-									<div class="PTB18-full-post-content">{{{this.content}}}</div>
-									<a href="{{{this.url.href}}}" class="post-card border-color--theme">
-										<div class="post-card__image">
-											<svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M34.1855 35L0.867523 35L0.867528 -1.83932e-06L34.1855 35Z" fill="#E6E8EA"/></svg>
-										</div>
-										<div class="post-card__content">
-											<span class="post-card__date" data-datetime="{{{publicationDate}}}"></span>
-											<span class="post-card__cat"></span>
-											<h4 class="post-card__heading">{{{this.title}}}</h4>
-										</div>
-									</a>
-								</div>
-							{{/each}}
-						</div>
+					<div class="PTB18-grid" data-count="12">
+						<div class="row"></div>
 					</div>
+					<div class="PTB18-more"><button class="btn btn--theme">View More</button></div>
 				</div>
 				<div class="col-12 col-md-3">
 					<div class="PTB18-sidebar">
@@ -57,41 +42,84 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
+		function ajaxPostQuery() {
+			queryURL = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/rss/news.json';
+			contentURL = $block.data('content_url');
+			queryString = '&num=' + $('.PTB18-grid').attr('data-count');
+			scrollPosition = document.documentElement.scrollTop;
+
+			// Get all active filters
+			$('.PTB18-filter input:checked').each(function() {
+				queryString = queryString + '&tag=' + $(this).val();
+			});
+
+			// Ajax query to load posts
+			$.ajax({
+	  			async: false,
+		        url : queryURL + '?page=' + contentURL + queryString,
+		        type: 'GET',
+		        dataType: 'json',
+		        success: function(data) {
+					var posts = '';
+
+					$.each(data.items, function(key, data) {
+						// Convert timestamp to post date
+						var postDateTime = new Date(data.publicationDate);
+						var formattedDate = postDateTime.toLocaleString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+
+						// Get image from content string
+						var formattedImage = '';
+						if (data.content.indexOf('src="') >= 0) {
+							var image = data.content.split('src="')[1].split('" ')[0];
+
+							if(image != '') {
+								// If image doesn't have http, set full url
+								if(!image.startsWith('http')) {
+									image = contentURL + image;
+								}
+
+								formattedImage = '<div class="post-card__image"><img src="' + image + '"><svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M34.1855 35L0.867523 35L0.867528 -1.83932e-06L34.1855 35Z" fill="#E6E8EA"/></svg></div>';
+							}							
+						}
+
+						posts = posts + '<div class="col-12 col-sm-6 col-md-4"><a href="' + data.url.href + '" class="post-card border-color--theme">' + formattedImage + '<div class="post-card__content"><span class="post-card__date">' + formattedDate + '</span><span class="post-card__cat">' + data.categories[0] + '</span><h4 class="post-card__heading">' + data.title + '</h4></div></a></div>';
+					});
+
+					$('.PTB18-grid > .row').html(posts);
+
+					// Keep window in same scroll position
+					window.scrollTo(0, scrollPosition);
+		        },
+		        error: function(data) {
+		        	console.log('Could not get data from ' + contentURL);
+		        },
+	        });
+		}
+
+		// Load posts on launch
+		ajaxPostQuery();
+
+		// On filter change run Ajax query
+	    $('.PTB18-filter').on('change', 'input', function() {
+			ajaxPostQuery();
+	    });
+
+	    // Add pagination
+	    $('.PTB18-more .btn').click(function() {
+	    	var currentCount = parseInt($('.PTB18-grid').attr('data-count'));
+	    	var newCount = currentCount + 12;
+	    	$('.PTB18-grid').attr('data-count', newCount);
+	    	ajaxPostQuery();
+	    });
+
+		// Loop through each filter and create checkbox
 		$('#block-{{ blockCount }} .PTB18-filter label').each(function() {
 			var cat = $(this).data('category');
-			$(this).html('<input type="checkbox" name="' + cat + '">' + cat);
+			$(this).html('<input type="checkbox" value="' + cat + '">' + cat);
 		});
 
-		$('#block-{{ blockCount }} .PTB18-grid .row > div').each(function() {
-			var $self = $(this);
-
-			// Get first image from content and move to image div
-			$('.PTB18-full-post-content img:first', $self).appendTo($('.post-card__image', $self));
-
-			// Convert timestamp to post date
-			var $postDateElement = $('.post-card__date', $self);
-			var postDateTime = new Date($postDateElement.data('datetime'));
-			var formattedDate = postDateTime.toLocaleString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
-			$postDateElement.text(formattedDate);
-
-			// Get all categories
-			var cats = $self.data('categories');
-
-			// Split them into an array
-			var catArray = cats.split(',');
-
-			// Set first category in span
-			$('.post-card__cat', $self).html(catArray[0]);
-
-			// Loop through category array
-			$.each(catArray, function(key, value) {
-				// Sanitize category
-				var catVal = value.replace(/\s+/g, '-').toLowerCase();
-
-				// Add Category class
-			  	$self.addClass('filter-category--' + catVal);
-			});
-		});
+			
 	});
 </script>

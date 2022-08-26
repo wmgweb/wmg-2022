@@ -16,4 +16,12 @@
 			}
 		}
 	}
+
+	.PTB17-grid-none {
+		display: none;
+
+		&.active {
+			display: block;
+		}
+	}
 }

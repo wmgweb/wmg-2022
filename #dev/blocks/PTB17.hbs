@@ -31,6 +31,7 @@
 				</label>
 			</div>
 			<div class="PTB17-grid">
+				<div class="PTB17-grid-none"><p>No results match your search.</p></div>
 				<div class="row">
 					{{#each content}}
 						<div class="col-12 col-md-6 active" data-cats="{{categories}}">
@@ -145,6 +146,7 @@
 
 		// Function to reset blocks
 		function block{{ blockCount }}ResetBlocks() {
+			$('#block-{{ blockCount }} .PTB17-grid-none').removeClass('active');
 			$('#block-{{ blockCount }} .row > div').addClass('active');
 			$('#block-{{ blockCount }} .PTB17-search input').val();
 		}
@@ -202,6 +204,7 @@
 			
 			// If content in search
 			if(searchString.length > 0) {
+				var activeCount = 0;
 
 				// Loop through all panels
 				$('#block-{{ blockCount }} .event-card').each(function() {
@@ -211,8 +214,15 @@
 					// If search string is contained in panel content, add active class
 					if(panelContent.toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
 						$(this).parent().addClass('active');
+						activeCount = activeCount + 1;
 					}
 				});
+
+				if(activeCount == 0) {
+					$('#block-{{ blockCount }} .PTB17-grid-none').addClass('active');
+				} else {
+					$('#block-{{ blockCount }} .PTB17-grid-none').removeClass('active');
+				}
 
 			} else {
 				// Else if no content reset

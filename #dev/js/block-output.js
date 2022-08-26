@@ -191,9 +191,14 @@ jQuery(document).ready(function($) {
   			}
   		}
 
+  		wmgBlockContentNumber = '';
+  		if($block.data('content_number')) {
+  			wmgBlockContentNumber = '&num=' + $block.data('content_number');
+  		}
+
   		$.ajax({
   			async: false,
-	        url : blockQueryUrl + '?page=' + wmgBlockContentURL,
+	        url : blockQueryUrl + '?page=' + wmgBlockContentURL + wmgBlockContentNumber,
 	        type: 'GET',
 	        dataType: 'json',
 	        success: function(data) {

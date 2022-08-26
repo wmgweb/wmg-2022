@@ -1,12 +1,88 @@
 <div id="block-{{ blockCount }}" class="block block-PTB block-PTB20">
 	<div class="container">
 		<div class="block__content">
-			PTB20
+			<div class="filters-bar">
+				<label class="filters-bar__search PTB20-search">
+					Search
+					<input type="text" name="PTB20-search">
+				</label>
+			</div>
+			<div class="PTB20-grid">
+				<div class="PTB20-grid-none"><p>No results match your search.</p></div>
+				<div class="row">
+					{{#each content}}
+						<div class="col-12 col-sm-6 col-md-3 active">
+							<div class="PTB20-post-content">{{{this.content}}}</div>
+							<a href="{{{this.url.href}}}" class="post-card border-color--theme">
+								<div class="post-card__image"></div>
+								<div class="post-card__content">
+									<h4>{{{this.title}}}</h4>
+								</div>
+							</a>
+						</div>
+					{{/each}}
+				</div>
+			</div>
+			
 		</div>
 	</div>
 </div>
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+		// Loop through each item
+		$('.PTB20-grid > .row > div').each(function() {
+			// Get image and move it
+			$('.PTB20-post-content img:first', $(this)).appendTo($('.post-card__image', $(this)));
+		});
+
+		// Function to reset blocks
+		function block{{ blockCount }}ResetBlocks() {
+			$('#block-{{ blockCount }} .PTB20-grid-none').removeClass('active');
+			$('#block-{{ blockCount }} .row > div').addClass('active');
+			$('#block-{{ blockCount }} .PTB20-search input').val();
+		}
+
+		/* -- SEARCH -- */
+		function block{{ blockCount }}Search() {
+			var searchString = $('#block-{{ blockCount }} .PTB20-search input').val();
+
+			// Hide active blocks
+			$('#block-{{ blockCount }} .row .active').removeClass('active');
+			
+			// If content in search
+			if(searchString.length > 0) {
+				var activeCount = 0;
+
+				// Loop through all panels
+				$('#block-{{ blockCount }} .post-card').each(function() {
+					// Get content as string
+					var panelContent = $(this).text();
+
+					// If search string is contained in panel content, add active class
+					if(panelContent.toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
+						$(this).parent().addClass('active');
+						activeCount = activeCount + 1;
+					}
+				});
+
+				if(activeCount == 0) {
+					$('#block-{{ blockCount }} .PTB20-grid-none').addClass('active');
+				} else {
+					$('#block-{{ blockCount }} .PTB20-grid-none').removeClass('active');
+				}
+
+			} else {
+				// Else if no content reset
+				block{{ blockCount }}ResetBlocks();
+			}
+
+		}
+
+		// Run search after input change
+		$('#block-{{ blockCount }} .PTB20-search input').keyup(function() {
+			block{{ blockCount }}Search();
+		});
 	});
 </script>

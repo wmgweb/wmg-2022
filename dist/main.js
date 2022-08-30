@@ -12663,9 +12663,9 @@ this["WMG"]["blocks"]["PTB17"] = Handlebars.template({"1":function(container,dep
         return undefined
     };
 
-  return "										[!button style=\"red\" link=\""
+  return "										<a href=\""
     + ((stack1 = container.lambda(((stack1 = (depth0 != null ? lookupProperty(depth0,"url") : depth0)) != null ? lookupProperty(stack1,"href") : stack1), depth0)) != null ? stack1 : "")
-    + "\" text=\"Find out more\"]\r\n";
+    + "\" class=\"btn btn--theme\">Find out more</a>\r\n";
 },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {

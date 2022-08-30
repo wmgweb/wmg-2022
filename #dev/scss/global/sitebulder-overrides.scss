@@ -1,0 +1,13 @@
+table {
+	.uneditable-input, 
+	audio, 
+	iframe, 
+	img, 
+	input, 
+	pre, 
+	select, 
+	textarea, 
+	video {
+		max-width: 100% !important;
+	}
+}

@@ -1,80 +1,48 @@
-table {
-	.uneditable-input, 
-	audio, 
-	iframe, 
-	img, 
-	input, 
-	pre, 
-	select, 
-	textarea, 
-	video {
-		max-width: 100% !important;
-	}
-}
+body.page-frontend {
+    .id7-right-border,
+    .id7-left-border {
+    	display: none;
+    }
 
-.h1, 
-.h2, 
-.h3, 
-.h4, 
-.h5, 
-.h6, 
-a, 
-a:link, 
-a:visited, 
-h1, 
-h2, 
-h3, 
-h4, 
-h5, 
-h6 {
-	color: inherit;
-}
-	
-// Fix to content page containers
-#entries .datalist.panel {
-	margin: 0 auto;
+    .id7-main-content {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+    }
 
-	& + hr {
-		margin: 0 auto;
+    aside {
+        padding: 20px;
+    }
 
-		& + #adminOptions {
-			margin: 0 auto;
+	table {
+		.uneditable-input, 
+		audio, 
+		iframe, 
+		img, 
+		input, 
+		pre, 
+		select, 
+		textarea, 
+		video {
+			max-width: 100% !important;
 		}
 	}
-}
 
-@media screen and (min-width: 768px) {
-	#entries .datalist.panel {
-	    width: 710px;
-
-		& + hr {
-			& + #adminOptions {
-				width: 710px;
-			}
-		}
-	}
-}
-
-@media screen and (min-width: 992px) {
-	#entries .datalist.panel {
-	    width: 930px;
-
-		& + hr {
-			& + #adminOptions {
-				width: 930px;
-			}
-		}
-	}
-}
-
-@media screen and (min-width: 1200px) {
-	#entries .datalist.panel {
-	    width: 1130px;
-
-		& + hr {
-			& + #adminOptions {
-				width: 1130px;
-			}
-		}
+	.h1, 
+	.h2, 
+	.h3, 
+	.h4, 
+	.h5, 
+	.h6, 
+	a, 
+	a:link, 
+	a:visited, 
+	h1, 
+	h2, 
+	h3, 
+	h4, 
+	h5, 
+	h6 {
+		color: inherit;
 	}
 }

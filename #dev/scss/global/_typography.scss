@@ -70,8 +70,10 @@ ol {
 	}
 }
 
-a:not(.btn) {
-	text-decoration: underline;
+a:not(.btn),
+a:not(.btn):link, 
+a:not(.btn):visited {
+	text-decoration: none;
     color: inherit;
 
     &:focus {

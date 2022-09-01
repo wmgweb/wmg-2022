@@ -1,6 +1,12 @@
 // Hide until body class is added
 .id7-main-content-area {
 	display: none;
+
+	a:not(.btn),
+	a:not(.btn):link, 
+	a:not(.btn):visited {
+		text-decoration: underline;
+	}
 }
 
 body.page-frontend {
@@ -35,27 +41,7 @@ body.page-frontend {
 		video {
 			max-width: 100% !important;
 		}
-	}
-
-	.block {
-		.h1, 
-		.h2, 
-		.h3, 
-		.h4, 
-		.h5, 
-		.h6, 
-		a:not(.btn), 
-		a:not(.btn):link, 
-		a:not(.btn):visited, 
-		h1, 
-		h2, 
-		h3, 
-		h4, 
-		h5, 
-		h6 {
-			color: inherit;
-		}		
-	}
+	}	
 }
 
 body.page-datalist {

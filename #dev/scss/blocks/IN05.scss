@@ -7,6 +7,12 @@
 		padding: 18px 24px;
 		background-color: $color-red;
 
+		.IN__social-link {
+			a {
+				text-decoration: none;
+			}
+		}
+
 		.IN__social-main {
 			p {
 				margin: 0 15px 0 0;

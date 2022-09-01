@@ -29,3 +29,52 @@ h5,
 h6 {
 	color: inherit;
 }
+	
+// Fix to content page containers
+#entries .datalist.panel {
+	margin: 0 auto;
+
+	& + hr {
+		margin: 0 auto;
+
+		& + #adminOptions {
+			margin: 0 auto;
+		}
+	}
+}
+
+@media screen and (min-width: 768px) {
+	#entries .datalist.panel {
+	    width: 710px;
+
+		& + hr {
+			& + #adminOptions {
+				width: 710px;
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 992px) {
+	#entries .datalist.panel {
+	    width: 930px;
+
+		& + hr {
+			& + #adminOptions {
+				width: 930px;
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	#entries .datalist.panel {
+	    width: 1130px;
+
+		& + hr {
+			& + #adminOptions {
+				width: 1130px;
+			}
+		}
+	}
+}

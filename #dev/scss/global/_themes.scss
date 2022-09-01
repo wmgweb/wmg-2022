@@ -1,3 +1,5 @@
+// Set theme colours on various default elements
+
 @include theme('fill', '.brand-triangle path', '', '');
 @include theme('fill', '.theme-fill');
 @include theme('fill', '.theme-fill-path path');

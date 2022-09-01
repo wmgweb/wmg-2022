@@ -88,10 +88,35 @@ function blockShortcodes(block) {
 				scOutput = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + scAttr.id + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
 				break;
 			case "vimeo":
-				scOutput = '<iframe src="https://player.vimeo.com/video/' + scAttr.id + '" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
+				scOutput = '';
 				break;
-			case "sway":
-				scOutput = '<iframe width="760px" height="500px" src="https://sway.office.com/s/' + scAttr.id + '/embed" frameborder="0" marginheight="0" marginwidth="0" max-width="100%" sandbox="allow-forms allow-modals allow-orientation-lock allow-popups allow-same-origin allow-scripts" scrolling="no" style="border: none; max-width: 100%; max-height: 100vh;"></iframe>';
+			case "video":
+				// If video set
+				if('set' in scAttr && 'id' in scAttr) {
+					// Set the embed code depending on which type is set
+					var embed;
+					if(scAttr.set == 'youtube') {
+						embed = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + scAttr.id + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
+					} else if(scAttr.set == 'vimeo') {
+						embed = '<iframe src="https://player.vimeo.com/video/' + scAttr.id + '" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
+					} else if(scAttr.set == 'sway') {
+						embed = '<iframe width="760px" height="500px" src="https://sway.office.com/s/' + scAttr.id + '/embed" frameborder="0" marginheight="0" marginwidth="0" max-width="100%" sandbox="allow-forms allow-modals allow-orientation-lock allow-popups allow-same-origin allow-scripts" scrolling="no" style="border: none; max-width: 100%; max-height: 100vh;"></iframe>';
+					}
+
+					// Output wrapper
+					scOutput = '<div class="video-element video-element--' + scAttr.display + '">';
+
+					// If popup is set and image exists
+					if(scAttr.display == 'popup' && 'image' in scAttr) {
+						// Add image element
+						scOutput = scOutput + '<div class="video-element__image"><img src="' + scAttr.image + '" alt="' + scAttr.alt + '"></div>';
+					}
+
+					// Output embed code and close wrapper
+					scOutput = scOutput + '<div class="video-element__code">' + embed + '</div></div>';
+
+				}
+				
 				break;
 		}
 

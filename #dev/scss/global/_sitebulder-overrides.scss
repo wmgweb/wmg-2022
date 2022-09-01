@@ -1,7 +1,16 @@
+// Hide until body class is added
+.id7-main-content-area {
+	display: none;
+}
+
 body.page-frontend {
     .id7-right-border,
     .id7-left-border {
     	display: none;
+    }
+
+    .id7-main-content-area {
+    	display: block;
     }
 
     .id7-main-content {
@@ -44,5 +53,11 @@ body.page-frontend {
 	h5, 
 	h6 {
 		color: inherit;
+	}
+}
+
+body.page-datalist {
+	.id7-main-content-area {
+		display: block;
 	}
 }

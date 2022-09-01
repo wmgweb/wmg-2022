@@ -75,3 +75,16 @@ $theme-colors-alt: ('red': darken($color-red, 10%), 'yellow': darken($color-yell
         $count: $count + 5;
     }
 }
+
+// Border mixin to create multiple classes with spacing px values at 1px increments.
+@mixin border($property) {
+    $count: 0;
+
+    @while $count < 50 {
+        .#{$property}--#{$count} {
+            #{$property}: #{$count}px solid !important;
+        }
+
+        $count: $count + 1;
+    }
+}

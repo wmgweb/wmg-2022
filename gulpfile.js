@@ -52,7 +52,7 @@ function css() {
 // Compile JS
 function js() {
 	return gulp
-		.src([config.devJS + 'vendor/**/*.js', config.devJS + 'block-output.js'])
+		.src([config.devJS + 'vendor/**/*.js', config.devJS + 'block-output.js', config.devJS + 'global.js'])
 		.pipe(concat('main.js'))
 	    .pipe(gulp.dest(config.distJS));
 };

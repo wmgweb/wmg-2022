@@ -10817,6 +10817,9 @@ function blockShortcodes(block) {
 			case "vimeo":
 				scOutput = '<iframe src="https://player.vimeo.com/video/' + scAttr.id + '" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
 				break;
+			case "sway":
+				scOutput = '<iframe width="760px" height="500px" src="https://sway.office.com/s/' + scAttr.id + '/embed" frameborder="0" marginheight="0" marginwidth="0" max-width="100%" sandbox="allow-forms allow-modals allow-orientation-lock allow-popups allow-same-origin allow-scripts" scrolling="no" style="border: none; max-width: 100%; max-height: 100vh;"></iframe>';
+				break;
 		}
 
 		// Remove shortcode and replace

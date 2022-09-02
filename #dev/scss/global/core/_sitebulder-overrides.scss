@@ -1,12 +1,6 @@
 // Hide until body class is added
 .id7-main-content-area {
 	display: none;
-
-	a:not(.btn),
-	a:not(.btn):link, 
-	a:not(.btn):visited {
-		text-decoration: underline;
-	}
 }
 
 body.id7-main-content-area {

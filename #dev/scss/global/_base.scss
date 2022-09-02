@@ -74,6 +74,7 @@ a,
 a:link, 
 a:visited {
     color: inherit;
+    text-decoration-color: inherit;
 
     &:focus {
     	background: inherit !important;

@@ -14,6 +14,10 @@ var css_files = [
 	'https://wmgwebcdn.wmg.warwick.ac.uk/wmg/production/dist/main.css'
 ];
 
+// if(urlslug = 'people') {
+// 	css_files.push('https://wmgwebcdn.wmg.warwick.ac.uk/wmg/production/dist/main.css');
+// }
+
 // Loop through array, create link tag and append to end of head
 css_files.forEach(function (item, index) {
   	var link = document.createElement('link');

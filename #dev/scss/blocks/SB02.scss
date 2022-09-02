@@ -1,4 +1,7 @@
 .block-SB02 {
+	overflow: visible;
+	z-index: 100;
+
 	.row {
 		margin: 0 -27px;
 		width: calc(100% + 54px);
@@ -28,13 +31,104 @@
 		}
 
 		input {
+			width: 100%;
 			height: 38px;
 			padding: 0 10px;
 			display: inline-block;
 			vertical-align: middle;
-			flex: 1;
-			margin-right: 5px;
 			border: 0;
+			color: $color-text;
+
+			&:focus,
+			&:active {
+				border: 0;
+				outline: 0;
+			}
+		}
+	}
+
+	.SB02-search {
+		position: relative;
+		flex: 1;
+		margin-right: 5px;
+	}
+
+	.SB02-search-results {
+		display: none;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100%;
+		background: $color-white;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		padding: 10px 20px;
+		border-top: 1px solid $color-text;
+		max-height: 300px;
+    	overflow-y: scroll;
+		color: $color-text;
+
+		&.active {
+			display: block;
+		}
+
+		li {
+			display: none;
+			margin: 0;
+			padding: 0;
+			padding: 10px 0;
+
+			&.active {
+				display: block;
+			}
+
+			p {
+				margin: 0;
+			}
+
+			&.SB02-search-results__none {
+				display: none;
+			}
+		}
+
+		&.no-results {
+			li.SB02-search-results__none {
+				display: block;
+			}
+		}
+
+		.SB02-search-results__heading {
+			display: block;
+			margin-bottom: 5px;
+		}
+
+		.SB02-search-results__tags {
+			display: block;
+			font-size: 11px;
+
+			> span {
+				display: inline-block;
+				padding: 5px;
+				background: $color-red;
+				color: $color-white;
+
+				&.SB02-search-results__tag--Undergraduate {
+					background-color: $color-blue;
+				}
+
+				&.SB02-search-results__tag--Postgraduate {
+					background-color: $color-yellow;
+				}
+
+				&.SB02-search-results__tag--Professional {
+					background-color: $color-red;
+				}
+
+				&.SB02-search-results__tag--Degree-Apprenticeships {
+					background-color: #4d4e50;
+				}
+			}
 		}
 	}
 

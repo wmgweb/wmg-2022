@@ -52,9 +52,15 @@ function css() {
 // Compile JS
 function js() {
 	return gulp
-		.src([config.devJS + 'vendor/**/*.js', config.devJS + 'block-output.js', config.devJS + 'global.js'])
+		.src([config.devJS + 'vendor/**/*.js', config.devJS + 'main/block-output.js', config.devJS + 'main/global.js'])
 		.pipe(concat('main.js'))
 	    .pipe(gulp.dest(config.distJS));
+};
+
+function jsLoadResources() {
+	return gulp
+		.src([config.devJS + 'load-resources.js'])
+	    .pipe(gulp.dest(config.dist));
 };
 
 // Compile Handlebars Templates
@@ -97,13 +103,13 @@ function jsCombine() {
 // Watch Files 
 function watchFiles() {
 	gulp.watch(config.devBlocks + '**/*.hbs', gulp.series(handlebarsTemplates, jsCombine));
-	gulp.watch(config.devJS + '**/*.js', gulp.series(js, jsCombine));
+	gulp.watch(config.devJS + '**/*.js', gulp.series(js, jsCombine, jsLoadResources));
 	gulp.watch(config.devSASS + '**/*.scss', gulp.series(css, cssCombine));
 }
 
 const watch = gulp.series(watchFiles);
 const dep 	= gulp.parallel(dependencies);
-const build = gulp.parallel(dependencies, css, cssCombine, js, handlebarsTemplates, jsCombine);
+const build = gulp.parallel(dependencies, css, cssCombine, js, handlebarsTemplates, jsCombine, jsLoadResources);
 
 // Export Tasks
 exports.css = css;

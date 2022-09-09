@@ -1,0 +1,76 @@
+.boxstyle_ {
+	border: 0;
+
+	&.box1 {
+		background-color: $color-lightgrey-2;
+		border: 0;
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			color: $color-dark;
+		}
+	}
+
+	&.box2 {
+		background-color: $color-dark;
+		color: $color-white;
+		border: 0;
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			color: $color-white;
+		}
+	}
+
+	&.box3 {
+		background-color: $color-red;
+		color: $color-white;
+		border: 0;
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			color: $color-white;
+		}
+	}
+
+	&.box4 {
+		background-color: $color-gold;
+		border: 0;
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			color: $color-dark;
+		}
+	}
+
+	&.box5 {
+		background-color: $color-blue;
+		color: $color-white;
+		border: 0;
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			color: $color-white;
+		}
+	}
+}

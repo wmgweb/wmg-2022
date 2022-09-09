@@ -16,42 +16,83 @@
 	&.btn--red {
 		background-color: $color-red;
 		color: $color-white;
+
+		svg path {
+			color: $color-white;
+		}
 	}
 	
 	&.btn--gold {
 		background-color: $color-gold;
 		color: $color-dark;
+
+		svg path {
+			color: $color-dark;
+		}
 	}
 	
 	&.btn--blue {
 		background-color: $color-blue;
 		color: $color-dark;
+
+		svg path {
+			color: $color-dark;
+		}
 	}
 	
 	&.btn--orange {
 		background-color: $color-orange;
 		color: $color-dark;
+
+		svg path {
+			color: $color-dark;
+		}
 	}
 	
 	&.btn--green {
 		background-color: $color-green;
 		color: $color-dark;
+
+		svg path {
+			color: $color-dark;
+		}
 	}
 	
 	&.btn--dark {
 		background-color: $color-dark;
 		color: $color-white;
+
+		svg path {
+			color: $color-dark;
+		}
 	}
 	
 	&.btn--white {
 		background-color: $color-white;
 		color: $color-dark;
+
+		svg path {
+			color: $color-dark;
+		}
 	}
 	
 	&.btn--lightgrey,
 	&.btn--lightgrey-1 {
 		background-color: $color-lightgrey-1;
 		color: $color-dark;
+
+		svg path {
+			color: $color-dark;
+		}
+	}
+
+	&.btn-arrow--true {
+		svg {
+			vertical-align: middle;
+			margin: -3px 0 0 15px;
+		    width: 8px;
+		    height: 15px;
+		}
 	}
 
 	&.btn--text {
@@ -75,8 +116,6 @@
 				right: -20px;
 			    top: 50%;
 			    margin-top: -7.5px;
-			    width: 8px;
-			    height: 15px;
 			}
 		}
 

@@ -132,12 +132,25 @@ function blockShortcodes(block) {
 function blockEdit(block) {
 	if(userID != '') {
 		let contentURL = block.data('content_url');
-		jQuery.get('https://sitebuilder.warwick.ac.uk/sitebuilder2/api/permissions.htm?page=' + contentURL + '&user=' + userID, function(data) {
+		jQuery('.block', block).append('<div class="block__user"></div>');
+
+		jQuery.get('https://sitebuilder.warwick.ac.uk/sitebuilder2/api/permissions.htm?page=' + contentURL + '&user=' + userID, function(contentPermissionData) {
 		  	// If user has permissions, add edit button
-		  	if(data === 'true') {
-		  		jQuery('.block ', block).prepend('<a href="' + contentURL + '" class="block__edit" target="_blank">Edit</a>');
+		  	if(contentPermissionData === 'true') {
+		  		jQuery('.block__user ', block).prepend('<a href="' + contentURL + '" class="block__edit block__content-edit" target="_blank">Edit Content</a>');
 		  	}
 		});
+
+		// If posts URL is set
+		if(block.data('posts_url')) {
+			let postsURL = block.data('posts_url');
+			jQuery.get('https://sitebuilder.warwick.ac.uk/sitebuilder2/api/permissions.htm?page=' + postsURL + '&user=' + userID, function(postsPermissionData) {
+			  	// If user has permissions, add edit button
+			  	if(postsPermissionData === 'true') {
+			  		jQuery('.block__user ', block).prepend('<a href="' + postsURL + '" class="block__edit block__posts-edit" target="_blank">Edit Posts</a>');
+			  	}
+			});
+		}
 	}
 }
 
@@ -174,6 +187,37 @@ function blockImageFix(block) {
   			jQuery(this).attr('src', src);
   		}
 	});
+}
+
+// Convert timestamp to post date
+function blockPostDate(timestamp) {
+	let postDateTime = new Date(timestamp);
+	let formattedDate = postDateTime.toLocaleString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+	return formattedDate;
+}
+
+// Get the image url from block content
+function blockPostImage(content) {
+	let imageUrl = '';
+
+	// Search for src in content
+	if(content.indexOf('src="') >= 0) {
+		// Get content between src=" and next "
+		let image = content.split('src="')[1].split('" ')[0];
+
+		// If image exists
+		if(image != '') {
+			// If image doesn't have http, set full url
+			if(!image.startsWith('http')) {
+				imageUrl = contentURL + '/' + image;
+			}
+
+			// Remove url parameters
+			imageUrl = imageUrl.split('?')[0] 
+		}							
+	}
+
+	return imageUrl;
 }
 	
 jQuery(document).ready(function($) {  

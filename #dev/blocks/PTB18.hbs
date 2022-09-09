@@ -48,26 +48,13 @@
 					var posts = '';
 
 					$.each(data.items, function(key, data) {
-						// Convert timestamp to post date
-						var postDateTime = new Date(data.publicationDate);
-						var formattedDate = postDateTime.toLocaleString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
 
-						// Get image from content string
-						var formattedImage = '';
-						if (data.content.indexOf('src="') >= 0) {
-							var image = data.content.split('src="')[1].split('" ')[0];
-
-							if(image != '') {
-								// If image doesn't have http, set full url
-								if(!image.startsWith('http')) {
-									image = contentURL + image;
-								}
-
-								formattedImage = '<div class="post-card__image"><img src="' + image + '"><svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M34.1855 35L0.867523 35L0.867528 -1.83932e-06L34.1855 35Z" fill="#E6E8EA"/></svg></div>';
-							}							
+						var image = blockPostImage(data.content);
+						if(image != '') {
+							image = '<div class="post-card__image"><img src="' + image + '"><svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M34.1855 35L0.867523 35L0.867528 -1.83932e-06L34.1855 35Z" fill="#E6E8EA"/></svg></div>';						
 						}
 
-						posts = posts + '<div class="col-12 col-sm-6 col-md-4"><a href="' + data.url.href + '" class="post-card border-color--theme">' + formattedImage + '<div class="post-card__content"><span class="post-card__date">' + formattedDate + '</span><span class="post-card__cat">' + data.categories[0] + '</span><h4 class="post-card__heading">' + data.title + '</h4></div></a></div>';
+						posts = posts + '<div class="col-12 col-sm-6 col-md-4"><a href="' + data.url.href + '" class="post-card border-color--theme">' + image + '<div class="post-card__content"><span class="post-card__date">' + blockPostDate(data.publicationDate) + '</span><span class="post-card__cat">' + data.categories[0] + '</span><h4 class="post-card__heading">' + data.title + '</h4></div></a></div>';
 					});
 
 					$('.PTB18-grid > .row').html(posts);

@@ -10859,12 +10859,25 @@ function blockShortcodes(block) {
 function blockEdit(block) {
 	if(userID != '') {
 		let contentURL = block.data('content_url');
-		jQuery.get('https://sitebuilder.warwick.ac.uk/sitebuilder2/api/permissions.htm?page=' + contentURL + '&user=' + userID, function(data) {
+		jQuery('.block', block).append('<div class="block__user"></div>');
+
+		jQuery.get('https://sitebuilder.warwick.ac.uk/sitebuilder2/api/permissions.htm?page=' + contentURL + '&user=' + userID, function(contentPermissionData) {
 		  	// If user has permissions, add edit button
-		  	if(data === 'true') {
-		  		jQuery('.block ', block).prepend('<a href="' + contentURL + '" class="block__edit" target="_blank">Edit</a>');
+		  	if(contentPermissionData === 'true') {
+		  		jQuery('.block__user ', block).prepend('<a href="' + contentURL + '" class="block__edit block__content-edit" target="_blank">Edit Content</a>');
 		  	}
 		});
+
+		// If posts URL is set
+		if(block.data('posts_url')) {
+			let postsURL = block.data('posts_url');
+			jQuery.get('https://sitebuilder.warwick.ac.uk/sitebuilder2/api/permissions.htm?page=' + postsURL + '&user=' + userID, function(postsPermissionData) {
+			  	// If user has permissions, add edit button
+			  	if(postsPermissionData === 'true') {
+			  		jQuery('.block__user ', block).prepend('<a href="' + postsURL + '" class="block__edit block__posts-edit" target="_blank">Edit Posts</a>');
+			  	}
+			});
+		}
 	}
 }
 
@@ -10901,6 +10914,37 @@ function blockImageFix(block) {
   			jQuery(this).attr('src', src);
   		}
 	});
+}
+
+// Convert timestamp to post date
+function blockPostDate(timestamp) {
+	let postDateTime = new Date(timestamp);
+	let formattedDate = postDateTime.toLocaleString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+	return formattedDate;
+}
+
+// Get the image url from block content
+function blockPostImage(content) {
+	let imageUrl = '';
+
+	// Search for src in content
+	if(content.indexOf('src="') >= 0) {
+		// Get content between src=" and next "
+		let image = content.split('src="')[1].split('" ')[0];
+
+		// If image exists
+		if(image != '') {
+			// If image doesn't have http, set full url
+			if(!image.startsWith('http')) {
+				imageUrl = contentURL + '/' + image;
+			}
+
+			// Remove url parameters
+			imageUrl = imageUrl.split('?')[0] 
+		}							
+	}
+
+	return imageUrl;
 }
 	
 jQuery(document).ready(function($) {  
@@ -11615,8 +11659,14 @@ this["WMG"]["blocks"]["FB06"] = Handlebars.template({"1":function(container,dept
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":43,"column":12},"end":{"line":43,"column":28}}}) : helper)))
     + " .FB06-main__image').prepend('<svg width=\"57\" height=\"74\" viewBox=\"0 0 57 74\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"bg-fill-path\"><path d=\"M0 0L56.7634 -9.92483e-06L56.7634 73.5887L0 0Z\" fill=\"#E6E8EA\"/></svg>');\r\n\r\n		// Wrap everything else\r\n		$('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":46,"column":12},"end":{"line":46,"column":28}}}) : helper)))
-    + " .FB06-main').children().not('.FB06-main__image').wrapAll('<div class=\"FB06-main__content\"><div class=\"half-container half-container--lg half-container--left\"></div></div>');\r\n\r\n		// Initilise slick carousel with custom numbered pagination\r\n		$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":49,"column":12},"end":{"line":49,"column":28}}}) : helper)))
+    + " .FB06-main').children().not('.FB06-main__image').wrapAll('<div class=\"FB06-main__content\"><div class=\"half-container half-container--lg half-container--left\"></div></div>');\r\n\r\n		// Ajax query to load posts\r\n		if($('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":49,"column":15},"end":{"line":49,"column":31}}}) : helper)))
+    + "').parent('.wmg-block').data('posts_url')) {\r\n			queryURL = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/rss/news.json';\r\n			contentURL = $('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":51,"column":26},"end":{"line":51,"column":42}}}) : helper)))
+    + "').parent('.wmg-block').data('posts_url');\r\n\r\n			$.ajax({\r\n	  			async: false,\r\n		        url : queryURL + '?page=' + contentURL + '&num=5',\r\n		        type: 'GET',\r\n		        dataType: 'json',\r\n		        success: function(data) {\r\n					var posts = '';\r\n\r\n					$.each(data.items, function(key, data) {\r\n						\r\n\r\n						// Get image from content string\r\n						var image = blockPostImage(data.content);\r\n\r\n						if(image != '') {\r\n							var image = '<div class=\"FB06-carousel__item-image\"><img src=\"' + image + '\" alt=\"' + data.title + '\"></div>';\r\n						}\r\n\r\n						posts = posts + '<div class=\"FB06-carousel__item\">' + image + '<div class=\"FB06-carousel__item-content\"><div class=\"half-container half-container--lg half-container--right\"><p class=\"FB06-carousel__item-content-date\">' + blockPostDate(data.publicationDate) + '</p><h3>' + data.title + '</h3><p><a href=\"' + data.url.href + '\" class=\"btn btn--text btn-arrow--true\">Read more <svg width=\"8\" height=\"15\" viewBox=\"0 0 8 15\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7.72761 8.55602L2.46362 14.5042C2.09979 14.9153 1.51146 14.9153 1.1515 14.5042L0.276745 13.5157C-0.0870884 13.1046 -0.0870884 12.4398 0.276746 12.0331L4.00411 7.8125L0.272876 3.59632C-0.0909585 3.1852 -0.0909585 2.5204 0.272876 2.11366L1.14763 1.12084C1.51146 0.70972 2.09979 0.70972 2.45975 1.12084L7.72374 7.06898C8.09144 7.4801 8.09144 8.1449 7.72761 8.55602Z\" fill=\"#272729\"></path></svg></a></p></div></div></div>';\r\n					});\r\n\r\n					$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":74,"column":15},"end":{"line":74,"column":31}}}) : helper)))
+    + " .FB06-carousel').html(posts);\r\n\r\n					// Keep window in same scroll position\r\n					window.scrollTo(0, scrollPosition);\r\n		        },\r\n		        error: function(data) {\r\n		        	console.log('Could not get data from ' + contentURL);\r\n		        },\r\n	        });\r\n	    }\r\n\r\n		// Initilise slick carousel with custom numbered pagination\r\n		$('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":86,"column":12},"end":{"line":86,"column":28}}}) : helper)))
     + " .FB06-carousel').slick({\r\n			arrows: false,\r\n			dots: true,\r\n			draggable: false,\r\n			customPaging : function(slider, i) {\r\n				var thumb = $(slider.$slides[i]).data();\r\n				return '<a>0' + parseInt(i+1) + '</a>';\r\n			}\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["HB01"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -12798,18 +12848,18 @@ this["WMG"]["blocks"]["PTB18"] = Handlebars.template({"compiler":[8,">= 4.3.0"],
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":27,"column":18},"end":{"line":27,"column":34}}}) : helper)))
     + "');\r\n		var $block = $('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":28,"column":25},"end":{"line":28,"column":41}}}) : helper)))
-    + "').parent('.wmg-block');\r\n\r\n		function ajaxPostQuery() {\r\n			queryURL = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/rss/news.json';\r\n			contentURL = $block.data('content_url');\r\n			queryString = '&num=' + $('.PTB18-grid').attr('data-count');\r\n			scrollPosition = document.documentElement.scrollTop;\r\n\r\n			// Get all active filters\r\n			$('.PTB18-filter input:checked').each(function() {\r\n				queryString = queryString + '&tag=' + $(this).val();\r\n			});\r\n\r\n			// Ajax query to load posts\r\n			$.ajax({\r\n	  			async: false,\r\n		        url : queryURL + '?page=' + contentURL + queryString,\r\n		        type: 'GET',\r\n		        dataType: 'json',\r\n		        success: function(data) {\r\n					var posts = '';\r\n\r\n					$.each(data.items, function(key, data) {\r\n						// Convert timestamp to post date\r\n						var postDateTime = new Date(data.publicationDate);\r\n						var formattedDate = postDateTime.toLocaleString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });\r\n\r\n						// Get image from content string\r\n						var formattedImage = '';\r\n						if (data.content.indexOf('src=\"') >= 0) {\r\n							var image = data.content.split('src=\"')[1].split('\" ')[0];\r\n\r\n							if(image != '') {\r\n								// If image doesn't have http, set full url\r\n								if(!image.startsWith('http')) {\r\n									image = contentURL + image;\r\n								}\r\n\r\n								formattedImage = '<div class=\"post-card__image\"><img src=\"' + image + '\"><svg width=\"35\" height=\"35\" viewBox=\"0 0 35 35\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M34.1855 35L0.867523 35L0.867528 -1.83932e-06L34.1855 35Z\" fill=\"#E6E8EA\"/></svg></div>';\r\n							}							\r\n						}\r\n\r\n						posts = posts + '<div class=\"col-12 col-sm-6 col-md-4\"><a href=\"' + data.url.href + '\" class=\"post-card border-color--theme\">' + formattedImage + '<div class=\"post-card__content\"><span class=\"post-card__date\">' + formattedDate + '</span><span class=\"post-card__cat\">' + data.categories[0] + '</span><h4 class=\"post-card__heading\">' + data.title + '</h4></div></a></div>';\r\n					});\r\n\r\n					$('.PTB18-grid > .row').html(posts);\r\n\r\n					// Keep window in same scroll position\r\n					window.scrollTo(0, scrollPosition);\r\n		        },\r\n		        error: function(data) {\r\n		        	console.log('Could not get data from ' + contentURL);\r\n		        },\r\n	        });\r\n		}\r\n\r\n		// Load posts on launch\r\n		ajaxPostQuery();\r\n\r\n		// On filter change run Ajax query\r\n	    $('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":88,"column":15},"end":{"line":88,"column":31}}}) : helper)))
+    + "').parent('.wmg-block');\r\n\r\n		function ajaxPostQuery() {\r\n			queryURL = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/rss/news.json';\r\n			contentURL = $block.data('content_url');\r\n			queryString = '&num=' + $('.PTB18-grid').attr('data-count');\r\n			scrollPosition = document.documentElement.scrollTop;\r\n\r\n			// Get all active filters\r\n			$('.PTB18-filter input:checked').each(function() {\r\n				queryString = queryString + '&tag=' + $(this).val();\r\n			});\r\n\r\n			// Ajax query to load posts\r\n			$.ajax({\r\n	  			async: false,\r\n		        url : queryURL + '?page=' + contentURL + queryString,\r\n		        type: 'GET',\r\n		        dataType: 'json',\r\n		        success: function(data) {\r\n					var posts = '';\r\n\r\n					$.each(data.items, function(key, data) {\r\n\r\n						var image = blockPostImage(data.content);\r\n						if(image != '') {\r\n							image = '<div class=\"post-card__image\"><img src=\"' + image + '\"><svg width=\"35\" height=\"35\" viewBox=\"0 0 35 35\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M34.1855 35L0.867523 35L0.867528 -1.83932e-06L34.1855 35Z\" fill=\"#E6E8EA\"/></svg></div>';						\r\n						}\r\n\r\n						posts = posts + '<div class=\"col-12 col-sm-6 col-md-4\"><a href=\"' + data.url.href + '\" class=\"post-card border-color--theme\">' + image + '<div class=\"post-card__content\"><span class=\"post-card__date\">' + blockPostDate(data.publicationDate) + '</span><span class=\"post-card__cat\">' + data.categories[0] + '</span><h4 class=\"post-card__heading\">' + data.title + '</h4></div></a></div>';\r\n					});\r\n\r\n					$('.PTB18-grid > .row').html(posts);\r\n\r\n					// Keep window in same scroll position\r\n					window.scrollTo(0, scrollPosition);\r\n		        },\r\n		        error: function(data) {\r\n		        	console.log('Could not get data from ' + contentURL);\r\n		        },\r\n	        });\r\n		}\r\n\r\n		// Load posts on launch\r\n		ajaxPostQuery();\r\n\r\n		// On filter change run Ajax query\r\n	    $('#block-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":75,"column":15},"end":{"line":75,"column":31}}}) : helper)))
     + " .PTB18-filter').on('change', 'input', function() {\r\n			ajaxPostQuery();\r\n	    });\r\n\r\n	    // Add pagination\r\n	    $('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":93,"column":15},"end":{"line":93,"column":31}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":80,"column":15},"end":{"line":80,"column":31}}}) : helper)))
     + " .PTB18-more .btn').click(function() {\r\n	    	var currentCount = parseInt($('.PTB18-grid').attr('data-count'));\r\n	    	var newCount = currentCount + 12;\r\n	    	$('.PTB18-grid').attr('data-count', newCount);\r\n	    	ajaxPostQuery();\r\n	    });\r\n\r\n	    // Load filters\r\n	    var filtersContentURL = $block.data('filters_url');\r\n\r\n	    $.ajax({\r\n  			async: false,\r\n	        url : 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/dataentry/entries.json?page=' + filtersContentURL,\r\n	        type: 'GET',\r\n	        dataType: 'json',\r\n	        success: function(data) {				\r\n				$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":109,"column":14},"end":{"line":109,"column":30}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":96,"column":14},"end":{"line":96,"column":30}}}) : helper)))
     + " .PTB18-filter').html(data.items[0].content);\r\n\r\n				// Loop through each filter and create checkbox\r\n				$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":112,"column":14},"end":{"line":112,"column":30}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":99,"column":14},"end":{"line":99,"column":30}}}) : helper)))
     + " .PTB18-filter li').each(function() {\r\n					var cat = $(this).text();\r\n					$(this).html('<label><input type=\"checkbox\" value=\"' + cat + '\">' + cat + '</label>');\r\n				});\r\n	        },\r\n	        error: function(data) {\r\n	        	console.log('Could not get filters from ' + filtersContentURL);\r\n	        }\r\n	    });			\r\n\r\n	    // Mobile filter button\r\n	    $('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":123,"column":15},"end":{"line":123,"column":31}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":110,"column":15},"end":{"line":110,"column":31}}}) : helper)))
     + " .PTB18-filter-button').click(function() {\r\n	    	$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":124,"column":16},"end":{"line":124,"column":32}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":111,"column":16},"end":{"line":111,"column":32}}}) : helper)))
     + " .PTB18-filter').toggleClass('active');\r\n	    	$(this).toggleClass('active');\r\n	    });\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["PTB20"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {

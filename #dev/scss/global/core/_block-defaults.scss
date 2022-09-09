@@ -3,20 +3,26 @@
 	overflow: hidden;
 	padding: 30px 0;
 
-	.block__edit {
+	.block__user {
 		display: none;
 		position: absolute;
 		right: 0;
 		bottom: 0;
 		z-index: 1000;
-		text-decoration: none;
-		background: $color-dark;
-		color: $color-white;
-		padding: .5rem 2rem;
+
+		.block__edit {
+			display: inline-block;
+			text-decoration: none;
+			background: $color-dark;
+			color: $color-white;
+			padding: .5rem 2rem;
+			margin-left: 10px;
+		}
+
 	}
 
 	&:hover {
-		.block__edit {
+		.block__user {
 			display: block;
 		}
 	}

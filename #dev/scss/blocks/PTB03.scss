@@ -9,6 +9,32 @@
 			bottom: 0;
 			left: 5vw;
 		}
+
+		.slick-track {
+			display: flex !important;
+		}
+
+		.slick-slide {
+			height: auto;
+
+			> div {
+				height: 100%;
+			}
+		}
+
+		.PTB03-carousel__item {
+			height: 100%;
+
+			.card-block {
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+
+				h3 {
+					flex: 1;
+				}
+			}
+		}
 	}
 
 	&.bg--dark {

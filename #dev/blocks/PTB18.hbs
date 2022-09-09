@@ -49,7 +49,7 @@
 
 					$.each(data.items, function(key, data) {
 
-						var image = blockPostImage(data.content);
+						var image = blockPostImage(data.content, contentURL);
 						if(image != '') {
 							image = '<div class="post-card__image"><img src="' + image + '"><svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M34.1855 35L0.867523 35L0.867528 -1.83932e-06L34.1855 35Z" fill="#E6E8EA"/></svg></div>';						
 						}
@@ -57,7 +57,7 @@
 						posts = posts + '<div class="col-12 col-sm-6 col-md-4"><a href="' + data.url.href + '" class="post-card border-color--theme">' + image + '<div class="post-card__content"><span class="post-card__date">' + blockPostDate(data.publicationDate) + '</span><span class="post-card__cat">' + data.categories[0] + '</span><h4 class="post-card__heading">' + data.title + '</h4></div></a></div>';
 					});
 
-					$('.PTB18-grid > .row').html(posts);
+					$('#block-{{ blockCount }} .PTB18-grid > .row').html(posts);
 
 					// Keep window in same scroll position
 					window.scrollTo(0, scrollPosition);

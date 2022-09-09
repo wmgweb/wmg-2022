@@ -45,14 +45,14 @@
 		// Wrap everything else
 		$('#block-{{ blockCount }} .FB06-main').children().not('.FB06-main__image').wrapAll('<div class="FB06-main__content"><div class="half-container half-container--lg half-container--left"></div></div>');
 
-		// Ajax query to load posts
+		// Ajax query to load posts if data-posts_url is set
 		if($('#block-{{ blockCount }}').parent('.wmg-block').data('posts_url')) {
 			queryURL = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/rss/news.json';
-			contentURL = $('#block-{{ blockCount }}').parent('.wmg-block').data('posts_url');
+			postsURL = $('#block-{{ blockCount }}').parent('.wmg-block').data('posts_url');
 
 			$.ajax({
 	  			async: false,
-		        url : queryURL + '?page=' + contentURL + '&num=5',
+		        url : queryURL + '?page=' + postsURL + '&num=5',
 		        type: 'GET',
 		        dataType: 'json',
 		        success: function(data) {
@@ -62,7 +62,7 @@
 						
 
 						// Get image from content string
-						var image = blockPostImage(data.content);
+						var image = blockPostImage(data.content, postsURL);
 
 						if(image != '') {
 							var image = '<div class="FB06-carousel__item-image"><img src="' + image + '" alt="' + data.title + '"></div>';
@@ -77,7 +77,7 @@
 					window.scrollTo(0, scrollPosition);
 		        },
 		        error: function(data) {
-		        	console.log('Could not get data from ' + contentURL);
+		        	console.log('Could not get data from ' + postsURL);
 		        },
 	        });
 	    }

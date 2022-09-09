@@ -197,7 +197,7 @@ function blockPostDate(timestamp) {
 }
 
 // Get the image url from block content
-function blockPostImage(content) {
+function blockPostImage(content, contentURL) {
 	let imageUrl = '';
 
 	// Search for src in content
@@ -218,6 +218,80 @@ function blockPostImage(content) {
 	}
 
 	return imageUrl;
+}
+	
+// Function to run an AJAX query for posts/events and return the data
+function postsQuery(postsURL, postsCount) {
+	var postsData;
+
+	jQuery.ajax({
+			async: false,
+        url : 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/rss/news.json?page=' + postsURL + '&num=' + postsCount,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+			postsData = data.items;
+        }
+    });
+    return postsData;
+}
+
+// Function to output event start/end dates
+function eventDates(startTimestamp, endTimestamp) {
+	// Convert to date/time
+	var startDateTime = new Date(startTimestamp);
+	var endDateTime = new Date(endTimestamp);
+
+	// Get formatted dates
+	var startFormattedDate = startDateTime.toLocaleString('en-GB', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+	var endFormattedDate = endDateTime.toLocaleString('en-GB', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+
+	var returnedDateTimeString = '';
+	var startFormattedTime = '';
+	var endFormattedTime = '';
+
+	// If it is set to midnight, assumed to be all day event so don't show time
+	if(startDateTime.getHours() != '0') {
+		startFormattedTime = startDateTime.getHours().toLocaleString('en-GB', {minimumIntegerDigits: 2})  + ':' + startDateTime.getMinutes().toLocaleString('en-GB', {minimumIntegerDigits: 2});
+	}
+
+	if(endDateTime.getHours() != '0') {
+		endFormattedTime = endDateTime.getHours().toLocaleString('en-GB', {minimumIntegerDigits: 2})  + ':' + startDateTime.getMinutes().toLocaleString('en-GB', {minimumIntegerDigits: 2});
+	}
+		
+	// If start and end date are the same, only show once
+	if(startFormattedDate == endFormattedDate) {
+		returnedDateTimeString = 'Date: ' + startFormattedDate;
+
+		// Add start time if it exists
+		if(startFormattedTime != '') {
+			returnedDateTimeString = returnedDateTimeString + ' <br>Start: ' + startFormattedTime;
+		}
+
+		// Add end time if it exists
+		if(endFormattedTime != '') {
+			returnedDateTimeString = returnedDateTimeString + ' <br>End: ' + endFormattedTime;
+		}
+	} else { // Else if start and end date are different
+
+		// Add start date
+		returnedDateTimeString = 'Start Date: ' + startFormattedDate;
+
+		// Add start time if it exists
+		if(startFormattedTime != '') {
+			returnedDateTimeString = returnedDateTimeString + ' <br>Start Time: ' + startFormattedTime + '<br>';
+		}
+
+		// Add end date
+		returnedDateTimeString = returnedDateTimeString + ' <br>End Date: ' + endFormattedDate;
+
+		// Add end time if it exists
+		if(endFormattedTime != '') {
+			returnedDateTimeString = returnedDateTimeString + ' <br>End Time: ' + endFormattedTime;
+		}
+	}
+
+	return returnedDateTimeString;
 }
 	
 jQuery(document).ready(function($) {  

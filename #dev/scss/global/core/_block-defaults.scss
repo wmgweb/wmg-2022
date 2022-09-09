@@ -66,6 +66,12 @@
 		}
 	}
 
+	&.post-date--false {
+		.post-date {
+			display: none;
+		}
+	}
+
 	@include lg {
 		&.block-triangle--bottom-left {
 			.block-triangle {

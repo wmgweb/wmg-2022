@@ -31,14 +31,11 @@
 		blockFunctions('{{ blockCount }}');
 
 		// Loop through each image
-		$('#block-{{ blockCount }} .SB01-side__content img').each(function(index, element) {
+		$('#block-{{ blockCount }} .SB01-side__content p').each(function(index, element) {
 
 			// Create a wrapper for the content
-			$(this).nextUntil('img').wrapAll('<div class="icon-short-text"><div class="icon-short-text-main"></div></div>');
-
-			// Move the image into wrapper
-			$(this).prependTo($(this).next('.icon-short-text'));
-
+			$(this).addClass('icon-short-text');
+			$(this).children().not('.fa').wrapAll('<div class="icon-short-text-main"></div>');
 		});
 
 		function block{{ blockCount }}MoveImage() {

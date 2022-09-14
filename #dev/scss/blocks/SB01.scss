@@ -1,4 +1,5 @@
 .block-SB01 {
+	@include theme('color', '.SB01-side__content .fa', '&');
 	padding: 0;
 
 	.row {

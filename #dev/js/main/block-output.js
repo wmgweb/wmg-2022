@@ -26,7 +26,7 @@ function blockFunctions(blockID) {
 
 // Shortcodes
 function blockShortcodes(block) {
-	let shortcodeLimit = 10; // Only allow 10 shortcodes per block
+	let shortcodeLimit = 100; // Only allow 100 shortcodes per block
 	let shortcodeCount = 1; // Current shortcode count
 	let shortcodeOutput = ''; // Empty output variable
 	let blockContent = jQuery('.block__content', block); // Get the '.block_content' element - this is the wrapper where we check for shortcodes
@@ -53,6 +53,8 @@ function blockShortcodes(block) {
 				scAttr[attr[0]] = attrVal; 
 			}
 		});
+
+		scOutput = '';
 
 		// If shortcode is button
 		switch(scAttr.type) {
@@ -84,11 +86,10 @@ function blockShortcodes(block) {
 
 				scOutput = '<span class="brand-triangle'+ color + '"><svg width="14" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L-1.90735e-06 19L-2.46316e-07 6.83429e-07L14 19Z" fill="#EE3124"/></svg></span>';
 				break;
-			case "youtube":
-				scOutput = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + scAttr.id + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
-				break;
-			case "vimeo":
-				scOutput = '';
+			case "fa":
+				if('code' in scAttr) {
+					scOutput = '<i class="' + scAttr.code + '"></i>';
+				}
 				break;
 			case "video":
 				// If video set

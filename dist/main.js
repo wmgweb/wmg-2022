@@ -10753,7 +10753,7 @@ function blockFunctions(blockID) {
 
 // Shortcodes
 function blockShortcodes(block) {
-	let shortcodeLimit = 10; // Only allow 10 shortcodes per block
+	let shortcodeLimit = 100; // Only allow 100 shortcodes per block
 	let shortcodeCount = 1; // Current shortcode count
 	let shortcodeOutput = ''; // Empty output variable
 	let blockContent = jQuery('.block__content', block); // Get the '.block_content' element - this is the wrapper where we check for shortcodes
@@ -10780,6 +10780,8 @@ function blockShortcodes(block) {
 				scAttr[attr[0]] = attrVal; 
 			}
 		});
+
+		scOutput = '';
 
 		// If shortcode is button
 		switch(scAttr.type) {
@@ -10811,11 +10813,10 @@ function blockShortcodes(block) {
 
 				scOutput = '<span class="brand-triangle'+ color + '"><svg width="14" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L-1.90735e-06 19L-2.46316e-07 6.83429e-07L14 19Z" fill="#EE3124"/></svg></span>';
 				break;
-			case "youtube":
-				scOutput = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + scAttr.id + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
-				break;
-			case "vimeo":
-				scOutput = '';
+			case "fa":
+				if('code' in scAttr) {
+					scOutput = '<i class="' + scAttr.code + '"></i>';
+				}
 				break;
 			case "video":
 				// If video set
@@ -13155,16 +13156,16 @@ this["WMG"]["blocks"]["SB01"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":31,"column":18},"end":{"line":31,"column":34}}}) : helper)))
     + "');\r\n\r\n		// Loop through each image\r\n		$('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":34,"column":12},"end":{"line":34,"column":28}}}) : helper)))
-    + " .SB01-side__content img').each(function(index, element) {\r\n\r\n			// Create a wrapper for the content\r\n			$(this).nextUntil('img').wrapAll('<div class=\"icon-short-text\"><div class=\"icon-short-text-main\"></div></div>');\r\n\r\n			// Move the image into wrapper\r\n			$(this).prependTo($(this).next('.icon-short-text'));\r\n\r\n		});\r\n\r\n		function block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":44,"column":16},"end":{"line":44,"column":32}}}) : helper)))
+    + " .SB01-side__content p').each(function(index, element) {\r\n\r\n			// Create a wrapper for the content\r\n			$(this).addClass('icon-short-text');\r\n			$(this).children().not('.fa').wrapAll('<div class=\"icon-short-text-main\"></div>');\r\n		});\r\n\r\n		function block"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":41,"column":16},"end":{"line":41,"column":32}}}) : helper)))
     + "MoveImage() {\r\n			// If mobile/tablet\r\n			if($(window).width() < 992) {\r\n				$('.SB01-image').prependTo('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":47,"column":39},"end":{"line":47,"column":55}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":44,"column":39},"end":{"line":44,"column":55}}}) : helper)))
     + " .SB01-main');\r\n			} else {\r\n				$('.SB01-image').prependTo('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":49,"column":39},"end":{"line":49,"column":55}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":46,"column":39},"end":{"line":46,"column":55}}}) : helper)))
     + " .SB01-side');\r\n			}\r\n		}\r\n\r\n		block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":53,"column":7},"end":{"line":53,"column":23}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":50,"column":7},"end":{"line":50,"column":23}}}) : helper)))
     + "MoveImage();\r\n\r\n		$(window).resize(function() {\r\n			block"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":56,"column":8},"end":{"line":56,"column":24}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":53,"column":8},"end":{"line":53,"column":24}}}) : helper)))
     + "MoveImage();\r\n		});\r\n\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["SB02"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {

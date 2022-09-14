@@ -121,9 +121,19 @@
 
 		&.btn--text--white {
 			border-color: $color-white;
+			color: $color-white;
 
 			svg path {
 				fill: $color-white;
+			}
+		}
+
+		&.btn--text--dark {
+			border-color: $color-dark;
+			color: $color-dark;
+
+			svg path {
+				fill: $color-dark;
 			}
 		}
 	}

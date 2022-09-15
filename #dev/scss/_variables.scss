@@ -23,6 +23,20 @@ $color-green 		: #C1D82F;
 
 $color-text  	: $color-dark;
 
+// Alt colours
+$color-alt-red			: darken($color-red, 10%);
+$color-alt-yellow		: darken($color-yellow, 10%);
+$color-alt-gold			: darken($color-gold, 10%);
+$color-alt-blue			: darken($color-blue, 10%);
+$color-alt-orange		: darken($color-orange, 10%);
+$color-alt-darkblue		: darken($color-darkblue, 10%);
+$color-alt-green		: darken($color-green, 10%);
+$color-alt-lightgrey-1	: darken($color-lightgrey-1, 10%);
+$color-alt-lightgrey-2	: darken($color-lightgrey-2, 10%);
+$color-alt-lightgrey-3	: darken($color-lightgrey-3, 10%);
+$color-alt-grey			: darken($color-grey, 10%);
+$color-alt-white		: darken($color-white, 10%);
+
 // Bootstrap Breakpoints
 $bs-lg 	: 1200px;
 $bs-md  : 992px;

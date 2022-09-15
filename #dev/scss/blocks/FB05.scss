@@ -9,6 +9,14 @@
 	// Set default inner block colour
 	.inner-block {
 		background-color: $color-red;
+
+		&:after {
+			background-color: $color-alt-red;
+		}
+
+		svg path {
+			fill: $color-alt-red;
+		}
 	}
 
 	.FB05__main {

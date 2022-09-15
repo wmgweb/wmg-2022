@@ -10822,7 +10822,7 @@ function blockShortcodes(block) {
 				// If video set
 				if('set' in scAttr && 'id' in scAttr) {
 					// Set the embed code depending on which type is set
-					var embed;
+					var embed = '';
 					if(scAttr.set == 'youtube') {
 						embed = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + scAttr.id + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
 					} else if(scAttr.set == 'vimeo') {
@@ -11108,7 +11108,8 @@ jQuery(document).ready(function() {
 	jQuery('.id7-page-footer').after('<div class="video-popup"><div class="video-popup__content"><button class="video-popup__close">Close</button><div class="video-popup__code"></div></div></div>');
 
 	// On video element image click
-	jQuery('.video-element__image').click(function() {
+	jQuery('body').on('click', '.video-element__image', function() {
+		console.log('Opening Video!');
 		// Get video code
 		var code = jQuery('.video-element__code', jQuery(this).parent('.video-element')).html();
 

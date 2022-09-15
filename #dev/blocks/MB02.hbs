@@ -45,7 +45,7 @@
 		// Initialise the Slick Carousels - one mobile, one desktop
 		function block{{ blockCount }}Carousels() {
 			if($(window).width() < 768) {
-				$('#block-{{ blockCount }} .MB02-mobile-carousel').slick({
+				$('#block-{{ blockCount }} .MB02-mobile-carousel').not('.slick-initialized').slick({
 					dots: true,
 					arrows: true,
 					autoplay: false,
@@ -55,7 +55,7 @@
 			}
 
 			if($(window).width() >= 768) {
-				$('#block-{{ blockCount }} .MB02-carousel').slick({
+				$('#block-{{ blockCount }} .MB02-carousel').not('.slick-initialized').slick({
 					dots: false,
 					arrows: true,
 					autoplay: false,

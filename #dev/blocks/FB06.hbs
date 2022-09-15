@@ -72,9 +72,6 @@
 					});
 
 					$('#block-{{ blockCount }} .FB06-carousel').html(posts);
-
-					// Keep window in same scroll position
-					window.scrollTo(0, scrollPosition);
 		        },
 		        error: function(data) {
 		        	console.log('Could not get data from ' + postsURL);

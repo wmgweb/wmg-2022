@@ -95,7 +95,7 @@ function blockShortcodes(block) {
 				// If video set
 				if('set' in scAttr && 'id' in scAttr) {
 					// Set the embed code depending on which type is set
-					var embed;
+					var embed = '';
 					if(scAttr.set == 'youtube') {
 						embed = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + scAttr.id + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
 					} else if(scAttr.set == 'vimeo') {

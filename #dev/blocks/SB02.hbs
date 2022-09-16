@@ -22,7 +22,7 @@
 		blockFunctions('{{ blockCount }}');
 
 		// Ajax query to load items
-		var contentURL = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/dataentry/entries.json?page=/fac/sci/wmg/edit-contents';
+		var contentURL = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/dataentry/entries.json?page=/fac/sci/wmg-2021/study/all-courses/course-contents';
 		$.ajax({
   			async: false,
 	        url : contentURL,
@@ -43,7 +43,7 @@
 						}
 					});
 					// Add to output
-					output = output + '<li><span class="SB02-search-results__heading">' + data.content + '</span><div class="SB02-search-results__tags">' + cats + '</span></li>';
+					output = output + '<li><span class="SB02-search-results__heading"><a href="' + data.url.href + '">' + data.title + '</a></span><div class="SB02-search-results__tags">' + cats + '</span></li>';
 				});
 
 				output = output + '<li class="SB02-search-results__none">No courses matched your search</li>';

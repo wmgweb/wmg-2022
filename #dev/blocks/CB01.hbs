@@ -15,6 +15,13 @@
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
 
+		var $parent = $('#block-{{ blockCount }}').parent('.wmg-block');
+
+		// Add title if set
+		if($parent.data('title')) {
+			$('#block-{{ blockCount }} .block__content').prepend('<h2>' + $parent.data('title') + '</h2>');
+		}
+
 		// Loop through each card block, check if an image exists and wrap it
 		$('#block-{{ blockCount }} .card-block').each(function() {
 			if($('img', $(this)).length) {

@@ -315,10 +315,6 @@ jQuery(document).ready(function($) {
   			wmgBlockContentURL = pagePath + wmgBlockContentURL;
   			$block.attr('data-content_url', wmgBlockContentURL);
   		}
-
-  		if(!wmgBlockContentURL.endsWith('/')) {
-  			wmgBlockContentURL = wmgBlockContentURL + '/';
-  		}
   		$(this).data('content_url', wmgBlockContentURL);
 
   		// If block ID is set, load. Otherwise take first block.
@@ -352,6 +348,7 @@ jQuery(document).ready(function($) {
 				var currentItem = data.items;
 				var handlebarsBlockData = {
 					title : data.title,
+					link : data.link,
 					content : data.items,
 					categories: data.categories,
 					blockCount : wmgCurrentBlockCount,

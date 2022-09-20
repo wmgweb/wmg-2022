@@ -315,6 +315,11 @@ jQuery(document).ready(function($) {
   			wmgBlockContentURL = pagePath + wmgBlockContentURL;
   			$block.attr('data-content_url', wmgBlockContentURL);
   		}
+
+  		if(!wmgBlockContentURL.endsWith('/')) {
+  			wmgBlockContentURL = wmgBlockContentURL + '/';
+  		}
+  		
   		$(this).data('content_url', wmgBlockContentURL);
 
   		// If block ID is set, load. Otherwise take first block.

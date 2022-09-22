@@ -1,6 +1,10 @@
 .block-FB03 {
 	padding: 0;
 
+	.block__content {
+		position: relative;
+	}
+
 	.row {
 		margin: 0;
 		width: 100%;
@@ -24,33 +28,43 @@
 
 	.FB03__main {
 		position: relative;
-		padding: 30px 0;
+
+		.corner-arrow {
+			width: 53px;
+			height: auto;
+		}
+
+		.FB03__main-content {
+			padding: 30px 0;
+		}
 
 		.h3,
 		h3 {
 			margin: 0;
 			color: $color-grey;
 		}
+	}
 
-		.corner-arrow {
-			position: absolute;
-			top: 0;
-			right: 0;
-			width: 53px;
-			height: auto;
-		}
+	.corner-arrow {
+		width: 150px;
+		height: 305px;
+		position: absolute;
+		top: 0;
+		right: 0;
 	}
 
 	@include lg {
 		.FB03__main {
+			height: 100%;
 			display: flex;
-			align-items: center;
-			padding-top: 20px;
-			padding-bottom: 20px;
+			flex-direction: column;
+			justify-content: center;
 
-			.corner-arrow {
-				width: 150px;
-				height: 305px;
+			.FB03__main-content {
+				display: flex;
+				align-items: center;
+				padding-top: 20px;
+				padding-bottom: 20px;
 			}
 		}
 	}

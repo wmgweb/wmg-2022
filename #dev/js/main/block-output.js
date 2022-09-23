@@ -236,19 +236,50 @@ function blockPostImage(content, contentURL) {
 }
 	
 // Function to run an AJAX query for posts/events and return the data
-function postsQuery(postsURL, postsCount) {
-	var postsData;
+function postsQuery(postsURL, postsCount, postsTags) {
+	var postsData = false;
+	var postsTagsString = '';
+
+	if(postsTags != '') {
+		var postTagsArray = postsTags.split(',');
+		var postsTagsString = '';
+
+		jQuery.each(postTagsArray, function(key, value) {
+		  	postsTagsString = postsTagsString + '&tag=' + value;
+		});
+	}
 
 	jQuery.ajax({
-			async: false,
-        url : 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/rss/news.json?page=' + postsURL + '&num=' + postsCount,
+		async: false,
+        url : 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/rss/news.json?page=' + postsURL + '&num=' + postsCount + postsTagsString,
         type: 'GET',
         dataType: 'json',
         success: function(data) {
 			postsData = data.items;
         }
     });
+
     return postsData;
+}
+
+// Function to automatically run the postsQuery function based on data on given block. Saves a lot of repeat code in blocks.
+function blockPostsQuery($block, postsCount) {
+	var postsData = false;
+
+	// If block has posts url
+	if($block.data('posts_url')) {
+		postsURL = $block.data('posts_url');
+		postsTags = '';
+
+		// If block has tags
+		if($block.data('posts_tags')) {
+			postsTags = $block.data('posts_tags');
+		}
+
+		postsData = postsQuery(postsURL, 5, postsTags);
+	}
+
+	return postsData;
 }
 
 // Function to output event start/end dates

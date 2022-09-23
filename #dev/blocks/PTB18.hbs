@@ -26,62 +26,62 @@
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
 		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
+		var contentURL = $block.data('content_url');
 
-		function ajaxPostQuery() {
-			queryURL = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/rss/news.json';
-			contentURL = $block.data('content_url');
-			queryString = '&num=' + $('.PTB18-grid').attr('data-count');
-			scrollPosition = document.documentElement.scrollTop;
+		// Function to render posts. Uses main postsQuery function. 
+		function PTB18RenderPosts() {
+			var activeTags = '';
+			var scrollPosition = document.documentElement.scrollTop;
+			var postsCount = $('.PTB18-grid', $block).attr('data-count');
 
 			// Get all active filters
-			$('.PTB18-filter input:checked').each(function() {
-				queryString = queryString + '&tag=' + $(this).val();
+			$('.PTB18-filter input:checked', $block).each(function(key) {
+				if(key > 0) {
+					activeTags = activeTags + ',';
+				}
+				activeTags = activeTags + $(this).val();
 			});
 
-			// Ajax query to load posts
-			$.ajax({
-	  			async: false,
-		        url : queryURL + '?page=' + contentURL + queryString,
-		        type: 'GET',
-		        dataType: 'json',
-		        success: function(data) {
-					var posts = '';
+			var postsData = postsQuery(contentURL, postsCount, activeTags);
 
-					$.each(data.items, function(key, data) {
+			// If post data is returned
+			if(postsData != false) {
+				var posts = '';
 
-						var image = blockPostImage(data.content, contentURL);
-						if(image != '') {
-							image = '<div class="post-card__image"><img src="' + image + '"><svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M34.1855 35L0.867523 35L0.867528 -1.83932e-06L34.1855 35Z" fill="#E6E8EA"/></svg></div>';						
-						}
+				// Loop through all post data
+				$.each(postsData, function(key, data) {
+					// Set image string if it exists
+					var image = blockPostImage(data.content, contentURL);
+					if(image != '') {
+						image = '<div class="post-card__image"><img src="' + image + '"><svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M34.1855 35L0.867523 35L0.867528 -1.83932e-06L34.1855 35Z" fill="#E6E8EA"/></svg></div>';						
+					}
+					// Add to posts string
+					posts = posts + '<div class="col-12 col-sm-6 col-md-4"><a href="' + data.url.href + '" class="post-card border-color--theme">' + image + '<div class="post-card__content"><span class="post-card__date">' + blockPostDate(data.publicationDate) + '</span><span class="post-card__cat">' + data.categories[0] + '</span><h4 class="post-card__heading">' + data.title + '</h4></div></a></div>';
 
-						posts = posts + '<div class="col-12 col-sm-6 col-md-4"><a href="' + data.url.href + '" class="post-card border-color--theme">' + image + '<div class="post-card__content"><span class="post-card__date">' + blockPostDate(data.publicationDate) + '</span><span class="post-card__cat">' + data.categories[0] + '</span><h4 class="post-card__heading">' + data.title + '</h4></div></a></div>';
-					});
+				});
 
-					$('#block-{{ blockCount }} .PTB18-grid > .row').html(posts);
+				$('.PTB18-grid > .row', $block).html(posts);
 
-					// Keep window in same scroll position
-					window.scrollTo(0, scrollPosition);
-		        },
-		        error: function(data) {
-		        	console.log('Could not get data from ' + contentURL);
-		        },
-	        });
+				// Scroll window to original position
+				window.scrollTo(0, scrollPosition);
+			}
+
 		}
 
 		// Load posts on launch
-		ajaxPostQuery();
+		PTB18RenderPosts();
 
 		// On filter change run Ajax query
 	    $('#block-{{ blockCount }} .PTB18-filter').on('change', 'input', function() {
-			ajaxPostQuery();
+			PTB18RenderPosts();
 	    });
 
 	    // Add pagination
 	    $('#block-{{ blockCount }} .PTB18-more .btn').click(function() {
-	    	var currentCount = parseInt($('.PTB18-grid').attr('data-count'));
+	    	var currentCount = parseInt($('.PTB18-grid', $block).attr('data-count'));
 	    	var newCount = currentCount + 12;
-	    	$('.PTB18-grid').attr('data-count', newCount);
-	    	ajaxPostQuery();
+	    	$('.PTB18-grid', $block).attr('data-count', newCount);
+	    	PTB18RenderPosts();
 	    });
 
 	    // Load filters

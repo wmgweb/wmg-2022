@@ -9,13 +9,11 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
+		var postsData = blockPostsQuery($block, 8);
+		var postsOutput = '';
 
-		// Ajax query to load posts if data-posts_url is set
-		if($('#block-{{ blockCount }}').parent('.wmg-block').data('posts_url')) {
-			postsURL = $('#block-{{ blockCount }}').parent('.wmg-block').data('posts_url');
-			var postsData = postsQuery(postsURL, 8);
-			var postsOutput = '';
-
+		if(postsData != false) {
 			$.each(postsData, function(key, data) {
 				var authors = '';
 

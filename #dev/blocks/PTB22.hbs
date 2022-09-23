@@ -24,13 +24,11 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
+		var postsData = blockPostsQuery($block, 5);
+		var postsOutput = '';
 
-		// Ajax query to load posts if data-posts_url is set
-		if($('#block-{{ blockCount }}').parent('.wmg-block').data('posts_url')) {
-			postsURL = $('#block-{{ blockCount }}').parent('.wmg-block').data('posts_url');
-			var postsData = postsQuery(postsURL, 5);
-			var postsOutput = '';
-
+		if(postsData != false) {
 			$.each(postsData, function(key, data) {
 				// Get image from content string
 				var image = blockPostImage(data.content, postsURL);
@@ -47,25 +45,24 @@
 
 				// If first item, set in static area
 				if(key <= 0) {
-					$('#block-{{ blockCount }} .PTB22-static').html(itemOutput);
+					$('.PTB22-static', $block).html(itemOutput);
 				} else { // Else add to carousel
 					postsOutput = postsOutput + '<div class="PTB22-carousel__item">' + itemOutput + '</div>';
 				}
 			});
-					console.log(postsOutput);
 
-			$('#block-{{ blockCount }} .PTB22-carousel').html(postsOutput);
+			$('.PTB22-carousel', $block).html(postsOutput);
 	    }
 
 		// Loop through each card block, check if an image exists and wrap it
-		$('#block-{{ blockCount }} .card-block').each(function() {
+		$('.card-block', $block).each(function() {
 			if($('img', $(this)).length) {
 				$('img', $(this)).unwrap('p').wrap('<div class="card-block__image"></div>');
 			}
 		});
 
 		// Initialise Slick Carousel with custom arrows and dots
-		$('#block-{{ blockCount }} .PTB22-carousel').slick({
+		$('.PTB22-carousel', $block).slick({
 			autoplay: false,
 			draggable: false,
 			dots: true,
@@ -97,12 +94,12 @@
 		// Function to calculate desktop dots location
 		function block{{ blockCount }}DotsLocation() {
 			// If button exists
-			if($('#block-{{ blockCount }} .PTB-intro .btn').length) {
+			if($('.PTB-intro .btn', $block).length) {
 				// If window width is desktop
 				if($(window).width() > 991) {
 					// Set dots right to button width + 30px
 					var btnWidth = $('#block-{{ blockCount }} .PTB-intro .btn').outerWidth() + 30;
-					$('#block-{{ blockCount }} .slick-dots').css({'right': btnWidth + 'px'})
+					$('.slick-dots', $block).css({'right': btnWidth + 'px'})
 				}				
 			}
 

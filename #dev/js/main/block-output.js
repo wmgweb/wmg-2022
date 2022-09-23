@@ -216,10 +216,10 @@ function blockPostImage(content, contentURL) {
 	let imageUrl = '';
 
 	// Search for src in content
-	if(content.indexOf('src="') >= 0) {
+	if(content.indexOf('img src="') >= 0) {
 		// Get content between src=" and next "
-		let image = content.split('src="')[1].split('" ')[0];
-
+		let image = content.split('img src="')[1].split('" ')[0];
+		
 		// If image exists
 		if(image != '') {
 			// If image doesn't have http, set full url

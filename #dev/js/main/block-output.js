@@ -92,9 +92,7 @@ function blockShortcodes(block) {
 				}
 				break;
 			case "heading":
-					console.log('hello!');
 				if('htype' in scAttr && 'text' in scAttr) {
-					console.log(scAttr);
 					var subheading = '';
 					if('subtext' in scAttr) {
 						subheading = '<span class="brand-heading__sub ' + scAttr.substyle + '">' + scAttr.subtext + '</span>';
@@ -189,6 +187,7 @@ function blockOptionsClasses(block, blockOptions) {
 			jQuery('.block', block).append('<svg width="70" height="148" viewBox="0 0 70 148" fill="none" xmlns="http://www.w3.org/2000/svg" class="block-triangle theme-fill-path"><path d="M0 0L73 1.27637e-05L73 148L0 0Z" fill="#EE3124"/></svg>');
 		}
 	}
+	return true;
 }
 
 // Image pathing check and fix - checks if a relative url is set and if so adds the content url

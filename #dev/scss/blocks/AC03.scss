@@ -109,14 +109,34 @@
 				flex-wrap: wrap;
 
 				li {
-					padding: 0 25px;
 					height: 50px;
 					display: flex;
 					align-items: center;
 
+					button {
+						border-left: 1px solid $color-white;
+						padding: 0 35px;
+					}
+
 					&.active {
 						display: flex;
 						background: $color-red;
+
+						button {
+							border-left-color: transparent;
+						}
+
+						& + li {
+							button {
+								border-left-color: transparent;
+							}
+						}
+					}
+
+					&:first-child {
+						button {
+							border-left: 0;;
+						}
 					}
 				}
 			}

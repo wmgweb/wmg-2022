@@ -66,10 +66,11 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		/* -- STYLING -- */
 		// Loop through each event card timestamp
-		$('#block-{{ blockCount }} .event-card__timestamp').each(function() {
+		$('.event-card__timestamp', $block).each(function() {
 			// Get timestamp
 			var startTimestamp = $(this).data('timestamp-start');
 			var endTimestamp = $(this).data('timestamp-end');
@@ -83,7 +84,7 @@
 		});
 
 		// Remove anchors from summary
-		$('#block-{{ blockCount }} .event-card__summary a').each(function() {
+		$('.event-card__summary a', $block).each(function() {
 			$(this).replaceWith($(this).text());
 		});
 
@@ -94,14 +95,14 @@
 
 		// Function to reset blocks
 		function block{{ blockCount }}ResetBlocks() {
-			$('#block-{{ blockCount }} .PTB17-grid-none').removeClass('active');
-			$('#block-{{ blockCount }} .row > div').addClass('active');
-			$('#block-{{ blockCount }} .PTB17-search input').val();
+			$('.PTB17-grid-none', $block).removeClass('active');
+			$('.row > div', $block).addClass('active');
+			$('.PTB17-search input', $block).val();
 		}
 
 		/* -- CATEGORY FILTER -- */
 		// Loop through each grid item
-		$('#block-{{ blockCount }} .row > div').each(function() {
+		$('.row > div', $block).each(function() {
 			// Get all categories
 			var cats = $(this).data('cats');
 			// Split them into an array
@@ -119,7 +120,7 @@
 		});
 
 		// On category change
-		$('#block-{{ blockCount }} select.PTB17-filter').change(function() {
+		$('select.PTB17-filter', $block).change(function() {
 			// Reset all blocks
 			block{{ blockCount }}ResetBlocks();
 
@@ -135,7 +136,7 @@
 					var filterName = $(this).data('filter');
 
 					// Hide cards that don't have category class
-					$('#block-{{ blockCount }} .row .active').not('.filter-' + filterName + '--' + val).removeClass('active');
+					$('.row .active', $block).not('.filter-' + filterName + '--' + val).removeClass('active');
 				}
 
 			});
@@ -145,17 +146,17 @@
 
 		/* -- SEARCH -- */
 		function block{{ blockCount }}Search() {
-			var searchString = $('#block-{{ blockCount }} .PTB17-search input').val();
+			var searchString = $('.PTB17-search input', $block).val();
 
 			// Hide active blocks
-			$('#block-{{ blockCount }} .row .active').removeClass('active');
+			$('.row .active', $block).removeClass('active');
 			
 			// If content in search
 			if(searchString.length > 0) {
 				var activeCount = 0;
 
 				// Loop through all panels
-				$('#block-{{ blockCount }} .event-card').each(function() {
+				$('.event-card', $block).each(function() {
 					// Get content as string
 					var panelContent = $(this).text();
 
@@ -167,9 +168,9 @@
 				});
 
 				if(activeCount == 0) {
-					$('#block-{{ blockCount }} .PTB17-grid-none').addClass('active');
+					$('.PTB17-grid-none', $block).addClass('active');
 				} else {
-					$('#block-{{ blockCount }} .PTB17-grid-none').removeClass('active');
+					$('.PTB17-grid-none', $block).removeClass('active');
 				}
 
 			} else {
@@ -180,7 +181,7 @@
 		}
 
 		// Run search after input change
-		$('#block-{{ blockCount }} .PTB17-search input').keyup(function() {
+		$('.PTB17-search input', $block).keyup(function() {
 			block{{ blockCount }}Search();
 		});
 	});

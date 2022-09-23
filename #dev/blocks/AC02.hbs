@@ -28,15 +28,16 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Add wrapper to button
-		$('#block-{{ blockCount }} .AC02__intro .btn').wrap('<div class="AC02__intro-btn"></div>');
+		$('.AC02__intro .btn', $block).wrap('<div class="AC02__intro-btn"></div>');
 
 		// Add wrapper around everything else
-		$('#block-{{ blockCount }} .AC02__intro').children().not('.AC02__intro-btn').wrapAll('<div class="AC02__intro-content"></div>');
+		$('.AC02__intro', $block).children().not('.AC02__intro-btn').wrapAll('<div class="AC02__intro-content"></div>');
 
 		// Initilise Slick Carousel with custom paging (grabs first element)
-		$('#block-{{ blockCount }} .AC02__carousel').slick({
+		$('.AC02__carousel', $block).slick({
 			autoplay: false,
 			dots: true,
 			arrows: false,
@@ -48,7 +49,7 @@
 		});
 
 		// Loop through each slide content
-		$('#block-{{ blockCount }} .AC02__carousel-item-content').each(function() {
+		$('.AC02__carousel-item-content', $block).each(function() {
 			var $parent = $(this).parents('.AC02__carousel-item');
 
 			// Remove pagination heading
@@ -67,8 +68,8 @@
 		// Calculate the position of the dots depending on height
 		function block{{ blockCount }}DotsPosition() {
 			if($(window).width() < 992) {
-				var dotsHeight = $('#block-{{ blockCount }} .slick-dots').height() + 40;
-				$('#block-{{ blockCount }} .AC02__intro').css('padding-bottom', dotsHeight + 'px')
+				var dotsHeight = $('.slick-dots', $block).height() + 40;
+				$('.AC02__intro', $block).css('padding-bottom', dotsHeight + 'px')
 			}
 		}
 

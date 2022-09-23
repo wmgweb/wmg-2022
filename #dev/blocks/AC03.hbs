@@ -28,9 +28,10 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');		
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Loop through each content block
-		$('#block-{{ blockCount }} .AC03__content-item').each(function(index) {
+		$('.AC03__content-item', $block).each(function(index) {
 			var buttonClass = '';
 
 			// Get tab heading
@@ -43,7 +44,7 @@
 				buttonClass = ' class="active"';
 
 				// Set mobile tab dropdown to tab heading
-				$('#block-{{ blockCount }} .AC03__tabs-dropdown span').text(tabHeading);
+				$('.AC03__tabs-dropdown span', $block).text(tabHeading);
 
 				// Set mobile button
 				$('.btn', $(this)).clone().appendTo($('#block-{{ blockCount }} .AC03__tabs-menu-button')); 
@@ -53,7 +54,7 @@
 			$('p:first-child', $(this)).remove();
 
 			// Create tab button
-			$('#block-{{ blockCount }} .AC03__tabs .AC03__tabs-list').append('<li' + buttonClass + ' data-id="' + index + '"><button>' + tabHeading + '</button></li>');
+			$('.AC03__tabs .AC03__tabs-list', $block).append('<li' + buttonClass + ' data-id="' + index + '"><button>' + tabHeading + '</button></li>');
 
 			// Wrap triangle
 			$('.brand-triangle', $(this)).unwrap('p').wrap('<div class="AC03__content-item-header"></div>');
@@ -63,11 +64,11 @@
 		});
 
 		// On tab button click
-		$('#block-{{ blockCount }} .AC03__tabs li').click(function() {
+		$('.AC03__tabs li', $block).click(function() {
 			block{{ blockCount }}ListSlideToggle();
 
 			// Remove active class from old button
-			$('#block-{{ blockCount }} .AC03__tabs li.active').removeClass('active');
+			$('.AC03__tabs li.active', $block).removeClass('active');
 
 			// Get tab ID
 			var id = $(this).data('id');
@@ -77,25 +78,25 @@
 			$(this).addClass('active');
 
 			// Set mobile tab dropdown to tab heading
-			$('#block-{{ blockCount }} .AC03__tabs-dropdown span').text(heading);
+			$('.AC03__tabs-dropdown span', $block).text(heading);
 
 			// Hide old content block
-			$('#block-{{ blockCount }} .AC03__content-item.active').removeClass('active');
+			$('.AC03__content-item.active', $block).removeClass('active');
 
 			// Show new content block
-			$('#block-{{ blockCount }} .AC03__content-item.AC03__content-item--' + id).addClass('active');
+			$('.AC03__content-item.AC03__content-item--' + id, $block).addClass('active');
 		});
 
 		// Function to hide list on mobile
 		function block{{ blockCount }}ListSlideToggle() {
 			if($(window).width() < 1200) {
-				$('#block-{{ blockCount }} .AC03__tabs-dropdown').toggleClass('active');
-				$('#block-{{ blockCount }} .AC03__tabs-list').slideToggle();
+				$('.AC03__tabs-dropdown', $block).toggleClass('active');
+				$('.AC03__tabs-list', $block).slideToggle();
 			}
 		}
 
 		// On click of mobile dropdown button
-		$('#block-{{ blockCount }} .AC03__tabs-dropdown').click(function() {
+		$('.AC03__tabs-dropdown', $block).click(function() {
 			block{{ blockCount }}ListSlideToggle();
 		});
 	});

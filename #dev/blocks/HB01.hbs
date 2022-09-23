@@ -15,8 +15,9 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
-		$('#block-{{ blockCount }} .HB01__carousel-item').each(function() {
+		$('.HB01__carousel-item', $block).each(function() {
 			$('img', $(this)).appendTo($('.HB01__carousel-item-bg', $(this)));
 		});
 
@@ -36,7 +37,7 @@
 		}
 
 		// Add dots if setting is set
-		if($('#block-{{ blockCount }}').hasClass('carousel-dots--true')) {
+		if($('.block', $block).hasClass('carousel-dots--true')) {
 			slickObject.dots = true;
 		}
 

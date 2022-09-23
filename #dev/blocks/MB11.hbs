@@ -12,9 +12,10 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Initialise the Slick Carousel with custom arrows
-		$('#block-{{ blockCount }} .MB11-carousel').slick({
+		$('.MB11-carousel', $block).slick({
 			dots: false,
 			arrows: true,
 			autoplay: false,

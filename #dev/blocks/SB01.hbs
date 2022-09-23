@@ -29,9 +29,10 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Loop through each image
-		$('#block-{{ blockCount }} .SB01-side__content p').each(function(index, element) {
+		$('.SB01-side__content p', $block).each(function(index, element) {
 
 			// Create a wrapper for the content
 			$(this).addClass('icon-short-text');
@@ -41,9 +42,9 @@
 		function block{{ blockCount }}MoveImage() {
 			// If mobile/tablet
 			if($(window).width() < 992) {
-				$('.SB01-image').prependTo('#block-{{ blockCount }} .SB01-main');
+				$('.SB01-image').prependTo('.SB01-main', $block);
 			} else {
-				$('.SB01-image').prependTo('#block-{{ blockCount }} .SB01-side');
+				$('.SB01-image').prependTo('.SB01-side', $block);
 			}
 		}
 

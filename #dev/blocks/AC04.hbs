@@ -19,18 +19,19 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Wrap image
-		$('#block-{{ blockCount }} .AC04-intro img').unwrap('p').wrap('<div class="AC04-intro__image"></div>');
+		$('.AC04-intro img', $block).unwrap('p').wrap('<div class="AC04-intro__image"></div>');
 
 		// Wrap everything else
-		$('#block-{{ blockCount }} .AC04-intro').children().not('.AC04-intro__image').wrapAll('<div class="AC04-intro__content"><div class="half-container half-container--lg half-container--left"></div></div>');
+		$('.AC04-intro', $block).children().not('.AC04-intro__image').wrapAll('<div class="AC04-intro__content"><div class="half-container half-container--lg half-container--left"></div></div>');
 
 		// Add SVG icon
-		$('#block-{{ blockCount }} .AC04-intro__content').append('<svg width="33" height="351" viewBox="0 0 33 351" fill="none" xmlns="http://www.w3.org/2000/svg" class="d-none d-md-block image-box-border theme-fill-path-alt"><g style="mix-blend-mode:multiply"><path d="M0.632812 36.436L32.018 0V351H0.632812V36.436Z" fill="#de0905"/></g></svg>');
+		$('.AC04-intro__content', $block).append('<svg width="33" height="351" viewBox="0 0 33 351" fill="none" xmlns="http://www.w3.org/2000/svg" class="d-none d-md-block image-box-border theme-fill-path-alt"><g style="mix-blend-mode:multiply"><path d="M0.632812 36.436L32.018 0V351H0.632812V36.436Z" fill="#de0905"/></g></svg>');
 
 		// Initilise Slick Carousel with custom paging (takes first child element)
-		$('#block-{{ blockCount }} .AC04-carousel').slick({
+		$('.AC04-carousel', $block).slick({
 			autoplay: false,
 			dots: true,
 			arrows: false,
@@ -42,7 +43,7 @@
 		});
 
 		// Loop through all carousel items
-		$('#block-{{ blockCount }} .AC04-carousel__item').each(function() {
+		$('.AC04-carousel__item', $block).each(function() {
 			// Remove pagination heading
 			$(this).children().first().remove();
 
@@ -61,7 +62,7 @@
 		// Calculate the position of the dots depending on height
 		function block{{ blockCount }}DotsPosition() {
 			if($(window).width() < 992) {
-				var dotsHeight = $('#block-{{ blockCount }} .slick-dots').height() + 40;
+				var dotsHeight = $('.slick-dots', $block).height() + 40;
 				$('#block-{{ blockCount }} .AC04-carousel').css('padding-top', dotsHeight + 'px')
 			}
 		}

@@ -21,12 +21,13 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
-		$('#block-{{ blockCount }} .PTB01-carousel__item').each(function() {
+		$('.PTB01-carousel__item', $block).each(function() {
 			$('img', $(this)).appendTo($('.PTB01-carousel__item-image', $(this)));
 		});
 
-		$('#block-{{ blockCount }} .PTB01-carousel').slick({
+		$('.PTB01-carousel', $block).slick({
 			autoplay: false,
 			arrows: true,
 			dots: true,

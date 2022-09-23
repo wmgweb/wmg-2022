@@ -15,9 +15,10 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Loop through each article
-		$('#block-{{ blockCount }} .FB04__article').each(function() {
+		$('.FB04__article', $block).each(function() {
 			// Move image to image wrapper
 			$('.FB04__article-content img', $(this)).unwrap('p').appendTo($('.FB04__article-img', $(this)));
 		});

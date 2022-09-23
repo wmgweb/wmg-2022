@@ -43,14 +43,14 @@
 	    }
 
 		// Loop through each card block, check if an image exists and wrap it
-		$('#block-{{ blockCount }} .card-block').each(function() {
+		$('.card-block', $block).each(function() {
 			if($('img', $(this)).length) {
 				$('img', $(this)).unwrap('p').wrap('<div class="card-block__image"></div>');
 			}
 		});
 
 		// Initialise Slick Carousel with custom arrows and dots
-		$('#block-{{ blockCount }} .PTB03-carousel').slick({
+		$('.PTB03-carousel', $block).slick({
 			autoplay: false,
 			draggable: false,
 			dots: true,
@@ -81,11 +81,11 @@
 		// Function to calculate desktop dots location
 		function block{{ blockCount }}DotsLocation() {
 			// If button exists
-			if($('#block-{{ blockCount }} .PTB-intro .btn').length) {
+			if($('.PTB-intro .btn', $block).length) {
 				// If window width is desktop
 				if($(window).width() > 991) {
 					// Set dots right to button width + 30px
-					var btnWidth = $('#block-{{ blockCount }} .PTB-intro .btn').outerWidth() + 30;
+					var btnWidth = $('.PTB-intro .btn', $block).outerWidth() + 30;
 					$('#block-{{ blockCount }} .slick-dots').css({'right': btnWidth + 'px'})
 				}				
 			}

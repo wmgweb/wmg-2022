@@ -17,11 +17,12 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Wrap image
-		$('#block-{{ blockCount }} .TB20-media img').unwrap('p').wrap('<div class="TB20-media__image"></div>');
+		$('.TB20-media img', $block).unwrap('p').wrap('<div class="TB20-media__image"></div>');
 
 		// Wrap everything else
-		$('#block-{{ blockCount }} .TB20-media').children().not('.TB20-media__image').wrapAll('<div class="TB20-media__content"></div>');
+		$('.TB20-media', $block).children().not('.TB20-media__image').wrapAll('<div class="TB20-media__content"></div>');
 	});
 </script>

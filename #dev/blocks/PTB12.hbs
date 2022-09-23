@@ -20,9 +20,10 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Loop through all the articles
-		$('#block-{{ blockCount }} .bio-article').each(function() {
+		$('.bio-article', $block).each(function() {
 			var $self = $(this);
 
 			// Loop through all the links in the articles

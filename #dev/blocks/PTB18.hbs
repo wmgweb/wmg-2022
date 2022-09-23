@@ -72,12 +72,12 @@
 		PTB18RenderPosts();
 
 		// On filter change run Ajax query
-	    $('#block-{{ blockCount }} .PTB18-filter').on('change', 'input', function() {
+	    $('.PTB18-filter', $block).on('change', 'input', function() {
 			PTB18RenderPosts();
 	    });
 
 	    // Add pagination
-	    $('#block-{{ blockCount }} .PTB18-more .btn').click(function() {
+	    $('.PTB18-more .btn', $block).click(function() {
 	    	var currentCount = parseInt($('.PTB18-grid', $block).attr('data-count'));
 	    	var newCount = currentCount + 12;
 	    	$('.PTB18-grid', $block).attr('data-count', newCount);
@@ -93,10 +93,10 @@
 	        type: 'GET',
 	        dataType: 'json',
 	        success: function(data) {				
-				$('#block-{{ blockCount }} .PTB18-filter').html(data.items[0].content);
+				$('.PTB18-filter', $block).html(data.items[0].content);
 
 				// Loop through each filter and create checkbox
-				$('#block-{{ blockCount }} .PTB18-filter li').each(function() {
+				$('.PTB18-filter li', $block).each(function() {
 					var cat = $(this).text();
 					$(this).html('<label><input type="checkbox" value="' + cat + '">' + cat + '</label>');
 				});
@@ -107,8 +107,8 @@
 	    });			
 
 	    // Mobile filter button
-	    $('#block-{{ blockCount }} .PTB18-filter-button').click(function() {
-	    	$('#block-{{ blockCount }} .PTB18-filter').toggleClass('active');
+	    $('.PTB18-filter-button', $block).click(function() {
+	    	$('.PTB18-filter', $block).toggleClass('active');
 	    	$(this).toggleClass('active');
 	    });
 	});

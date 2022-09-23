@@ -30,6 +30,7 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Loop through each item
 		$('.PTB20-grid > .row > div').each(function() {
@@ -39,24 +40,24 @@
 
 		// Function to reset blocks
 		function block{{ blockCount }}ResetBlocks() {
-			$('#block-{{ blockCount }} .PTB20-grid-none').removeClass('active');
-			$('#block-{{ blockCount }} .row > div').addClass('active');
-			$('#block-{{ blockCount }} .PTB20-search input').val();
+			$('.PTB20-grid-none', $block).removeClass('active');
+			$('.row > div', $block).addClass('active');
+			$('.PTB20-search input', $block).val();
 		}
 
 		/* -- SEARCH -- */
 		function block{{ blockCount }}Search() {
-			var searchString = $('#block-{{ blockCount }} .PTB20-search input').val();
+			var searchString = $('.PTB20-search input', $block).val();
 
 			// Hide active blocks
-			$('#block-{{ blockCount }} .row .active').removeClass('active');
+			$('.row .active', $block).removeClass('active');
 			
 			// If content in search
 			if(searchString.length > 0) {
 				var activeCount = 0;
 
 				// Loop through all panels
-				$('#block-{{ blockCount }} .post-card').each(function() {
+				$('.post-card', $block).each(function() {
 					// Get content as string
 					var panelContent = $(this).text();
 
@@ -68,9 +69,9 @@
 				});
 
 				if(activeCount == 0) {
-					$('#block-{{ blockCount }} .PTB20-grid-none').addClass('active');
+					$('.PTB20-grid-none', $block).addClass('active');
 				} else {
-					$('#block-{{ blockCount }} .PTB20-grid-none').removeClass('active');
+					$('.PTB20-grid-none', $block).removeClass('active');
 				}
 
 			} else {
@@ -81,7 +82,7 @@
 		}
 
 		// Run search after input change
-		$('#block-{{ blockCount }} .PTB20-search input').keyup(function() {
+		$('.PTB20-search input', $block).keyup(function() {
 			block{{ blockCount }}Search();
 		});
 	});

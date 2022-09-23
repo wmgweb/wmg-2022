@@ -27,9 +27,10 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Loop through each person block
-		$('#block-{{ blockCount }} .person-block').each(function() {
+		$('.person-block', $block).each(function() {
 			// Wrap image
 			$('img', $(this)).wrap('<div class="person-block__image"></div>');
 
@@ -38,7 +39,7 @@
 		});
 
 		// Loop through each button
-		$('#block-{{ blockCount }} .PTB09-cats button').each(function() {
+		$('.PTB09-cats button', $block).each(function() {
 			// Grab the cat id from the text, and sanitize
 			var cat = $(this).text().replace(/\s+/g, '-').toLowerCase();
 
@@ -47,7 +48,7 @@
 		});
 
 		// Loop through each grid item
-		$('#block-{{ blockCount }} .PTB09-grid > div').each(function() {
+		$('.PTB09-grid > div', $block).each(function() {
 			// Get all categories
 			var cats = $(this).data('cats');
 			// Split them into an array
@@ -67,7 +68,7 @@
 		// Function to display 4 blocks at a time
 		function block{{ blockCount }}ShowBlocks() {
 			// If category is set, change loop element to this cat class
-			if($('#block-{{ blockCount }} .PTB09-cats button.active').length) {
+			if($('.PTB09-cats button.active', $block).length) {
 				// Get category from currently active button
 				var activeCat = $('#block-{{ blockCount }} .PTB09-cats button.active').data('cat');
 				// Set element as currently active button class
@@ -86,26 +87,26 @@
 
 			// Check if any more blocks. Hide button if none.
 			if(!$(searchElement).length) {
-				$('#block-{{ blockCount }} .PTB09-grid__expand').hide();
+				$('.PTB09-grid__expand', $block).hide();
 			}	
 		}
 
 		// Function to reset blocks
 		function block{{ blockCount }}ResetBlocks() {
-			$('#block-{{ blockCount }} .PTB09-grid > div.active').removeClass('active').addClass('inactive');
-			$('#block-{{ blockCount }} .PTB09-grid__expand').show();
+			$('.PTB09-grid > div.active', $block).removeClass('active').addClass('inactive');
+			$('.PTB09-grid__expand', $block).show();
 		}
 
 		// Show blocks on load
 		block{{ blockCount }}ShowBlocks();
 
 		// Show blocks on button click
-		$('#block-{{ blockCount }} .PTB09-grid__expand').click(function() {
+		$('.PTB09-grid__expand', $block).click(function() {
 			block{{ blockCount }}ShowBlocks();
 		});
 
 		// On category button click
-		$('#block-{{ blockCount }} .PTB09-cats button').click(function() {
+		$('.PTB09-cats button', $block).click(function() {
 			// If currently active, remove active class
 			if($(this).hasClass('active')) {
 				$(this).removeClass('active');

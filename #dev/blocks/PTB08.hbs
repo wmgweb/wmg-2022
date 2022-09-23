@@ -15,9 +15,10 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Loop through each block - groups 2 together for carousel
-		$('#block-{{ blockCount }} .bordered-text-block').each(function(index, element) {
+		$('.bordered-text-block', $block).each(function(index, element) {
 			// If desktop
 			if($(window).width() > 991) {
 				// If even add wrapper
@@ -33,7 +34,7 @@
 		});
 
 		// Initialise Slick Carousel
-		$('.PTB08-carousel').slick({
+		$('.PTB08-carousel', $block).slick({
 			slidesToShow: 2,
 			arrows: true,
 			dots: true,

@@ -14,16 +14,15 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
-
-		var $parent = $('#block-{{ blockCount }}').parent('.wmg-block');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Add title if set
-		if($parent.data('title')) {
-			$('#block-{{ blockCount }} .block__content').prepend('<h2>' + $parent.data('title') + '</h2>');
+		if($block.data('title')) {
+			$('.block__content', $block).prepend('<h2>' + $block.data('title') + '</h2>');
 		}
 
 		// Loop through each card block, check if an image exists and wrap it
-		$('#block-{{ blockCount }} .card-block').each(function() {
+		$('.card-block', $block).each(function() {
 			if($('img', $(this)).length) {
 				$('img', $(this)).unwrap('p').wrap('<div class="card-block__image"></div>');
 			}

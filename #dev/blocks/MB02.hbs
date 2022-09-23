@@ -18,13 +18,14 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		var block{{ blockCount }}ImageCount = 0;
 		var block{{ blockCount }}Images = [];
 		var block{{ blockCount }}SlideImages = [];
 
 		// Loop through images and split into array of slides
-		$('#block-{{ blockCount }} .MB02__images img').each(function() {
+		$('.MB02__images img', $block).each(function() {
 			block{{ blockCount }}ImageCount = block{{ blockCount }}ImageCount + 1;
 			block{{ blockCount }}SlideImages.push($(this).attr('src'));
 
@@ -39,13 +40,13 @@
 		// Loop through each image and set the grid elements
 		$.each(block{{ blockCount }}Images, function(index, value) {
 		  	var block{{ blockCount }}SlideHTML = '<div class="MB02-grid"><div class="row"><div class="col-12 col-md-6"><div class="MB02-img"><img src="' + value[0] + '"></div></div><div class="col-12 col-md-6"><div class="row"><div class="col-12 col-md-6"><div class="MB02-img MB02-img--half"><img src="' + value[1] + '"></div></div><div class="col-12 col-md-6"><div class="MB02-img MB02-img--half"><img src="' + value[2] + '"></div></div><div class="col-12"><div class="MB02-img MB02-img--half"><img src="' + value[3] + '"></div></div></div></div></div></div>';
-		  	$('#block-{{ blockCount }} .MB02-carousel').prepend(block{{ blockCount }}SlideHTML);
+		  	$('.MB02-carousel', $block).prepend(block{{ blockCount }}SlideHTML);
 		});
 
 		// Initialise the Slick Carousels - one mobile, one desktop
 		function block{{ blockCount }}Carousels() {
 			if($(window).width() < 768) {
-				$('#block-{{ blockCount }} .MB02-mobile-carousel').not('.slick-initialized').slick({
+				$('.MB02-mobile-carousel', $block).not('.slick-initialized').slick({
 					dots: true,
 					arrows: true,
 					autoplay: false,
@@ -55,7 +56,7 @@
 			}
 
 			if($(window).width() >= 768) {
-				$('#block-{{ blockCount }} .MB02-carousel').not('.slick-initialized').slick({
+				$('.MB02-carousel', $block).not('.slick-initialized').slick({
 					dots: false,
 					arrows: true,
 					autoplay: false,

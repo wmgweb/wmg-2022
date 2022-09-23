@@ -25,9 +25,10 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');	
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Loop through all accordion items
-		$('#block-{{ blockCount }} .AC-accordion').each(function() {
+		$('.AC-accordion', $block).each(function() {
 
 			// Create wrapper for heading
 			$(this).children().first().wrap('<div class="AC-accordion__heading"></div>');
@@ -40,7 +41,7 @@
 		});
 
 		// Add on-click function to show/hide content
-		$('#block-{{ blockCount }} .AC-accordion__heading').click(function() {
+		$('.AC-accordion__heading', $block).click(function() {
 			var $parent = $(this).parent('.AC-accordion');
 			$parent.toggleClass('active');
 		});

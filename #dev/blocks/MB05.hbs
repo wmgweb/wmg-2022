@@ -16,8 +16,9 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Move button
-		$('#block-{{ blockCount }} .MB05__intro .btn').appendTo('#block-{{ blockCount }} .MB05__button');
+		$('.MB05__intro .btn', $block).appendTo('#block-{{ blockCount }} .MB05__button');
 	});
 </script>

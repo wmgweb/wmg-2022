@@ -15,12 +15,13 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Set height variable - this is used to make all intro heights the same height to align timeline
 		var introHeight = 0;
 
 		// Loop through each carousel item
-		$('#block-{{ blockCount }} .SB03-carousel__item').each(function() {
+		$('.SB03-carousel__item', $block).each(function() {
 			// Wrap first image element in bg class
 			$('img', $(this)).first().unwrap('p').wrap('<div class="SB03-carousel__item-bg"></div>');
 
@@ -38,7 +39,7 @@
 		});
 
 		// Initialise Slick Carousel with custom SVG arrows
-		$('#block-{{ blockCount }} .SB03-carousel').slick({
+		$('.SB03-carousel', $block).slick({
 			autoplay: false,
 			arrows: true,
 			dots: false,

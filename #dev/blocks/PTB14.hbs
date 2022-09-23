@@ -12,9 +12,10 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Initialise Slick Carousel
-		$('#block-{{ blockCount }} .PTB14-carousel').slick({
+		$('.PTB14-carousel', $block).slick({
 			autoplay: false,
 			arrows: true,
 			dots: true,

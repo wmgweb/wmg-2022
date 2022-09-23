@@ -20,6 +20,7 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Ajax query to load items
 		var contentURL = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/dataentry/entries.json?page=/fac/sci/wmg-2021/study/all-courses/course-contents';
@@ -48,7 +49,7 @@
 
 				output = output + '<li class="SB02-search-results__none">No courses matched your search</li>';
 
-				$('#block-{{ blockCount }} .SB02-search-results').html(output);
+				$('.SB02-search-results', $block).html(output);
 	        },
 	        error: function(data) {
 	        	console.log('Could not get data from ' + contentURL);
@@ -56,10 +57,10 @@
         });
 
         function block{{ blockCount }}Search() {
-        	var searchString = $('#block-{{ blockCount }} .SB02-search input').val();
+        	var searchString = $('.SB02-search input', $block).val();
         	console.log(searchString);
 			// Hide active blocks
-			$('#block-{{ blockCount }} .SB02-search-results li').removeClass('active');
+			$('.SB02-search-results li', $block).removeClass('active');
 			
 			// If content in search
 			if(searchString.length > 0) {
@@ -67,7 +68,7 @@
 				$('.SB02-search-results').addClass('active');
 
 				// Loop through all panels
-				$('#block-{{ blockCount }} .SB02-search-results li').each(function() {
+				$('.SB02-search-results li', $block).each(function() {
 					// Get content as string
 					var panelContent = $(this).text();
 
@@ -89,7 +90,7 @@
         }
 
 		// Run search after input change
-		$('#block-{{ blockCount }} .SB02-search input').keyup(function() {
+		$('.SB02-search input', $block).keyup(function() {
 			block{{ blockCount }}Search();
 		});
 

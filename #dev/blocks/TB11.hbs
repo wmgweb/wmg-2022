@@ -39,9 +39,10 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Initialise the Slick Carousel
-		$('#block-{{ blockCount }} .TB11__carousel').slick({
+		$('.TB11__carousel', $block).slick({
 			autoplay: false,
 			dots: true,
 			arrows: false,

@@ -19,8 +19,9 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Move image
-		$('#block-{{ blockCount }} .IN01__main img').appendTo($('#block-{{ blockCount }} .IN01__image'));
+		$('.IN01__main img', $block).appendTo($('#block-{{ blockCount }} .IN01__image'));
 	});
 </script>

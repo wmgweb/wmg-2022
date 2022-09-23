@@ -7,14 +7,15 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		// Get image url and remove image element
-		var $img = $('#block-{{ blockCount }} img');
+		var $img = $('img', $block);
 		var imgSrc = $img.attr('src');
 		$img.unwrap('p').remove();
 
 		// Add background image
-		$('#block-{{ blockCount }} .MB01-img').css('background-image', 'url(' + imgSrc + ')');
+		$('.MB01-img', $block).css('background-image', 'url(' + imgSrc + ')');
 		 
 	});
 </script>

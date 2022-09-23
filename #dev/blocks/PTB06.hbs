@@ -42,7 +42,7 @@
 	    }
 
 		// Loop through all blocks
-		$('#block-{{ blockCount }} .event-card').each(function() {
+		$('.event-card', $block).each(function() {
 			// Wrap image
 			$('img', $(this)).wrap('<div class="event-card__image"></div>');
 

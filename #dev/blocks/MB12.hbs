@@ -20,19 +20,20 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 
 		function block{{ blockCount }}Search() {
-			var searchString = $('#block-{{ blockCount }} .MB12-search input').val();
+			var searchString = $('.MB12-search input', $block).val();
 			var currentActiveCount = 0;
 
 			// Hide active blocks
-			$('#block-{{ blockCount }} .row .active').removeClass('active');
+			$('.row .active', $block).removeClass('active');
 			
 			// If content in search
 			if(searchString.length > 0) {
 
 				// Loop through all panels
-				$('#block-{{ blockCount }} .media-panel').each(function() {
+				$('.media-panel', $block).each(function() {
 					// Get content as string
 					var panelContent = $(this).text();
 
@@ -50,7 +51,7 @@
 
 			} else {
 				// Else if no content show first 6
-				$('#block-{{ blockCount }} .row').children().slice(0,6).addClass('active');
+				$('.row', $block).children().slice(0,6).addClass('active');
 			}
 
 		}
@@ -59,7 +60,7 @@
 		block{{ blockCount }}Search();
 
 		// Run search after input change
-		$('#block-{{ blockCount }} .MB12-search input').keyup(function() {
+		$('.MB12-search input', $block).keyup(function() {
 			block{{ blockCount }}Search();
 		});
 	});

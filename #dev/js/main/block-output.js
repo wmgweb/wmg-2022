@@ -91,6 +91,18 @@ function blockShortcodes(block) {
 					scOutput = '<i class="' + scAttr.code + '"></i>';
 				}
 				break;
+			case "heading":
+					console.log('hello!');
+				if('htype' in scAttr && 'text' in scAttr) {
+					console.log(scAttr);
+					var subheading = '';
+					if('subtext' in scAttr) {
+						subheading = '<span class="brand-heading__sub ' + scAttr.substyle + '">' + scAttr.subtext + '</span>';
+					}
+					scOutput = '<' + scAttr.htype + ' class="brand-heading ' + scAttr.style + '">' + subheading + '<span>' + scAttr.text + '</span><' + scAttr.htype +'/>';
+				}
+
+				break;
 			case "video":
 				// If video set
 				if('set' in scAttr && 'id' in scAttr) {

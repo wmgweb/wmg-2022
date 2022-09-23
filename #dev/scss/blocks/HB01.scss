@@ -83,6 +83,10 @@
 			left: 0;
 			padding: 30px 5vw;
 
+			.HB01__carousel-item-content-overlay {
+				display: none;
+			}
+
 			h1,
 			h2,
 			h3,
@@ -143,15 +147,46 @@
 		}
 
 		.HB01__carousel {	
-
 			.HB01__carousel-item {
 				.HB01__carousel-item-content {
-					padding: 80px 30px 150px 5vw;
+					padding: 80px 30px 150px 135px;
 					width: 444px;
 					height: 100%;
 					display: flex;
 					justify-content: flex-start;
 					flex-direction: column;	
+					position: relative;
+
+					.HB01__carousel-item-content-overlay {
+						display: block;
+						position: absolute;
+						top: 0;
+						left: 0;
+						height: 100%;
+						width: 97px;
+						z-index: 1;
+
+						svg {
+							width: 100%;
+							height: 78px;
+							position: absolute;
+							top: 0;
+							left: 0;
+							z-index: 2;
+						}
+
+						&:after {
+							content: '';
+							mix-blend-mode: multiply;
+							background: #000;
+							width: 100%;
+							height: calc(100% - 77px);
+							position: absolute;
+							top: 77px;
+							left: 0;
+							z-index: 1;
+						}
+					}
 
 					&:before {
 						content: '';
@@ -160,9 +195,10 @@
 						transform: rotate(-25deg);
 						background: $color-white;
 						position: absolute;
-						left: 5vw;
-						bottom: 80px;
+						left: 97px;
+						bottom: 81px;
 						transform-origin: bottom right;
+						z-index: 2;
 					}
 
 					&:after {
@@ -171,8 +207,9 @@
 						height: 2px;
 						background: $color-white;
 						position: absolute;
-						left: 5vw;
+						left: 97px;
 						bottom: 80px;
+						z-index: 2;
 
 					}
 				}

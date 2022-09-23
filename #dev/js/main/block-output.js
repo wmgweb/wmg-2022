@@ -182,13 +182,13 @@ function blockOptionsClasses(block, blockOptions) {
 // Image pathing check and fix - checks if a relative url is set and if so adds the content url
 function blockImageFix(block) {
 	jQuery('img', block).each(function() {
-		var src = jQuery(this).attr('src');console.log(src);
+		var src = jQuery(this).attr('src');
 		// If doesnt start with '/' or 'http'
 		if(!src.startsWith('/') && !src.startsWith('http')) {
 			// Add content url path to image src
   			src = block.data('content_url') + src;
   			jQuery(this).attr('src', src);
-  		}console.log(src);
+  		}
 	});
 }
 

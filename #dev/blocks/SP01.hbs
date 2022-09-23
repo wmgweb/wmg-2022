@@ -1,0 +1,39 @@
+<div id="block-{{ blockCount }}" class="block block-SP block-SP01">
+	<div class="container">
+		<div class="block__content">
+			
+		</div>
+	</div>
+</div>
+<script>
+	jQuery(document).ready(function($) {
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
+
+		// Get ID from url param
+		const urlParams = new URLSearchParams(window.location.search);
+		const postID = urlParams.get('id');
+		const postsUrl = $block.data('content_url');
+
+		// Get all post data
+		const postsData = postsQuery(postsUrl, 200);
+		let thisPostData;
+
+		// Find the data for this post by id
+		$.each(postsData, function(key, data) {
+			if(data.id == postID) {
+				thisPostData = data;
+			}
+		});
+
+		// If no post data
+		if(!thisPostData) {
+			$('.block__content', $block).html('<h1 style="padding: 100px 0; text-align: center;">No post data.</h1>');
+		} else { // Else output the post data
+			let postOutput = '<div class="SP-intro">[!triangle]<p class="SP-date">' + blockPostDate(thisPostData.publicationDate) + '</p><h1 class="h3 SP-heading">' + thisPostData.title + '</h1></div><div class="SP-content">' + thisPostData.content + '</div>';
+			$('.block__content', $block).html(postOutput);
+		}
+
+		blockFunctions('{{ blockCount }}');
+
+	});
+</script>

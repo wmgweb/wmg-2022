@@ -10761,12 +10761,10 @@ function blockShortcodes(block) {
 
 	// Loop through all instances of shortcode
 	while(blockContentHTML.indexOf('[!') >= 0 && shortcodeCount <= shortcodeLimit) {
-
+		var currentShortcodeStart = blockContentHTML.indexOf('[!') + 2;
+		var currentShortcodeEnd = blockContentHTML.indexOf(']', currentShortcodeStart);
 		// Get shortcode content
-		let shortcode = blockContentHTML.substring(
-		    blockContentHTML.lastIndexOf('[!') + 2, 
-		    blockContentHTML.lastIndexOf(']')
-		);
+		let shortcode = blockContentHTML.substring(currentShortcodeStart, currentShortcodeEnd);
 
 		// Get shortcode attributes and set as object
 		let scAttrArray = shortcode.split(/\s+(?=(?:[^\'"]*[\'"][^\'"]*[\'"])*[^\'"]*$)/);
@@ -10824,7 +10822,7 @@ function blockShortcodes(block) {
 					if('subtext' in scAttr) {
 						subheading = '<span class="brand-heading__sub ' + scAttr.substyle + '">' + scAttr.subtext + '</span>';
 					}
-					scOutput = '<' + scAttr.htype + ' class="brand-heading ' + scAttr.style + '">' + subheading + '<span>' + scAttr.text + '</span><' + scAttr.htype +'/>';
+					scOutput = '<' + scAttr.htype + ' class="brand-heading ' + scAttr.style + '">' + subheading + '<span>' + scAttr.text + '</span></' + scAttr.htype +'>';
 				}
 
 				break;
@@ -10966,7 +10964,7 @@ function postsQuery(postsURL, postsCount, postsTags) {
 	var postsData = false;
 	var postsTagsString = '';
 
-	if(postsTags != '') {
+	if(postsTags) {
 		var postTagsArray = postsTags.split(',');
 		var postsTagsString = '';
 
@@ -11079,6 +11077,12 @@ jQuery(document).ready(function($) {
   		var wmgBlockOptions = $block.data('content_url');
   		var handlebarsBlock = WMG.blocks[wmgBlockID];
   		var handlebarsBlockData = {};
+
+  		// If content url is set to false, output block without content
+  		if(wmgBlockContentURL == false) {
+  			$block.html(handlebarsBlock());
+  			return false;
+  		}
 
   		// Format content url
   		if(!wmgBlockContentURL.startsWith('/')) {

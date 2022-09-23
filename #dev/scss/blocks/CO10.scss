@@ -1,4 +1,6 @@
 .block-CO10 {
+	padding: 30px 0;
+	
 	.CO10-social {
 		.CO10-social__links {
 			list-style: none;
@@ -41,6 +43,7 @@
 		.CO10-main {
 			display: flex;
 			justify-content: space-between;
+			align-items: center;
 		}
 
 		&.address-inline--true {

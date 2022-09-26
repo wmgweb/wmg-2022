@@ -33,7 +33,7 @@
 
 					a {
 						text-decoration: none;
-						font-size: 35px;
+						font-size: 24px;
 					}
 				}
 			}
@@ -47,6 +47,16 @@
 	.IN__map-main {
 		p {
 			margin: 0;
+		}
+	}
+
+	@include md {
+		.IN__social {
+			.IN__social-main {
+				ul li a {
+					font-size: 35px;
+				}
+			}
 		}
 	}
 

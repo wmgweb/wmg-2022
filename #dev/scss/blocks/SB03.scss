@@ -35,7 +35,7 @@
 				max-width: 100%;
 				margin: 0 auto;
 				font-size: 16px;
-				padding: 0 5vw;
+				padding: 0 7vw;
 			}
 
 			.SB03-carousel__item-timeline {
@@ -82,7 +82,7 @@
 			}
 
 			.SB03-carousel__item-intro {
-				padding: 0 5vw;
+				padding: 0 7vw;
 				
 				h1,
 				h2,
@@ -110,7 +110,7 @@
 		.slick-arrow {
 			position: absolute;
 			top: 50%;
-			left: 5vw;
+			left: 7vw;
 			z-index: 10;
 			padding: 0;
 			background: none;
@@ -121,7 +121,7 @@
 
 			&.slick-next {
 				left: auto;
-				right: 5vw;
+				right: 7vw;
 			}
 		}
 	}

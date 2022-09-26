@@ -56,12 +56,7 @@
 			}
 
 			.HB01__carousel-item-bg {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				z-index: 1;
+				height: 230px;
 
 				img {
 					width: 100%;
@@ -73,18 +68,36 @@
 
 		.HB01__carousel-item-content {
 			width: 100%;
+			flex: 1;
 			z-index: 2;
 			color: $color-white;
 			background: rgba(0, 0, 0, .8);
 			background-blend-mode: multiply;
 			min-height: 230px;
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			padding: 30px 5vw;
+			padding: 5px 7vw 50px;
+			position: relative;
+
+			.HB01__carousel-item-content-main {
+				position: relative;
+				z-index: 2;
+			}
 
 			.HB01__carousel-item-content-overlay {
-				display: none;
+				svg {
+					display: none;
+				}
+
+				&:after {
+					content: '';
+					mix-blend-mode: multiply;
+					background: rgba(0,0,0,.7);
+					position: absolute;
+					top: -48px;
+					left: 0;
+					z-index: 1;
+					width: 100%;
+					height: 96px;
+				}
 			}
 
 			h1,
@@ -118,6 +131,10 @@
 			margin: 0 1rem;
 			line-height: 1;
 
+			&:first-child {
+				margin-left: 0;
+			}
+
 			a {
 				cursor: pointer;
 				text-decoration: none;
@@ -148,6 +165,15 @@
 
 		.HB01__carousel {	
 			.HB01__carousel-item {
+				.HB01__carousel-item-bg {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					z-index: 1;					
+				}
+
 				.HB01__carousel-item-content {
 					padding: 80px 30px 150px 135px;
 					width: 444px;
@@ -155,7 +181,6 @@
 					display: flex;
 					justify-content: center;
 					flex-direction: column;	
-					position: relative;
 
 					.HB01__carousel-item-content-overlay {
 						display: block;
@@ -167,6 +192,7 @@
 						z-index: 1;
 
 						svg {
+							display: block;
 							width: 100%;
 							height: 78px;
 							position: absolute;
@@ -177,14 +203,9 @@
 
 						&:after {
 							content: '';
-							mix-blend-mode: multiply;
 							background: #000;
-							width: 100%;
 							height: calc(100% - 77px);
-							position: absolute;
 							top: 77px;
-							left: 0;
-							z-index: 1;
 						}
 					}
 
@@ -218,6 +239,7 @@
 
 		.slick-dots {
 			bottom: 20px;
+			left: 135px;
 		}
 	}
 }

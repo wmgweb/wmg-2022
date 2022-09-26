@@ -4,10 +4,15 @@
 			background-color: $color-red;
 		}
 	}
+
+	.IN__main {
+		margin-bottom: 30px;
+	}
 	
 	@include lg {
 		.IN__main {
 			padding-top: 30px;
+			margin-bottom: 0;
 		}
 	}
 }

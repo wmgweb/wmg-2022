@@ -1,13 +1,15 @@
 .block-MB01 {
-	.MB01-img {
-		height: 236px;
-		background-attachment: fixed;
-		background-size: cover;
+	.MB01-mobile-img {
+		img {
+			width: 100%;
+		}
 	}
 
 	@include md {
 		.MB01-img {
 			height: 463px;
+			background-attachment: fixed;
+			background-size: cover;
 		}
 	}
 }

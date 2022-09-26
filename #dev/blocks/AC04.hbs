@@ -48,7 +48,7 @@
 			$(this).children().first().remove();
 
 			// Wrap media
-			$('.video-wrapper', $(this)).unwrap('p').wrap('<div class="AC04-carousel__item-media"></div>');
+			$('.video-element', $(this)).unwrap('p').wrap('<div class="AC04-carousel__item-media"></div>');
 			$('img', $(this)).unwrap('p').wrap('<div class="AC04-carousel__item-media"></div>');
 
 			// Add media description to div (any content after the media)

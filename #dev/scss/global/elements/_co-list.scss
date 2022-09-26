@@ -22,5 +22,13 @@
 	ol {
 		list-style: none;
 		padding: 0;
+		font-size: 14px;
+	}
+
+	@include md {
+		ul,
+		ol {
+			font-size: 15px;
+		}
 	}
 }

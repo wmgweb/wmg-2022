@@ -21,7 +21,7 @@
 
 	.FB05__main {
 		padding-right: 67px;
-		padding: 50px 67px 50px 0;
+		padding: 50px 0 50px 0;
 
 		.corner-arrow {
 			position: absolute;
@@ -39,6 +39,10 @@
 				height: 100%;
 				margin: 0;
 			}
+		}
+
+		.inner-block {
+			padding-right: 50px;
 		}
 
 		img {
@@ -69,8 +73,7 @@
 	@include lg {
 		&.height--large {
 			.FB05__main {
-				padding-top: 65px;
-				padding-bottom: 65px;
+				padding: 65px 100px 65px 0;
 			}
 		}
 
@@ -90,6 +93,7 @@
 
 			.inner-block {
 				width: 311px;
+				padding-right: 7vw;
 			}
 
 			.FB05__side-image {

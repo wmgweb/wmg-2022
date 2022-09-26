@@ -175,7 +175,7 @@ function blockWrappers(block) {
 
 	// Remove empty p tags
 	jQuery('p', block).each(function() {
-	    if(jQuery(this).text().trim().length == 0) {
+	    if(jQuery(this).html().trim().length == 0) {
 	        jQuery(this).remove()
 	    }
 	});

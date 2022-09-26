@@ -10902,7 +10902,7 @@ function blockWrappers(block) {
 
 	// Remove empty p tags
 	jQuery('p', block).each(function() {
-	    if(jQuery(this).text().trim().length == 0) {
+	    if(jQuery(this).html().trim().length == 0) {
 	        jQuery(this).remove()
 	    }
 	});
@@ -11436,7 +11436,7 @@ this["WMG"]["blocks"]["AC04"] = Handlebars.template({"1":function(container,dept
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":21,"column":18},"end":{"line":21,"column":34}}}) : helper)))
     + "');\r\n		var $block = $('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":22,"column":25},"end":{"line":22,"column":41}}}) : helper)))
-    + "').parent('.wmg-block');\r\n\r\n		// Wrap image\r\n		$('.AC04-intro img', $block).unwrap('p').wrap('<div class=\"AC04-intro__image\"></div>');\r\n\r\n		// Wrap everything else\r\n		$('.AC04-intro', $block).children().not('.AC04-intro__image').wrapAll('<div class=\"AC04-intro__content\"><div class=\"half-container half-container--lg half-container--left\"></div></div>');\r\n\r\n		// Add SVG icon\r\n		$('.AC04-intro__content', $block).append('<svg width=\"33\" height=\"351\" viewBox=\"0 0 33 351\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"d-none d-md-block image-box-border theme-fill-path-alt\"><g style=\"mix-blend-mode:multiply\"><path d=\"M0.632812 36.436L32.018 0V351H0.632812V36.436Z\" fill=\"#de0905\"/></g></svg>');\r\n\r\n		// Initilise Slick Carousel with custom paging (takes first child element)\r\n		$('.AC04-carousel', $block).slick({\r\n			autoplay: false,\r\n			dots: true,\r\n			arrows: false,\r\n			fade: true,\r\n			customPaging : function(slider, i) {\r\n        		var title = $(slider.$slides[i].innerHTML).find('.AC04-carousel__item').children().first().html();\r\n        		return '<span>' + title + '</span>';\r\n    		},\r\n		});\r\n\r\n		// Loop through all carousel items\r\n		$('.AC04-carousel__item', $block).each(function() {\r\n			// Remove pagination heading\r\n			$(this).children().first().remove();\r\n\r\n			// Wrap media\r\n			$('.video-wrapper', $(this)).unwrap('p').wrap('<div class=\"AC04-carousel__item-media\"></div>');\r\n			$('img', $(this)).unwrap('p').wrap('<div class=\"AC04-carousel__item-media\"></div>');\r\n\r\n			// Add media description to div (any content after the media)\r\n			var $mediaElement = $('.AC04-carousel__item-media', $(this));\r\n			$mediaElement.nextAll().appendTo($mediaElement);\r\n\r\n			// Add everything else to another wrapper\r\n			$(this).children().not('.AC04-carousel__item-media').wrapAll('<div class=\"AC04-carousel__item-content\"></div>');\r\n		});\r\n\r\n		// Calculate the position of the dots depending on height\r\n		function block"
+    + "').parent('.wmg-block');\r\n\r\n		// Wrap image\r\n		$('.AC04-intro img', $block).unwrap('p').wrap('<div class=\"AC04-intro__image\"></div>');\r\n\r\n		// Wrap everything else\r\n		$('.AC04-intro', $block).children().not('.AC04-intro__image').wrapAll('<div class=\"AC04-intro__content\"><div class=\"half-container half-container--lg half-container--left\"></div></div>');\r\n\r\n		// Add SVG icon\r\n		$('.AC04-intro__content', $block).append('<svg width=\"33\" height=\"351\" viewBox=\"0 0 33 351\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"d-none d-md-block image-box-border theme-fill-path-alt\"><g style=\"mix-blend-mode:multiply\"><path d=\"M0.632812 36.436L32.018 0V351H0.632812V36.436Z\" fill=\"#de0905\"/></g></svg>');\r\n\r\n		// Initilise Slick Carousel with custom paging (takes first child element)\r\n		$('.AC04-carousel', $block).slick({\r\n			autoplay: false,\r\n			dots: true,\r\n			arrows: false,\r\n			fade: true,\r\n			customPaging : function(slider, i) {\r\n        		var title = $(slider.$slides[i].innerHTML).find('.AC04-carousel__item').children().first().html();\r\n        		return '<span>' + title + '</span>';\r\n    		},\r\n		});\r\n\r\n		// Loop through all carousel items\r\n		$('.AC04-carousel__item', $block).each(function() {\r\n			// Remove pagination heading\r\n			$(this).children().first().remove();\r\n\r\n			// Wrap media\r\n			$('.video-element', $(this)).unwrap('p').wrap('<div class=\"AC04-carousel__item-media\"></div>');\r\n			$('img', $(this)).unwrap('p').wrap('<div class=\"AC04-carousel__item-media\"></div>');\r\n\r\n			// Add media description to div (any content after the media)\r\n			var $mediaElement = $('.AC04-carousel__item-media', $(this));\r\n			$mediaElement.nextAll().appendTo($mediaElement);\r\n\r\n			// Add everything else to another wrapper\r\n			$(this).children().not('.AC04-carousel__item-media').wrapAll('<div class=\"AC04-carousel__item-content\"></div>');\r\n		});\r\n\r\n		// Calculate the position of the dots depending on height\r\n		function block"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":63,"column":16},"end":{"line":63,"column":32}}}) : helper)))
     + "DotsPosition() {\r\n			if($(window).width() < 992) {\r\n				var dotsHeight = $('.slick-dots', $block).height() + 40;\r\n				$('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":66,"column":14},"end":{"line":66,"column":30}}}) : helper)))
@@ -12124,11 +12124,11 @@ this["WMG"]["blocks"]["MB01"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":31}}}) : helper)))
     + "\" class=\"block block-MB block-MB01\">\r\n	<div class=\"block__content\">\r\n		"
     + ((stack1 = container.lambda(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"0") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
-    + "\r\n		<div class=\"MB01-img\"></div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
+    + "\r\n		<div class=\"d-none d-md-block MB01-img\"></div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":9,"column":18},"end":{"line":9,"column":34}}}) : helper)))
     + "');\r\n		var $block = $('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":10,"column":25},"end":{"line":10,"column":41}}}) : helper)))
-    + "').parent('.wmg-block');\r\n\r\n		// Get image url and remove image element\r\n		var $img = $('img', $block);\r\n		var imgSrc = $img.attr('src');\r\n		$img.unwrap('p').remove();\r\n\r\n		// Add background image\r\n		$('.MB01-img', $block).css('background-image', 'url(' + imgSrc + ')');\r\n		 \r\n	});\r\n</script>";
+    + "').parent('.wmg-block');\r\n\r\n		// Get image url and remove image element\r\n		var $img = $('img', $block);\r\n		var imgSrc = $img.attr('src');\r\n		$img.unwrap('p').wrap('<div class=\"d-md-none MB01-mobile-img\"></div>');\r\n\r\n		// Add background image\r\n		$('.MB01-img', $block).css('background-image', 'url(' + imgSrc + ')');\r\n		 \r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["MB02"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -12919,7 +12919,7 @@ this["WMG"]["blocks"]["PTB17"] = Handlebars.template({"1":function(container,dep
         return undefined
     };
 
-  return "											<p><strong><span class=\"event-card__timestamp\" data-timestamp-start=\""
+  return "											<p class=\"event-card__date\"><strong><span class=\"event-card__timestamp\" data-timestamp-start=\""
     + ((stack1 = alias1((depth0 != null ? lookupProperty(depth0,"start") : depth0), depth0)) != null ? stack1 : "")
     + "\" data-timestamp-end=\""
     + ((stack1 = alias1((depth0 != null ? lookupProperty(depth0,"end") : depth0), depth0)) != null ? stack1 : "")
@@ -12932,7 +12932,7 @@ this["WMG"]["blocks"]["PTB17"] = Handlebars.template({"1":function(container,dep
         return undefined
     };
 
-  return "											<p><br><strong>Hosted: "
+  return "											<p class=\"event-card__location\"><strong>Hosted: "
     + ((stack1 = container.lambda((depth0 != null ? lookupProperty(depth0,"location") : depth0), depth0)) != null ? stack1 : "")
     + "</strong></p>\r\n";
 },"8":function(container,depth0,helpers,partials,data) {

@@ -42,10 +42,10 @@
 									<h4>{{{this.title}}}</h4>
 									<div class="event-card__content-info">
 										{{#if this.start}}
-											<p><strong><span class="event-card__timestamp" data-timestamp-start="{{{this.start}}}" data-timestamp-end="{{{this.end}}}"></span></strong></p>
+											<p class="event-card__date"><strong><span class="event-card__timestamp" data-timestamp-start="{{{this.start}}}" data-timestamp-end="{{{this.end}}}"></span></strong></p>
 										{{/if}}
 										{{#if this.location}}
-											<p><br><strong>Hosted: {{{this.location}}}</strong></p>
+											<p class="event-card__location"><strong>Hosted: {{{this.location}}}</strong></p>
 										{{/if}}
 									</div>
 									{{#if this.summary}}

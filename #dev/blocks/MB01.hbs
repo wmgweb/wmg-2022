@@ -1,7 +1,7 @@
 <div id="block-{{ blockCount }}" class="block block-MB block-MB01">
 	<div class="block__content">
 		{{{content.[0].content}}}
-		<div class="MB01-img"></div>
+		<div class="d-none d-md-block MB01-img"></div>
 	</div>
 </div>
 <script>
@@ -12,7 +12,7 @@
 		// Get image url and remove image element
 		var $img = $('img', $block);
 		var imgSrc = $img.attr('src');
-		$img.unwrap('p').remove();
+		$img.unwrap('p').wrap('<div class="d-md-none MB01-mobile-img"></div>');
 
 		// Add background image
 		$('.MB01-img', $block).css('background-image', 'url(' + imgSrc + ')');

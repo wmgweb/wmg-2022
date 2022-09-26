@@ -71,7 +71,7 @@
 			flex: 1;
 			z-index: 2;
 			color: $color-white;
-			background: rgba(0, 0, 0, .8);
+			background: rgba(0, 0, 0, .88);
 			background-blend-mode: multiply;
 			min-height: 230px;
 			padding: 5px 7vw 50px;
@@ -149,7 +149,7 @@
 	}
 
 	@include md {
-		height: 751px;
+		height: 650px;
 
 		&.height-small {
 			height: 390px;
@@ -181,6 +181,7 @@
 					display: flex;
 					justify-content: center;
 					flex-direction: column;	
+					background: rgba(0, 0, 0, .9);
 
 					.HB01__carousel-item-content-overlay {
 						display: block;

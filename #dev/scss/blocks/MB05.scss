@@ -1,10 +1,12 @@
 .block-MB05 {
+	padding: 30px 0;
+
 	.row {
-		padding: 0 16px;
 		width: calc(100% + 32px);
+		margin: 0 -16px;
 
 		> div {
-			
+			padding: 0 16px;	
 		}
 	}
 	

@@ -27,6 +27,10 @@
 		}
 	}
 
+	.slick-slide {
+		padding-bottom: 20px;
+	}	
+
 	.slick-dots {
 		@extend .slick-dots-circle;
 	}
@@ -49,6 +53,6 @@
 				padding-left: 32px;
 				padding-right: 0;
 			}
-		}		
+		}	
 	}
 }

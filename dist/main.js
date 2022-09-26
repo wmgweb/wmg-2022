@@ -10898,7 +10898,7 @@ function blockWrappers(block) {
 	// Remove <p> tags from all images and videos
 	jQuery('img', block).unwrap('p');
 	jQuery('video', block).unwrap('p');
-	jQuery('brand-triangle', block).unwrap('p');
+	jQuery('.brand-triangle', block).unwrap('p');
 }
 
 

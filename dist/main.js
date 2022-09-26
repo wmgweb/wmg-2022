@@ -11006,6 +11006,92 @@ function blockPostsQuery($block, postsCount) {
 	return postsData;
 }
 
+// Function to run an AJAX query for publications and return the data
+function pubsQuery(count, authors, id) {
+	var pubsData = false;
+
+	jQuery.ajax({
+		async: false,
+        url : 'https://charlie.wmg.warwick.ac.uk/api/getPublications.php?ufid=' + id + '&authors='+ authors + '&numberofitems=' + count,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+			pubsData = data;
+        }
+    });
+
+    return pubsData;
+
+}
+
+// Function to automatically run the pubsQuery function based on data on given block. Saves a lot of repeat code in blocks.
+function blockPubsQuery($block) {
+	let pubsData = false;
+	let pubsCount = 5;
+	let pubsAuthors = false;
+	let pubsID = false;
+
+	// If block has pubs_count
+	if($block.data('pubs_count')) {
+		pubsCount = $block.data('pubs_count');
+	}
+
+	// If block has pubs_authors
+	if($block.data('pubs_authors')) {
+		pubsAuthors = $block.data('pubs_authors').split('|');
+	}
+
+	// If block has pubs_id
+	if($block.data('pubs_id')) {
+		pubsID = $block.data('pubs_id');
+	}
+
+	// If ID and authors set, run query
+	if(pubsID != false && pubsAuthors != false) {
+		pubsData = pubsQuery(pubsCount, pubsAuthors, pubsID);
+	} else { // Else output error message
+		console.log('Publications API Error! No data-pubs_authors and/or data-pubs_id set on the block.')
+	}
+
+	return pubsData;
+}
+
+// Parses publication data and outputs HTML
+function blockPubsArticles(pubsData, articleWrapperClass) {
+	var pubsOutput = '';
+
+	if(pubsData != false) {
+		jQuery.each(pubsData, function(key, data) {
+			var authors = '';
+
+			// Loop through each author and create output in var
+			if(data.rioxx2_author.length > 0) {
+				authors = 'Authors: ';
+				jQuery.each(data.rioxx2_author, function(key, data) {
+					if(key > 0) {
+						authors = authors + ' | ';
+					}
+					authors = authors + data.author;
+				});
+			}
+
+			if(articleWrapperClass) {
+				pubsOutput = pubsOutput + '<div class="' + articleWrapperClass + '">';
+			}
+
+			pubsOutput = pubsOutput + '<div class="article-post border-color--theme"><span class="article-post__date">' + data.date + '</span><h3 class="article-post__heading"><a href="' + data.uri + '">' + data.title + '</a></h3><span class="article-post__authors">' + authors + '</span></div>';
+			
+			if(articleWrapperClass) {
+				pubsOutput = pubsOutput + '</div>';
+			}
+		});
+
+		
+    }
+
+    return pubsOutput;
+}
+
 // Function to output event start/end dates
 function eventDates(startTimestamp, endTimestamp) {
 	// Convert to date/time
@@ -13267,9 +13353,7 @@ this["WMG"]["blocks"]["TB13"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":19,"column":18},"end":{"line":19,"column":34}}}) : helper)))
     + "');\r\n		var $block = $('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":20,"column":25},"end":{"line":20,"column":41}}}) : helper)))
-    + "').parent('.wmg-block');\r\n		var postsData = blockPostsQuery($block, 3);\r\n		var postsOutput = '';\r\n\r\n		if(postsData != false) {\r\n			$.each(postsData, function(key, data) {\r\n				var authors = '';\r\n\r\n				if(data.authors.length > 0) {\r\n					authors = 'Authors: ';\r\n					$.each(data.authors, function(key, data) {\r\n						if(key > 0) {\r\n							authors = authors + ' | ';\r\n						}\r\n						authors = authors + data;\r\n					});\r\n				}\r\n\r\n				var date = new Date(data.publicationDate);\r\n				date = date.toLocaleString('en-GB', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' })\r\n\r\n				postsOutput = postsOutput + '<div class=\"article-post border-color--theme\"><span class=\"article-post__date\">' + date + '</span><h3 class=\"article-post__heading\"><a href=\"' + $block.data('posts_article_page') + '?id=' + data.id + '\">' + data.title + '</a></h3><span class=\"article-post__authors\">' + authors + '</span></div>';\r\n			});\r\n\r\n			$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":44,"column":13},"end":{"line":44,"column":29}}}) : helper)))
-    + " .TB13-side__posts').html(postsOutput);\r\n	    }\r\n\r\n	});\r\n</script>";
+    + "').parent('.wmg-block');\r\n	 	var pubsData = blockPubsQuery($block);\r\n	 	var pubsHTML = blockPubsArticles(pubsData);\r\n\r\n	 	$('.TB13-side__posts', $block).html(pubsHTML);\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["TB16"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -13287,9 +13371,7 @@ this["WMG"]["blocks"]["TB16"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":11,"column":18},"end":{"line":11,"column":34}}}) : helper)))
     + "');\r\n		var $block = $('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":12,"column":25},"end":{"line":12,"column":41}}}) : helper)))
-    + "').parent('.wmg-block');\r\n		var postsData = blockPostsQuery($block, 8);\r\n		var postsOutput = '';\r\n\r\n		if(postsData != false) {\r\n			$.each(postsData, function(key, data) {\r\n				var authors = '';\r\n\r\n				if(data.authors.length > 0) {\r\n					authors = 'Authors: ';\r\n					$.each(data.authors, function(key, data) {\r\n						if(key > 0) {\r\n							authors = authors + ' | ';\r\n						}\r\n						authors = authors + data;\r\n					});\r\n				}\r\n\r\n				var date = new Date(data.publicationDate);\r\n				date = date.toLocaleString('en-GB', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' })\r\n\r\n				postsOutput = postsOutput + '<div class=\"TB16-col\"><div class=\"article-post border-color--theme\"><span class=\"article-post__date\">' + date + '</span><h3 class=\"article-post__heading\"><a href=\"' + $block.data('posts_article_page') + '?id=' + data.id + '\">' + data.title + '</a></h3><span class=\"article-post__authors\">' + authors + '</span></div></div>';\r\n			});\r\n\r\n			$('#block-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":36,"column":13},"end":{"line":36,"column":29}}}) : helper)))
-    + " .TB16-row').html(postsOutput);\r\n	    }\r\n	});\r\n</script>";
+    + "').parent('.wmg-block');\r\n	 	var pubsData = blockPubsQuery($block);\r\n	 	var pubsHTML = blockPubsArticles(pubsData, 'TB16-col');\r\n\r\n	 	$('.TB16-row', $block).html(pubsHTML);\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["TB20"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, alias5=container.lambda, lookupProperty = container.lookupProperty || function(parent, propertyName) {

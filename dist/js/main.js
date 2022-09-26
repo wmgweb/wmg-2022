@@ -11006,6 +11006,92 @@ function blockPostsQuery($block, postsCount) {
 	return postsData;
 }
 
+// Function to run an AJAX query for publications and return the data
+function pubsQuery(count, authors, id) {
+	var pubsData = false;
+
+	jQuery.ajax({
+		async: false,
+        url : 'https://charlie.wmg.warwick.ac.uk/api/getPublications.php?ufid=' + id + '&authors='+ authors + '&numberofitems=' + count,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+			pubsData = data;
+        }
+    });
+
+    return pubsData;
+
+}
+
+// Function to automatically run the pubsQuery function based on data on given block. Saves a lot of repeat code in blocks.
+function blockPubsQuery($block) {
+	let pubsData = false;
+	let pubsCount = 5;
+	let pubsAuthors = false;
+	let pubsID = false;
+
+	// If block has pubs_count
+	if($block.data('pubs_count')) {
+		pubsCount = $block.data('pubs_count');
+	}
+
+	// If block has pubs_authors
+	if($block.data('pubs_authors')) {
+		pubsAuthors = $block.data('pubs_authors').split('|');
+	}
+
+	// If block has pubs_id
+	if($block.data('pubs_id')) {
+		pubsID = $block.data('pubs_id');
+	}
+
+	// If ID and authors set, run query
+	if(pubsID != false && pubsAuthors != false) {
+		pubsData = pubsQuery(pubsCount, pubsAuthors, pubsID);
+	} else { // Else output error message
+		console.log('Publications API Error! No data-pubs_authors and/or data-pubs_id set on the block.')
+	}
+
+	return pubsData;
+}
+
+// Parses publication data and outputs HTML
+function blockPubsArticles(pubsData, articleWrapperClass) {
+	var pubsOutput = '';
+
+	if(pubsData != false) {
+		jQuery.each(pubsData, function(key, data) {
+			var authors = '';
+
+			// Loop through each author and create output in var
+			if(data.rioxx2_author.length > 0) {
+				authors = 'Authors: ';
+				jQuery.each(data.rioxx2_author, function(key, data) {
+					if(key > 0) {
+						authors = authors + ' | ';
+					}
+					authors = authors + data.author;
+				});
+			}
+
+			if(articleWrapperClass) {
+				pubsOutput = pubsOutput + '<div class="' + articleWrapperClass + '">';
+			}
+
+			pubsOutput = pubsOutput + '<div class="article-post border-color--theme"><span class="article-post__date">' + data.date + '</span><h3 class="article-post__heading"><a href="' + data.uri + '">' + data.title + '</a></h3><span class="article-post__authors">' + authors + '</span></div>';
+			
+			if(articleWrapperClass) {
+				pubsOutput = pubsOutput + '</div>';
+			}
+		});
+
+		
+    }
+
+    return pubsOutput;
+}
+
 // Function to output event start/end dates
 function eventDates(startTimestamp, endTimestamp) {
 	// Convert to date/time

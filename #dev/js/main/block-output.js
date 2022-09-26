@@ -172,6 +172,13 @@ function blockWrappers(block) {
 	jQuery('img', block).unwrap('p');
 	jQuery('video', block).unwrap('p');
 	jQuery('.brand-triangle', block).unwrap('p');
+
+	// Remove empty p tags
+	jQuery('p', block).each(function() {
+	    if(jQuery(this).text().trim().length == 0) {
+	        jQuery(this).remove()
+	    }
+	});
 }
 
 

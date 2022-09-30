@@ -17,6 +17,7 @@
 .video-element {
 	.video-element__image {
 		cursor: pointer;
+		position: relative;
 
 		svg {
 			position: absolute;

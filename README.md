@@ -5,7 +5,7 @@ This is a framework for building global styles, JavaScript and blocks for the WM
 To implement this project into the SiteBuilder CMS, you must include the `main.css` and `main.js` files found in `/dist` on every page you intend on using the framework. Once included, you can build pages in a modular format using blocks. Please check the [website documentation](https://warwick.ac.uk/fac/sci/wmg/intranet/info/comms/wmg-website-support/) for more information on how to implement blocks, and the [blocks FAQ](https://warwick.ac.uk/fac/sci/wmg/intranet/info/comms/wmg-website-support/blocks/) for information on how to populate each specific block in SiteBuilder.
 
 # Setup
-The framework requires Gulp, which in turn requires Node.js. You can install Node.js [here](https://nodejs.org/en/download/). All required packages are pre-loaded into package.json. To install all packages, run `npm install`.
+The framework requires Gulp, which in turn requires Node.js. You can install Node.js [here](https://nodejs.org/en/download/). All required packages are pre-loaded into package.json. To install all packages, navigate to the project folder in Command Prompt and run `npm install`. You then need to install Gulp using the following command `npm install --global gulp-cli`.
 
 The framework is now set-up and ready for development.
 

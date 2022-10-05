@@ -1,6 +1,6 @@
 .block-IG02 {
 	.IG02-grid {
-		margin: 0 -36px;
+		margin: 0 -36px -2px;
 		width: calc(100% + 72px);
 		display: flex;
 		flex-wrap: wrap;
@@ -25,8 +25,11 @@
 
 	@include md {
 		.IG02-grid {
+			margin-bottom: -72px;
+
 			.IG02-grid__item {
 				padding-bottom: 72px;
+				width: 50%;
 			}
 		}
 

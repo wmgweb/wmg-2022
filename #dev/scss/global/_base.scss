@@ -78,7 +78,7 @@ a:visited {
     color: inherit;
     text-decoration: underline;
 
-    &:focus {
+    &:not(.btn):focus {
     	background: inherit !important;
         outline: none !important;
         box-shadow: none !important;

@@ -1,6 +1,6 @@
 <div id="block-{{ blockCount }}" class="block block-AC block-AC04">
 	<div class="block__content">
-		<div class="block-intro AC04-intro bg--theme">
+		<div class="block-intro AC04-intro border-color--theme">
 			{{{content.[0].content}}}
 		</div>
 		<div class="container">
@@ -26,9 +26,6 @@
 
 		// Wrap everything else
 		$('.AC04-intro', $block).children().not('.AC04-intro__image').wrapAll('<div class="AC04-intro__content"><div class="half-container half-container--lg half-container--left"></div></div>');
-
-		// Add SVG icon
-		$('.AC04-intro__content', $block).append('<svg width="33" height="351" viewBox="0 0 33 351" fill="none" xmlns="http://www.w3.org/2000/svg" class="d-none d-md-block image-box-border theme-fill-path-alt"><g style="mix-blend-mode:multiply"><path d="M0.632812 36.436L32.018 0V351H0.632812V36.436Z" fill="#de0905"/></g></svg>');
 
 		// Initilise Slick Carousel with custom paging (takes first child element)
 		$('.AC04-carousel', $block).slick({

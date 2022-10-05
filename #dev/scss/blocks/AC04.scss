@@ -3,10 +3,12 @@
 
 	.AC04-intro {
 		color: $color-white;
+		background: $color-dark;
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
 		margin-bottom: 30px;
+		border-top: 10px solid transparent;
 
 		.AC04-intro__content {
 			position: relative;

@@ -640,7 +640,7 @@ this["WMG"]["blocks"]["IG02"] = Handlebars.template({"1":function(container,dept
         return undefined
     };
 
-  return "					<div class=\"col-12 col-sm-6 col-md-3\"><div class=\"IG02__item\">"
+  return "					<div class=\"IG02-grid__item\"><div class=\"IG02__item\">"
     + ((stack1 = container.lambda((depth0 != null ? lookupProperty(depth0,"content") : depth0), depth0)) != null ? stack1 : "")
     + "</div></div>\r\n";
 },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -653,11 +653,11 @@ this["WMG"]["blocks"]["IG02"] = Handlebars.template({"1":function(container,dept
 
   return "<div id=\"block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":31}}}) : helper)))
-    + "\" class=\"block block-IG block-IG02\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			<div class=\"row\">\r\n"
+    + "\" class=\"block block-IG block-IG02\">\r\n	<div class=\"container\">\r\n		<div class=\"block__content\">\r\n			<div class=\"IG02-grid\">\r\n"
     + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"content") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":5,"column":4},"end":{"line":7,"column":13}}})) != null ? stack1 : "")
     + "			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":14,"column":18},"end":{"line":14,"column":34}}}) : helper)))
-    + "');\r\n	});\r\n</script>";
+    + "');\r\n\r\n\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["IG05"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {

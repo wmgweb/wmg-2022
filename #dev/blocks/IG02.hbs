@@ -1,9 +1,9 @@
 <div id="block-{{ blockCount }}" class="block block-IG block-IG02">
 	<div class="container">
 		<div class="block__content">
-			<div class="row">
+			<div class="IG02-grid">
 				{{#each content}}
-					<div class="col-12 col-sm-6 col-md-3"><div class="IG02__item">{{{ this.content }}}</div></div>
+					<div class="IG02-grid__item"><div class="IG02__item">{{{ this.content }}}</div></div>
 				{{/each}}
 			</div>
 		</div>
@@ -12,5 +12,7 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+
+
 	});
 </script>

@@ -1,10 +1,13 @@
 .block-IG02 {
-	.row {
+	.IG02-grid {
 		margin: 0 -36px;
 		width: calc(100% + 72px);
+		display: flex;
+		flex-wrap: wrap;
 
-		> div {
+		.IG02-grid__item {
 			padding: 0 36px 2px;
+			width: 100%;
 		}
 	}
 
@@ -21,10 +24,22 @@
 	}
 
 	@include md {
-		.row {
-			> div {
+		.IG02-grid {
+			.IG02-grid__item {
 				padding-bottom: 72px;
 			}
+		}
+
+		&.columns--2 .IG02-grid .IG02-grid__item {
+			width: 50%;
+		}
+
+		&.columns--3 .IG02-grid .IG02-grid__item {
+			width: 33.333%;
+		}
+
+		&.columns--4 .IG02-grid .IG02-grid__item {
+			width: 25%;
 		}
 	}
 }

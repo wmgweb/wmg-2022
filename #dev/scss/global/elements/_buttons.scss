@@ -8,6 +8,8 @@
 	font-weight: bold;
 	font-size: 15px;
 	position: relative;
+	max-width: 100%;
+    white-space: pre-wrap;
 
 	&:hover {
 		opacity: .4;

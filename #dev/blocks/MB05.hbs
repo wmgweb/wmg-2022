@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="block__content">
 			<div class="MB05__intro">{{{content.[0].content}}}</div>
-			<div class="row">
+			<div class="row MB05__grid">
 				{{#each content}}
 					{{#if @index includeZero=false}}
 						<div class="col-12 col-md-6 col-lg-4"><div class="MB05__item">{{{ this.content }}}</div></div>
@@ -17,6 +17,15 @@
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
 		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
+		var postsData = blockPostsQuery($block);
+		var postsOutput = '';
+		if(postsData != false) {
+			$.each(postsData, function(key, data) {	console.log(data);
+				postsOutput = postsOutput + '<div class="col-12 col-md-6 col-lg-4"><div class="MB05__item"><a href="' + $block.data('posts_article_page') + '?id=' + data.id + '">' + data.title + '</a></div></div>';
+			});
+
+			$('.MB05__grid', $block).html(postsOutput);
+	    }
 
 		// Move button
 		$('.MB05__intro .btn', $block).appendTo('#block-{{ blockCount }} .MB05__button');

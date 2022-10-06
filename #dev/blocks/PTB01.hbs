@@ -22,6 +22,24 @@
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
 		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
+		var postsData = blockPostsQuery($block, 8);
+		var postsOutput = '';
+
+		if(postsData != false) {
+			$.each(postsData, function(key, data) {
+
+				// Get image from content string
+				var image = blockPostImage(data.content, postsURL);
+
+				if(image != '') {
+					var image = '<img src="' + image + '" alt="' + data.title + '">';
+				}
+
+				postsOutput = postsOutput + '<div class="PTB01-carousel__item"><div class="row"><div class="col-12 col-md-6"><div class="PTB01-carousel__item-image">' + image + '</div></div><div class="col-12 col-md-6"><div class="PTB01-carousel__item-content"><h3>' + data.title + '</h3><a href="' + $block.data('posts_article_page') + '?id=' + data.id + '" class="btn btn--theme">Read more</a></div></div></div></div>';
+			});
+
+			$('.PTB01-carousel', $block).html(postsOutput);
+	    }
 
 		$('.PTB01-carousel__item', $block).each(function() {
 			$('img', $(this)).appendTo($('.PTB01-carousel__item-image', $(this)));

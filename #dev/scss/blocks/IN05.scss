@@ -4,12 +4,22 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 18px 24px;
+		padding: 8px 24px;
 		background-color: $color-red;
 
 		.IN__social-link {
 			a {
 				text-decoration: none;
+				border-bottom: 1px solid $color-white;
+			}
+
+			p,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6 {
+				margin: 0;
 			}
 		}
 
@@ -48,6 +58,11 @@
 		p {
 			margin: 0;
 		}
+	}
+
+	.IN__map-description {
+		margin-top: 10px;
+		font-size: 15px;
 	}
 
 	@include md {

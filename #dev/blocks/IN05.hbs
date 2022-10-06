@@ -5,20 +5,11 @@
 				<div class="col-12 col-lg-6"><div class="IN__main">{{{content.[0].content}}}</div></div>
 				<div class="col-12 col-lg-6">
 					<div class="IN__social bg--theme color--white">
-						<div class="IN__social-link">
-							<a href="https://www.google.com/maps/dir//WMG+Warwick+6+Lord+Bhattacharyya+Way+Coventry+CV4+7AL/@52.3843819,-1.5618825,13z/data=!4m5!4m4!1m0!1m2!1m1!1s0x48774ac55565518b:0x52952e4c9e69efec" target="_blank">Find us</a>
-						</div>
-						<div class="IN__social-main">
-							<p>Connect with us</p>
-							<ul>
-								<li><a href="https://twitter.com/wmgwarwick" class="fa fa-twitter" target="_blank"></a></li>
-								<li><a href="https://www.linkedin.com/company/wmg-university-of-warwick/" class="fa fa-linkedin" target="_blank"></a></li>
-							</ul>
-						</div>
+						{{{content.[1].content}}}
 					</div>
 					<div class="IN__map">
-						<div class="IN__map-main">{{{content.[1].content}}}</div>
-						<div class="IN__map-description">{{{content.[2].content}}}</div>
+						<div class="IN__map-main">{{{content.[2].content}}}</div>
+						<div class="IN__map-description">{{{content.[3].content}}}</div>
 					</div>
 				</div>
 			</div>
@@ -28,5 +19,9 @@
 <script>
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
+		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
+
+		$('.IN__social', $block).children().first().wrap('<div class="IN__social-link"></div>');
+		$('.IN__social', $block).children().not('.IN__social-link').wrapAll('<div class="IN__social-main"></div>');
 	});
 </script>

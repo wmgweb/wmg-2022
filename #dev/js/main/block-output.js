@@ -86,7 +86,14 @@ function blockShortcodes(block) {
 				break;
 			case "fa":
 				if('code' in scAttr) {
-					scOutput = '<i class="' + scAttr.code + '"></i>';
+					let faCode = '<i class="' + scAttr.code + '"></i>';
+
+					// If link is set, add it
+					if('link' in scAttr) {
+						faCode = '<a href="' + scAttr.link + '" target="_blank">' + faCode + '</a>';
+					}
+					
+					scOutput = faCode;
 				}
 				break;
 			case "heading":

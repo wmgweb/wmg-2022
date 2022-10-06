@@ -475,6 +475,18 @@ jQuery(document).ready(function($) {
   			var wmgBlockContentID = parseInt($block.data('content_id'));
   		}
 
+  		// If block content tags are set, filter by them.
+  		var wmgBlockContentTags = '';
+  		if($block.data('content_tags')) {
+  			blockContentTagsArray = $block.data('content_tags').split(',');
+
+  			// Loop through each tag
+  			$.each(blockContentTagsArray, function(key, value) {
+  				// Add to tags parameter string
+  				wmgBlockContentTags = wmgBlockContentTags + '&tag=' + value;
+  			});
+  		}
+
   		var blockQueryUrl = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/dataentry/entries.json';
 
   		var blockQueryType = 'default';
@@ -487,14 +499,14 @@ jQuery(document).ready(function($) {
   			}
   		}
 
-  		wmgBlockContentNumber = '';
+  		var wmgBlockContentNumber = '';
   		if($block.data('content_number')) {
   			wmgBlockContentNumber = '&num=' + $block.data('content_number');
   		}
 
   		$.ajax({
   			async: false,
-	        url : blockQueryUrl + '?page=' + wmgBlockContentURL + wmgBlockContentNumber,
+	        url : blockQueryUrl + '?page=' + wmgBlockContentURL + wmgBlockContentNumber + wmgBlockContentTags,
 	        type: 'GET',
 	        dataType: 'json',
 	        success: function(data) {

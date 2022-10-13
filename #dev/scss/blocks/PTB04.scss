@@ -41,8 +41,8 @@
 
 	&.image-crop--round {
 		.PTB04-carousel__item-image-wrapper {
-			width: 300px;
-			height: 300px;
+			width: 200px;
+			height: 200px;
 			border-radius: 50%;
 			overflow: hidden;
 
@@ -54,7 +54,7 @@
 		}
 	}
 
-	@media(min-width: 500px) {
+	@media(min-width: 550px) {
 		&.image-crop--round {
 			.PTB04-carousel__item-image-wrapper {
 				width: 372px;

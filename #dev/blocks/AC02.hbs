@@ -9,12 +9,13 @@
 					{{#each content}}
 						{{#if @index includeZero=false}}
 							<div class="AC02__carousel-item">
-								<div class="row">
-									<div class="col-12 col-md-7">
-										<div class="AC02__carousel-item-content">{{{content}}}</div>
-									</div>
-									<div class="col-12 col-md-5">
-										<div class="AC02__carousel-item-image"></div>
+								<div class="AC02__carousel-item-inner">
+									<div class="AC02__carousel-item-content">
+										<div class="AC02__carousel-item-content-inner">
+											<div class="AC02__carousel-item-content-inner-main">
+												{{{content}}}
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -43,25 +44,45 @@
 			arrows: false,
 			fade: true,
 			customPaging : function(slider, i) {
-        		var title = $(slider.$slides[i].innerHTML).find('.AC02__carousel-item-content').children().first().html();
+        		var title = $(slider.$slides[i].innerHTML).find('.AC02__carousel-item-content-inner-main').children().first().html();
         		return '<span>' + title + '</span>';
     		},
 		});
 
 		// Loop through each slide content
-		$('.AC02__carousel-item-content', $block).each(function() {
-			var $parent = $(this).parents('.AC02__carousel-item');
+		$('.AC02__carousel-item-content-inner-main', $block).each(function() {
+			var $parent = $(this).parents('.AC02__carousel-item-inner');
 
 			// Remove pagination heading
 			$(this).children().first().remove();
 
-			// Move image
-			var $img = $('img', $(this));
-			var imgSrc = $img.attr('src');
-			var imgAlt = $img.attr('alt');
-			$img.unwrap('p').remove();
+			// If variation 2
+			if($('.block', $block).hasClass('variation--2')) {
+				// Move image
+				$('img', $(this)).first().unwrap('p').wrap('<div class="AC02__carousel-item-image"></div>');
+				$('.AC02__carousel-item-image', $(this)).appendTo($parent);
 
-			$('.AC02__carousel-item-image', $parent).prepend('<img src="' + imgSrc + '" alt="' + imgAlt + '">');
+				// Move list and heading
+				var $lastElement = $(this).children().last();
+
+				// Check if last element is list
+				if($lastElement.is('ul')) {
+					// Get previous element
+					$prevElement = $lastElement.prev();
+
+					// Wrap list
+					$lastElement.wrap('<div class="AC02__carousel-item-content-inner-sidebar"></div>');
+
+					// Check if previous element is heading
+					if($prevElement.is(':header')) {
+						// Move to wrapper
+						$prevElement.prependTo($('.AC02__carousel-item-content-inner-sidebar', $parent));
+					}
+
+					// Move list and heading wrapper
+					$('.AC02__carousel-item-content-inner-sidebar', $parent).appendTo($('.AC02__carousel-item-content', $parent));
+				}
+			}
 
 		});
 

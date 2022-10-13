@@ -6,9 +6,22 @@
 		background: $color-dark;
 		color: $color-white;
 
+		.slick-slide {
+			height: inherit !important;
+
+			& > div {
+				height: 100%;
+			}
+		}
+
+		.slick-track {
+			display: flex !important;
+		}
+
 		.SB03-carousel__item {
 			padding: 88px 0;
 			position: relative;
+			height: 100%;
 
 			.SB03-carousel__item-bg {
 				position: absolute;
@@ -122,6 +135,16 @@
 			&.slick-next {
 				left: auto;
 				right: 7vw;
+			}
+		}
+	}
+
+	@include md {
+		.SB03-carousel {
+			.SB03-carousel__item {
+				p {
+					padding: 0;
+				}
 			}
 		}
 	}

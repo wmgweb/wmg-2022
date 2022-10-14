@@ -133,8 +133,8 @@
 		svg {
 			vertical-align: middle;
 			margin: -3px 0 0 15px;
-		    width: 8px;
-		    height: 15px;
+		    width: 7px;
+		    height: 13px;
 		}
 	}
 
@@ -161,9 +161,9 @@
 
 			svg {
 				position: absolute;
-				right: -20px;
+				right: -17px;
 			    top: 50%;
-			    margin-top: -7.5px;
+			    margin-top: -5px;
 			}
 		}
 
@@ -171,7 +171,7 @@
 			border-color: $color-white;
 			color: $color-white;
 
-			svg path {
+			svg polygon {
 				fill: $color-white;
 			}
 
@@ -184,7 +184,7 @@
 			border-color: $color-dark;
 			color: $color-dark;
 
-			svg path {
+			svg polygon {
 				fill: $color-dark;
 			}
 
@@ -208,7 +208,7 @@
     	}
 
 		svg {
-			path {
+			polygon {
 				fill: $color-white;
 			}
 		}

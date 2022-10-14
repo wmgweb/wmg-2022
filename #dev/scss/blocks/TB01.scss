@@ -1,12 +1,12 @@
 .block-TB01 {
 	.block__content {
-		margin: 0 -16px;
-		width: calc(100% + 32px);
+		margin: 0 -30px;
+		width: calc(100% + 60px);
 	}
 
 	.block-TB01__column {
-		margin-bottom: 3rem;
-		padding: 0 16px;
+		margin-bottom: 60px;
+		padding: 0 30px;
 	}
 
 	@include lg {

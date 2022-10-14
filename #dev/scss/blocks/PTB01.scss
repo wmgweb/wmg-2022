@@ -45,15 +45,6 @@
 		}
 
 		.PTB01-carousel__item {
-			.row {
-				margin: 0 -17px;
-				width: calc(100% + 34px);
-
-				> div {
-					padding: 0 17px;
-				}
-			}
-
 			.PTB01-carousel__item-image {
 				margin: 0 0 30px;
 				height: 270px;
@@ -92,7 +83,7 @@
 
 			.slick-dots {
 				position: absolute;
-				left: calc(50% + 17px);
+				left: calc(50% + $bs_grid_default_spacing);
 				bottom: 0;
 			}
 		}

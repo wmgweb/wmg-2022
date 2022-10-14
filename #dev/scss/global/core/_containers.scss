@@ -45,3 +45,31 @@
         }
     }
 }
+
+.grid-default-padding-left {
+    padding-left: $bs_grid_default_spacing !important;
+}
+
+.grid-default-padding-right {
+    padding-right: $bs_grid_default_spacing !important;
+}
+
+@include md {
+    .grid-default-padding-md-left {
+        padding-left: $bs_grid_default_spacing !important;
+    }
+
+    .grid-default-padding-md-right {
+        padding-right: $bs_grid_default_spacing !important;
+    }
+}
+
+@include lg {
+    .grid-default-padding-lg-left {
+        padding-left: $bs_grid_default_spacing !important;
+    }
+
+    .grid-default-padding-lg-right {
+        padding-right: $bs_grid_default_spacing !important;
+    }
+}

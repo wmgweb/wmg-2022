@@ -69,7 +69,7 @@
 
 			.slick-dots {
 				position: absolute;
-    			left: calc(50% + 40px);
+    			left: calc(50% + calc($bs_grid_default_spacing - 1px));
 				bottom: 10px;
 			}
 
@@ -79,7 +79,7 @@
 				.PTB04-carousel__item-image {
 					border: 0;
 					border-right: 2px solid;
-					padding: 20px 40px;
+					padding: 20px calc($bs_grid_default_spacing - 1px);
 					margin: 0;
 					display: flex;
 					align-items: center;
@@ -92,7 +92,7 @@
 					height: 100%;
 					justify-content: center;
 					border-left: 2px solid;
-					padding: 30px 40px;
+					padding: 30px calc($bs_grid_default_spacing - 1px);
 				}
 			}
 		}

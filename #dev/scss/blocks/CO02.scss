@@ -8,8 +8,11 @@
 	}
 
 	.row {
+		width: calc(100% + 32px);
+		margin: 0 -16px;
+
 		> div {
-			padding-bottom: 24px;
+			padding: 0 16px 24px;
 		}
 	}
 

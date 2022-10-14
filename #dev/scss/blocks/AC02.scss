@@ -13,15 +13,6 @@
 			.AC02__carousel-item-content-inner-sidebar {
 				padding: 30px 0 0;
 
-				h1,
-				h2,
-				h3,
-				h4,
-				h5,
-				h6 {
-					text-transform: uppercase;
-				}
-
 				ul {
 					li {
 						margin: 0;
@@ -109,7 +100,7 @@
 			}
 
 			.AC02__carousel-item-image {
-				width: 33%;
+				width: 220px;
 			}
 
 			.AC02__carousel-item-inner {
@@ -130,6 +121,11 @@
 
 				.AC02__carousel-item-content-inner-sidebar {
 					padding: 0 0 0 30px;
+					max-width: 270px;
+
+					ul {
+						padding-left: 18px;
+					}
 				}
 			}
 		}

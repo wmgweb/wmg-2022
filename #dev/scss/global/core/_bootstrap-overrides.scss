@@ -5,14 +5,14 @@ $bs_breakpoints : ('sm' : $bs-sm, 'md' : $bs-md, 'lg' : $bs-lg);
 
 .row {
 	display: flex;
-	width: calc(100% + 20px);
-	margin: 0 -10px;
+	width: calc(100% + $bs_grid_default_spacing + $bs_grid_default_spacing);
+	margin: 0 calc(0px - $bs_grid_default_spacing);
 	flex-wrap: wrap;
 	flex-direction: row;
 
 	> div[class^="col-"] {
 		float: none;
-		padding: 0 10px;
+		padding: 0 $bs_grid_default_spacing;
 	}
 
 	// Create default columns

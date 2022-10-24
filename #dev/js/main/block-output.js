@@ -46,8 +46,8 @@ function blockShortcodes(block) {
 
 		jQuery.each(scAttrArray, function(key, value) {
 			if(key > 0) {
-				let attr = value.split('='); // Split by =
-				let attrVal = attr[1].substring(1, attr[1].length - 1); // Remove first and last quotes
+				let attr = value.split('="'); // Split by =
+				let attrVal = attr[1].substring(0, attr[1].length - 1); // Remove last quote
 				scAttr[attr[0]] = attrVal; 
 			}
 		});

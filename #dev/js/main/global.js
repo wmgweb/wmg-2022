@@ -12,7 +12,6 @@ jQuery(document).ready(function() {
 
 	// On video element image click
 	jQuery('body').on('click', '.video-element__image', function() {
-		console.log('Opening Video!');
 		// Get video code
 		var code = jQuery('.video-element__code', jQuery(this).parent('.video-element')).html();
 

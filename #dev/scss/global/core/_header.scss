@@ -8,6 +8,19 @@ html.safari .id7-masthead {
 	background: #fff !important;
 }
 
+.wmg-header__menu-button {
+	border: 0;
+	background: none;
+	padding: 0;
+	border-radius: 0;
+	cursor: pointer;
+	margin-left: 16px;
+
+	@include lg {
+		display: none;
+	}
+}
+
 .id7-utility-bar {
 	width: 100%;
 	height: auto;
@@ -56,11 +69,24 @@ html.safari .id7-masthead {
 		width: 90%;
 		max-width: 90%;
 		margin: 0 auto;
+		position: relative;
+
+		&:before {
+			content: '';
+			background: no-repeat center / contain;
+			background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTgiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAgMCA1OCAzMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTYuMTUxMiAyOS4yMTkyTDAuMzA3OTA2IDAuMjg3NzMyTDMxLjY1MDQgMC4yODc3MzFMMTYuMTUxMiAyOS4yMTkyWiIgZmlsbD0iIzNjM2MzZSIvPjxwYXRoIGQ9Ik00Mi4zMjkgMjkuMjE5MkwyNi40ODU2IDAuMjg3NzMyTDU3LjgyODEgMC4yODc3MzFMNDIuMzI5IDI5LjIxOTJaIiBmaWxsPSIjM2MzYzNlIi8+PC9zdmc+") !important;
+			width: 58px;
+			height: 29px;
+			position: absolute;
+			top: -1px;
+			left: 30px;
+			z-index: 1;
+		}
 
 		> .clearfix:first-of-type {
 			display: flex;
 			width: 100%;
-			padding: 20px 0 11px;    
+			padding: 35px 0 11px;    
 			align-items: center;
 		} 
 	}
@@ -105,6 +131,7 @@ html.safari .id7-masthead {
 		float: none;
 		width: auto;
 		padding: 0 0 0 23px;
+		margin: 0;
 	}
 }
 
@@ -115,6 +142,10 @@ html.safari .id7-masthead {
 .id7-search {
 	form {
 		margin:  0;
+
+		input {
+			display: none;
+		}
 	}
 
 	.id7-search-box-container {
@@ -131,7 +162,7 @@ html.safari .id7-masthead {
 		background: #C4C4C4;
 		color: #1D1D1D;
 		border: 0;
-		width: 200px;
+		width: 150px;
 		height: 30px;
 		padding: 0 10px;
 		line-height: 30px;
@@ -165,14 +196,24 @@ html.safari .id7-masthead {
 	}
 
 	.fas {
-		color: #1D1D1D;
-		font-size: 18px;
+		color: #4D4D4F;
+		font-size: 28px;
 	}
 
 	.search-button {
 		position: relative;
 		top: auto;
 		right: auto;
+
+		&:focus {
+			background: transparent !important;
+			outline: none !important;
+			box-shadow: none !important;
+
+			.fas {
+				color: #4D4D4F !important;
+			}
+		}
 	}
 }
 
@@ -360,6 +401,12 @@ html.safari .id7-masthead {
 @media(min-width: 1300px) {
 	.id7-search {
 		margin-top: -30px;
+
+		form {
+			input {
+				display: block;
+			}
+		}
 	}
 
 	.id7-navigation {
@@ -376,7 +423,7 @@ html.safari .id7-masthead {
 		    top: -55px;
 		    left: calc(7vw + 200px);
 		    z-index: 100;
-		    width: calc(90% - 450px);
+		    width: calc(90% - 430px);
 
 		    .navbar-nav {
 				width: 100%;

@@ -1,6 +1,7 @@
 /* Footer */
 .id7-page-footer {
 	.id7-site-footer {
+		display: none;
 		background: #272729 !important;
 		padding: 90px 0 40px;
 	} 
@@ -144,6 +145,12 @@
 			.id7-app-footer-content {
 				padding-top: 0;
 			}
+		}
+	}
+
+	@include lg {
+		.id7-site-footer {
+			display: block;
 		}
 	}
 }

@@ -11284,7 +11284,7 @@ jQuery(document).ready(function() {
 
 	// Close popup on click and reset content
 	jQuery('.video-popup__close').click(function() {
-		jQuery('.video-popup__code').html();
+		jQuery('.video-popup__code').empty();
 		jQuery('.video-popup').removeClass('active');
 	});
 

@@ -44,96 +44,102 @@ function blockShortcodes(block) {
 		let scAttr = {};
 		scAttr.type = scAttrArray[0];
 
-		jQuery.each(scAttrArray, function(key, value) {
-			if(key > 0) {
-				let attr = value.split('="'); // Split by =
-				let attrVal = attr[1].substring(0, attr[1].length - 1); // Remove last quote
-				scAttr[attr[0]] = attrVal; 
-			}
-		});
+		var scOutput = '';
 
-		scOutput = '';
-
-		// If shortcode is button
-		switch(scAttr.type) {
-			case "button":
-				// Add arrow if set
-				var arrow = '';
-				var arrowClass = '';
-				if(scAttr.arrow == 'true') {
-					arrow = '<?xml version="1.0" encoding="UTF-8"?><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7.34 12.86"><polygon points="0 0 0 1.18 6 6.43 0 11.68 0 12.86 7.34 6.43 0 0"/></svg>';
-					arrowClass = ' btn-arrow--' + scAttr.arrow;
+		try {
+			jQuery.each(scAttrArray, function(key, value) {
+				if(key > 0) {
+					let attr = value.split('="'); // Split by =
+					let attrVal = attr[1].substring(0, attr[1].length - 1); // Remove last quote
+					scAttr[attr[0]] = attrVal; 
 				}
+			});
 
-				// Add target attribute if set
-				var target = '';
-				if('target' in scAttr) {
-					target = ' target="' + scAttr.target + '"';
-				}
+			// If shortcode is button
+			switch(scAttr.type) {
+				case "button":
+					// Add arrow if set
+					var arrow = '';
+					var arrowClass = '';
+					if(scAttr.arrow == 'true') {
+						arrow = '<?xml version="1.0" encoding="UTF-8"?><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7.34 12.86"><polygon points="0 0 0 1.18 6 6.43 0 11.68 0 12.86 7.34 6.43 0 0"/></svg>';
+						arrowClass = ' btn-arrow--' + scAttr.arrow;
+					}
 
-				scOutput = '<a href="' + scAttr.link + '" class="btn btn--' + scAttr.style + arrowClass + '"' + target + '>' + scAttr.text + arrow + '</a>';
-				break;
-			case "triangle":
-				// Allow either spelling of colour to set value. Check if either exists and set class
-				var color = '';
-				if('color' in scAttr) {
-					color = ' brand-triangle--' + scAttr.color;
-				} else if('colour' in scAttr) {
-					color = ' brand-triangle--' + scAttr.colour;
-				}
-
-				scOutput = '<span class="brand-triangle'+ color + '"><svg width="14" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L-1.90735e-06 19L-2.46316e-07 6.83429e-07L14 19Z" fill="#EE3124"/></svg></span>';
-				break;
-			case "fa":
-				if('code' in scAttr) {
-					let faCode = '<i class="' + scAttr.code + '"></i>';
-
-					// If link is set, add it
+					// Add target attribute if set
+					var target = '';
+					if('target' in scAttr) {
+						target = ' target="' + scAttr.target + '"';
+					}
+		
 					if('link' in scAttr) {
-						faCode = '<a href="' + scAttr.link + '" target="_blank">' + faCode + '</a>';
+						scOutput = '<a href="' + scAttr.link + '" class="btn btn--' + scAttr.style + arrowClass + '"' + target + '>' + scAttr.text + arrow + '</a>';
+					}
+					break;
+				case "triangle":
+					// Allow either spelling of colour to set value. Check if either exists and set class
+					var color = '';
+					if('color' in scAttr) {
+						color = ' brand-triangle--' + scAttr.color;
+					} else if('colour' in scAttr) {
+						color = ' brand-triangle--' + scAttr.colour;
+					}
+
+					scOutput = '<span class="brand-triangle'+ color + '"><svg width="14" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L-1.90735e-06 19L-2.46316e-07 6.83429e-07L14 19Z" fill="#EE3124"/></svg></span>';
+					break;
+				case "fa":
+					if('code' in scAttr) {
+						let faCode = '<i class="' + scAttr.code + '"></i>';
+
+						// If link is set, add it
+						if('link' in scAttr) {
+							faCode = '<a href="' + scAttr.link + '" target="_blank">' + faCode + '</a>';
+						}
+						
+						scOutput = faCode;
+					}
+					break;
+				case "heading":
+					if('htype' in scAttr && 'text' in scAttr) {
+						var subheading = '';
+						if('subtext' in scAttr) {
+							subheading = '<span class="brand-heading__sub ' + scAttr.substyle + '">' + scAttr.subtext + '</span>';
+						}
+						scOutput = '<' + scAttr.htype + ' class="brand-heading ' + scAttr.style + '">' + subheading + '<span>' + scAttr.text + '</span></' + scAttr.htype +'>';
+					}
+
+					break;
+				case "video":
+					// If video set
+					if('set' in scAttr && 'id' in scAttr) {
+						// Set the embed code depending on which type is set
+						var embed = '';
+						if(scAttr.set == 'youtube') {
+							embed = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + scAttr.id + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
+						} else if(scAttr.set == 'vimeo') {
+							embed = '<iframe src="https://player.vimeo.com/video/' + scAttr.id + '" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
+						} else if(scAttr.set == 'sway') {
+							embed = '<iframe width="760px" height="500px" src="https://sway.office.com/s/' + scAttr.id + '/embed" frameborder="0" marginheight="0" marginwidth="0" max-width="100%" sandbox="allow-forms allow-modals allow-orientation-lock allow-popups allow-same-origin allow-scripts" scrolling="no" style="border: none; max-width: 100%; max-height: 100vh;"></iframe>';
+						}
+
+						// Output wrapper
+						scOutput = '<div class="video-element video-element--' + scAttr.display + '">';
+
+						// If popup is set and image exists
+						if(scAttr.display == 'popup' && 'image' in scAttr) {
+							// Add image element
+							scOutput = scOutput + '<div class="video-element__image"><?xml version="1.0" encoding="iso-8859-1"?><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" class="theme-fill-path"><path d="M256,0C114.511,0,0,114.497,0,256c0,141.49,114.495,256,256,256c141.49,0,256-114.497,256-256C512,114.51,397.503,0,256,0 z M348.238,284.418l-120.294,69.507c-10.148,5.864-22.661,5.874-32.826,0.009c-10.158-5.862-16.415-16.699-16.415-28.426V186.493 c0-11.728,6.258-22.564,16.415-28.426c5.076-2.93,10.741-4.395,16.406-4.395c5.67,0,11.341,1.468,16.42,4.402l120.295,69.507 c10.149,5.864,16.4,16.696,16.4,28.418C364.639,267.722,358.387,278.553,348.238,284.418z"/></svg><img src="' + scAttr.image + '" alt="' + scAttr.alt + '"></div>';
+						}
+
+						// Output embed code and close wrapper
+						scOutput = scOutput + '<div class="video-element__code">' + embed + '</div></div>';
+
 					}
 					
-					scOutput = faCode;
-				}
-				break;
-			case "heading":
-				if('htype' in scAttr && 'text' in scAttr) {
-					var subheading = '';
-					if('subtext' in scAttr) {
-						subheading = '<span class="brand-heading__sub ' + scAttr.substyle + '">' + scAttr.subtext + '</span>';
-					}
-					scOutput = '<' + scAttr.htype + ' class="brand-heading ' + scAttr.style + '">' + subheading + '<span>' + scAttr.text + '</span></' + scAttr.htype +'>';
-				}
-
-				break;
-			case "video":
-				// If video set
-				if('set' in scAttr && 'id' in scAttr) {
-					// Set the embed code depending on which type is set
-					var embed = '';
-					if(scAttr.set == 'youtube') {
-						embed = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + scAttr.id + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
-					} else if(scAttr.set == 'vimeo') {
-						embed = '<iframe src="https://player.vimeo.com/video/' + scAttr.id + '" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
-					} else if(scAttr.set == 'sway') {
-						embed = '<iframe width="760px" height="500px" src="https://sway.office.com/s/' + scAttr.id + '/embed" frameborder="0" marginheight="0" marginwidth="0" max-width="100%" sandbox="allow-forms allow-modals allow-orientation-lock allow-popups allow-same-origin allow-scripts" scrolling="no" style="border: none; max-width: 100%; max-height: 100vh;"></iframe>';
-					}
-
-					// Output wrapper
-					scOutput = '<div class="video-element video-element--' + scAttr.display + '">';
-
-					// If popup is set and image exists
-					if(scAttr.display == 'popup' && 'image' in scAttr) {
-						// Add image element
-						scOutput = scOutput + '<div class="video-element__image"><?xml version="1.0" encoding="iso-8859-1"?><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" class="theme-fill-path"><path d="M256,0C114.511,0,0,114.497,0,256c0,141.49,114.495,256,256,256c141.49,0,256-114.497,256-256C512,114.51,397.503,0,256,0 z M348.238,284.418l-120.294,69.507c-10.148,5.864-22.661,5.874-32.826,0.009c-10.158-5.862-16.415-16.699-16.415-28.426V186.493 c0-11.728,6.258-22.564,16.415-28.426c5.076-2.93,10.741-4.395,16.406-4.395c5.67,0,11.341,1.468,16.42,4.402l120.295,69.507 c10.149,5.864,16.4,16.696,16.4,28.418C364.639,267.722,358.387,278.553,348.238,284.418z"/></svg><img src="' + scAttr.image + '" alt="' + scAttr.alt + '"></div>';
-					}
-
-					// Output embed code and close wrapper
-					scOutput = scOutput + '<div class="video-element__code">' + embed + '</div></div>';
-
-				}
-				
-				break;
+					break;
+			}
+		} catch(e) {
+			console.log('Error in this shortcode: [!' + shortcode + ']');
 		}
 
 		// Remove shortcode and replace

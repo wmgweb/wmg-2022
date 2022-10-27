@@ -57,7 +57,7 @@
 			> div {
 				padding: 0 30px 30px;
 
-				&:before {
+				&:nth-child(1):before {
 					content: '';
 					display: block;
 					width: 100%;

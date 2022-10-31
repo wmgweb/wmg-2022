@@ -11007,20 +11007,26 @@ function postsQuery(postsURL, postsCount, postsTags) {
 }
 
 // Function to automatically run the postsQuery function based on data on given block. Saves a lot of repeat code in blocks.
-function blockPostsQuery($block, postsCount) {
+function blockPostsQuery($block) {
 	var postsData = false;
 
 	// If block has posts url
 	if($block.data('posts_url')) {
 		postsURL = $block.data('posts_url');
 		postsTags = '';
+		postsCount = 5;
 
 		// If block has tags
 		if($block.data('posts_tags')) {
 			postsTags = $block.data('posts_tags');
 		}
 
-		postsData = postsQuery(postsURL, 5, postsTags);
+		// If block has count
+		if($block.data('posts_count')) {
+			postsCount = $block.data('posts_count');
+		}
+		
+		postsData = postsQuery(postsURL, postsCount, postsTags);
 	}
 
 	return postsData;

@@ -25,7 +25,7 @@
 	jQuery(document).ready(function($) {
 		blockFunctions('{{ blockCount }}');
 		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
-		var postsData = blockPostsQuery($block, 5);
+		var postsData = blockPostsQuery($block);
 		var postsOutput = '';
 
 		if(postsData != false) {

@@ -6,7 +6,6 @@ var config = {
 	devJS 		: '#dev/js/',
 	devBlocks 	: '#dev/blocks/',
 	dist 		: 'dist/',
-	distCSS 	: 'dist/css/',
 	distJS 		: 'dist/js/'
 }
 
@@ -35,7 +34,7 @@ function dependencies(done) {
 // Compile CSS
 function css() {
 	return gulp
-		.src(config.devSASS + 'global.scss', config.devSASS + 'blocks.scss')
+		.src(config.devSASS + '*.scss')
 		.pipe(sourcemaps.init())
 		.pipe(globbing({
 			extensions: ['.scss']
@@ -45,7 +44,7 @@ function css() {
 	  	}).on('error', sass.logError))
 		.pipe(autoprefixer())
 		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest(config.distCSS));
+		.pipe(gulp.dest(config.dist));
 };
 
 
@@ -77,20 +76,6 @@ function handlebarsTemplates() {
 	    .pipe(gulp.dest(config.distJS));
 }
 
-// Compile all CSS into one file
-function cssCombine() {
-	return gulp
-		.src(config.devSASS + 'main.scss')
-		.pipe(globbing({
-			extensions: ['.scss']
-		}))
-	    .pipe(sass({
-	        outputStyle: 'compressed'
-	    }).on('error', sass.logError))
-		.pipe(autoprefixer())
-		.pipe(gulp.dest(config.dist));
-};
-
 // Compile all JS into one file
 function jsCombine() {
 	return gulp
@@ -104,16 +89,15 @@ function jsCombine() {
 function watchFiles() {
 	gulp.watch(config.devBlocks + '**/*.hbs', gulp.series(handlebarsTemplates, jsCombine));
 	gulp.watch(config.devJS + '**/*.js', gulp.series(js, jsCombine, jsLoadResources));
-	gulp.watch(config.devSASS + '**/*.scss', gulp.series(css, cssCombine));
+	gulp.watch(config.devSASS + '**/*.scss', gulp.series(css));
 }
 
 const watch = gulp.series(watchFiles);
 const dep 	= gulp.parallel(dependencies);
-const build = gulp.parallel(dependencies, css, cssCombine, js, handlebarsTemplates, jsCombine, jsLoadResources);
+const build = gulp.parallel(dependencies, css, js, handlebarsTemplates, jsCombine, jsLoadResources);
 
 // Export Tasks
 exports.css = css;
-exports.cssCombine = cssCombine;
 exports.js = js;
 exports.jsCombine = jsCombine;
 exports.handlebars = handlebarsTemplates;

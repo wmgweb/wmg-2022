@@ -10,7 +10,7 @@ html.safari .id7-masthead,
 }
 
 .id7-utility-masthead {
-	background: transparent;
+	background: transparent !important;
 	position: static;
 
 	&:after {
@@ -65,18 +65,18 @@ html.safari .id7-masthead,
 		&:before {
 			content: '';
 			background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTgiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAgMCA1OCAzMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTYuMTUxMiAyOS4yMTkyTDAuMzA3OTA2IDAuMjg3NzMyTDMxLjY1MDQgMC4yODc3MzFMMTYuMTUxMiAyOS4yMTkyWiIgZmlsbD0iIzNjM2MzZSIvPjxwYXRoIGQ9Ik00Mi4zMjkgMjkuMjE5MkwyNi40ODU2IDAuMjg3NzMyTDU3LjgyODEgMC4yODc3MzFMNDIuMzI5IDI5LjIxOTJaIiBmaWxsPSIjM2MzYzNlIi8+PC9zdmc+') no-repeat center / contain;
-			width: 58px;
-			height: 29px;
+			width: 83px;
+			height: 42px;
 			position: absolute;
 			top: -1px;
-			left: 30px;
+			left: 43px;
 			z-index: 1;
 		}
 
 		> .clearfix:first-of-type {
 			display: flex;
 			width: 100%;
-			padding: 35px 0 11px;    
+			padding: 50px 0 18px;    
 			align-items: center;
 		} 
 	}
@@ -90,7 +90,7 @@ html.safari .id7-masthead,
 
 		&:before {
 			content: '';
-			background: url($file_path + 'logo.svg') no-repeat center / contain;
+			background: url($file_path + 'logo.svg') no-repeat left center / contain;
 			width: 165px;
 			height: 45px;
 			display: block;
@@ -278,13 +278,18 @@ html.safari .id7-masthead,
 				color: #1D1D1D !important;
 			}
 
+			&:first-child {
+				padding-left: 0;
+			}
+
 			&.active {
 				> a {
 					text-decoration: none;
-					font-weight: normal;
+					font-weight: bold;
+					text-decoration: underline;
 
 					&:after {
-						display: block;
+						display: none !important;
 					}
 				}
 
@@ -367,8 +372,6 @@ html.safari .id7-masthead,
 			}
 
 			&:nth-child(3) {
-				margin-right: 15px;
-
 				.dropdown-menu:before {
 					background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iMTkiIHZpZXdCb3g9IjAgMCAxNCAxOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTQgMTlMLTEuOTA3MzVlLTA2IDE5TC0yLjQ2MzE2ZS0wNyA2LjgzNDI5ZS0wN0wxNCAxOVoiIGZpbGw9IiMwMDlkZGMiPjwvcGF0aD48L3N2Zz4=');
 				}
@@ -508,6 +511,18 @@ html.safari .id7-masthead,
 		}
 	}
 
+	.id7-masthead {
+		.id7-masthead-contents {
+			> .clearfix:first-of-type {
+				align-items: flex-end;
+			} 
+		}
+
+		.id7-search-column {
+			padding-bottom: 12px;
+		}
+	}
+
 	.id7-navigation {
 		.navbar-nav {
 			font-size: 16px;
@@ -519,7 +534,7 @@ html.safari .id7-masthead,
 
 		.navbar-primary {
 			position: absolute;
-		    top: -50px;
+		    top: -55px;
 		    left: calc(4vw + 200px);
 		    z-index: 100;
 		    width: calc(90% - 390px);
@@ -551,7 +566,8 @@ html.safari .id7-masthead,
 							position: absolute;
 							bottom: -15px;
 							border: 0;
-							background: $color-lightgrey-3;							
+							background: $color-lightgrey-3;	
+							margin: 0;						
 						}
 			    	}
 
@@ -566,6 +582,16 @@ html.safari .id7-masthead,
 
 							&:after {
 								display: block;
+							}
+						}
+
+						&.active {
+							> a {
+								text-decoration: none;
+
+								&:after {
+									display: block !important;
+								}
 							}
 						}			
 					}
@@ -600,13 +626,23 @@ html.safari .id7-masthead,
 							background: #4D4D4F;
 							display: inline-block !important;
 							vertical-align: middle;
-							margin: 2px 20px 0 0;						
+							margin: 2px 20px 0 0;		
+						    border: 0;
+						    position: relative;
+						    left: auto;
+						    bottom: auto;				
 						}
 					}
 
 					&:hover {
 						> a:after {
 							display: block;
+						}
+					}
+
+					&.active {						
+						&:hover > a:after {
+							display: block !important;
 						}
 					}
 			    }

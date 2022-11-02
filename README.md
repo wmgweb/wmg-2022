@@ -15,7 +15,7 @@ The framework uses the following tools:
 * [SASS](https://sass-lang.com/install)
 * JavaScript / [jQuery](https://jquery.com/)
 * [NPM](https://www.npmjs.com/) 
-* [Gulp 5](https://gulpjs.com/)
+* [Gulp 4](https://gulpjs.com/)
 
 Any development should be done in the #dev folder. The dist folder should not be edited - this is automatically compiled.
 Any vendor JavaScript (e.g. Handlebars, Slick Slider) should be added to `/#dev/js/vendor`.

@@ -476,6 +476,7 @@ jQuery(document).ready(function($) {
   			$block.attr('data-content_url', wmgBlockContentURL);
   		}
 
+  		// If content url doesn't contain trailing /, add one
   		if(!wmgBlockContentURL.endsWith('/')) {
   			wmgBlockContentURL = wmgBlockContentURL + '/';
   		}
@@ -503,19 +504,23 @@ jQuery(document).ready(function($) {
 
   		var blockQueryType = 'default';
 
+  		// Check the type of query set and change the query url accordingly
   		if($block.data('query_type')) {
   			blockQueryType = $block.data('query_type');
 
+  			// If events or news, change to news query url
   			if(blockQueryType == 'events' || blockQueryType == 'news') {
   				var blockQueryUrl = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/rss/news.json';
   			}
   		}
 
+  		// Set the content count to retrieve
   		var wmgBlockContentNumber = '';
   		if($block.data('content_number')) {
   			wmgBlockContentNumber = '&num=' + $block.data('content_number');
   		}
 
+  		// Make the API call for the block data. On success, output the handlebars block with the data.
   		$.ajax({
   			async: false,
 	        url : blockQueryUrl + '?page=' + wmgBlockContentURL + wmgBlockContentNumber + wmgBlockContentTags,

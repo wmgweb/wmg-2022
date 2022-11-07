@@ -10812,7 +10812,7 @@ function blockShortcodes(block) {
 						color = ' brand-triangle--' + scAttr.colour;
 					}
 
-					scOutput = '<span class="brand-triangle'+ color + '"><svg width="14" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L-1.90735e-06 19L-2.46316e-07 6.83429e-07L14 19Z" fill="#EE3124"/></svg></span>';
+					scOutput = '<span class="brand-triangle'+ color + '"><svg width="14" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L-1.90735e-06 19L-2.46316e-07 6.83429e-07L14 19Z" fill="#E32619"/></svg></span>';
 					break;
 				case "fa":
 					if('code' in scAttr) {
@@ -10929,7 +10929,7 @@ function blockOptionsClasses(block, blockOptions) {
 
 		// Add triangle SVG if class is set
 		if(key == 'block-triangle') {
-			jQuery('.block', block).append('<svg width="70" height="148" viewBox="0 0 70 148" fill="none" xmlns="http://www.w3.org/2000/svg" class="block-triangle theme-fill-path"><path d="M0 0L73 1.27637e-05L73 148L0 0Z" fill="#EE3124"/></svg>');
+			jQuery('.block', block).append('<svg width="70" height="148" viewBox="0 0 70 148" fill="none" xmlns="http://www.w3.org/2000/svg" class="block-triangle theme-fill-path"><path d="M0 0L73 1.27637e-05L73 148L0 0Z" fill="#E32619"/></svg>');
 		}
 	}
 	return true;
@@ -11203,6 +11203,7 @@ jQuery(document).ready(function($) {
   			$block.attr('data-content_url', wmgBlockContentURL);
   		}
 
+  		// If content url doesn't contain trailing /, add one
   		if(!wmgBlockContentURL.endsWith('/')) {
   			wmgBlockContentURL = wmgBlockContentURL + '/';
   		}
@@ -11230,19 +11231,23 @@ jQuery(document).ready(function($) {
 
   		var blockQueryType = 'default';
 
+  		// Check the type of query set and change the query url accordingly
   		if($block.data('query_type')) {
   			blockQueryType = $block.data('query_type');
 
+  			// If events or news, change to news query url
   			if(blockQueryType == 'events' || blockQueryType == 'news') {
   				var blockQueryUrl = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/rss/news.json';
   			}
   		}
 
+  		// Set the content count to retrieve
   		var wmgBlockContentNumber = '';
   		if($block.data('content_number')) {
   			wmgBlockContentNumber = '&num=' + $block.data('content_number');
   		}
 
+  		// Make the API call for the block data. On success, output the handlebars block with the data.
   		$.ajax({
   			async: false,
 	        url : blockQueryUrl + '?page=' + wmgBlockContentURL + wmgBlockContentNumber + wmgBlockContentTags,

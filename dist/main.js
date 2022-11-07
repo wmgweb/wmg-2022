@@ -10812,7 +10812,7 @@ function blockShortcodes(block) {
 						color = ' brand-triangle--' + scAttr.colour;
 					}
 
-					scOutput = '<span class="brand-triangle'+ color + '"><svg width="14" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L-1.90735e-06 19L-2.46316e-07 6.83429e-07L14 19Z" fill="#EE3124"/></svg></span>';
+					scOutput = '<span class="brand-triangle'+ color + '"><svg width="14" height="19" viewBox="0 0 14 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 19L-1.90735e-06 19L-2.46316e-07 6.83429e-07L14 19Z" fill="#E32619"/></svg></span>';
 					break;
 				case "fa":
 					if('code' in scAttr) {
@@ -10929,7 +10929,7 @@ function blockOptionsClasses(block, blockOptions) {
 
 		// Add triangle SVG if class is set
 		if(key == 'block-triangle') {
-			jQuery('.block', block).append('<svg width="70" height="148" viewBox="0 0 70 148" fill="none" xmlns="http://www.w3.org/2000/svg" class="block-triangle theme-fill-path"><path d="M0 0L73 1.27637e-05L73 148L0 0Z" fill="#EE3124"/></svg>');
+			jQuery('.block', block).append('<svg width="70" height="148" viewBox="0 0 70 148" fill="none" xmlns="http://www.w3.org/2000/svg" class="block-triangle theme-fill-path"><path d="M0 0L73 1.27637e-05L73 148L0 0Z" fill="#E32619"/></svg>');
 		}
 	}
 	return true;
@@ -11203,6 +11203,7 @@ jQuery(document).ready(function($) {
   			$block.attr('data-content_url', wmgBlockContentURL);
   		}
 
+  		// If content url doesn't contain trailing /, add one
   		if(!wmgBlockContentURL.endsWith('/')) {
   			wmgBlockContentURL = wmgBlockContentURL + '/';
   		}
@@ -11230,19 +11231,23 @@ jQuery(document).ready(function($) {
 
   		var blockQueryType = 'default';
 
+  		// Check the type of query set and change the query url accordingly
   		if($block.data('query_type')) {
   			blockQueryType = $block.data('query_type');
 
+  			// If events or news, change to news query url
   			if(blockQueryType == 'events' || blockQueryType == 'news') {
   				var blockQueryUrl = 'https://sitebuilder.warwick.ac.uk/sitebuilder2/api/rss/news.json';
   			}
   		}
 
+  		// Set the content count to retrieve
   		var wmgBlockContentNumber = '';
   		if($block.data('content_number')) {
   			wmgBlockContentNumber = '&num=' + $block.data('content_number');
   		}
 
+  		// Make the API call for the block data. On success, output the handlebars block with the data.
   		$.ajax({
   			async: false,
 	        url : blockQueryUrl + '?page=' + wmgBlockContentURL + wmgBlockContentNumber + wmgBlockContentTags,
@@ -11845,9 +11850,9 @@ this["WMG"]["blocks"]["FB03"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":31}}}) : helper)))
     + "\" class=\"block block-FB block-FB03\">\r\n	<div class=\"block__content\">\r\n		<div class=\"row\">\r\n			<div class=\"col-12 col-md-6 FB03__img\">"
     + ((stack1 = alias5(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"0") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
-    + "</div>\r\n			<div class=\"col-12 col-md-6\">\r\n				<div class=\"FB03__main\">\r\n					<svg width=\"150\" height=\"305\" viewBox=\"0 0 150 305\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"corner-arrow theme-fill-path d-md-none\">\r\n						<path d=\"M0 0L150 -1.31134e-05L150 305L0 0Z\" fill=\"#EE3124\"/>\r\n					</svg>\r\n					<div class=\"FB03__main-content\">\r\n						<div class=\"half-container half-container--lg half-container--right\">"
+    + "</div>\r\n			<div class=\"col-12 col-md-6\">\r\n				<div class=\"FB03__main\">\r\n					<svg width=\"150\" height=\"305\" viewBox=\"0 0 150 305\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"corner-arrow theme-fill-path d-md-none\">\r\n						<path d=\"M0 0L150 -1.31134e-05L150 305L0 0Z\" fill=\"#E32619\"/>\r\n					</svg>\r\n					<div class=\"FB03__main-content\">\r\n						<div class=\"half-container half-container--lg half-container--right\">"
     + ((stack1 = alias5(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"1") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
-    + "</div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n		<svg width=\"150\" height=\"305\" viewBox=\"0 0 150 305\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"corner-arrow theme-fill-path d-none d-md-block\">\r\n			<path d=\"M0 0L150 -1.31134e-05L150 305L0 0Z\" fill=\"#EE3124\"/>\r\n		</svg>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
+    + "</div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n		<svg width=\"150\" height=\"305\" viewBox=\"0 0 150 305\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"corner-arrow theme-fill-path d-none d-md-block\">\r\n			<path d=\"M0 0L150 -1.31134e-05L150 305L0 0Z\" fill=\"#E32619\"/>\r\n		</svg>\r\n	</div>\r\n</div>\r\n<script>\r\n	jQuery(document).ready(function($) {\r\n		blockFunctions('"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":23,"column":18},"end":{"line":23,"column":34}}}) : helper)))
     + "');\r\n	});\r\n</script>";
 },"useData":true});
@@ -13200,7 +13205,7 @@ this["WMG"]["blocks"]["SB01"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"
 
   return "<div id=\"block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":1,"column":15},"end":{"line":1,"column":31}}}) : helper)))
-    + "\" class=\"block block-SB block-SB01\">\r\n	<div class=\"block__content\">\r\n		<div class=\"row\">\r\n			<div class=\"col-12 col-md-6\">\r\n				<div class=\"SB01-main\">\r\n					<div class=\"half-container half-container--md half-container--left\">\r\n						<svg width=\"165\" height=\"183\" viewBox=\"0 0 165 183\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"d-none d-md-block SB01-main-icon theme-fill-path\"><g style=\"mix-blend-mode:multiply\"><path d=\"M0 0L165 0L165 183L0 0Z\" fill=\"#EE3124\"/></g></svg>\r\n						<a href=\"/courses/\" class=\"btn btn--text SB01-main-topbtn\">< Back to all courses</a>\r\n						"
+    + "\" class=\"block block-SB block-SB01\">\r\n	<div class=\"block__content\">\r\n		<div class=\"row\">\r\n			<div class=\"col-12 col-md-6\">\r\n				<div class=\"SB01-main\">\r\n					<div class=\"half-container half-container--md half-container--left\">\r\n						<svg width=\"165\" height=\"183\" viewBox=\"0 0 165 183\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"d-none d-md-block SB01-main-icon theme-fill-path\"><g style=\"mix-blend-mode:multiply\"><path d=\"M0 0L165 0L165 183L0 0Z\" fill=\"#E32619\"/></g></svg>\r\n						<a href=\"/courses/\" class=\"btn btn--text SB01-main-topbtn\">< Back to all courses</a>\r\n						"
     + ((stack1 = alias5(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"0") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")
     + "\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<div class=\"col-12 col-md-6\">\r\n				<div class=\"SB01-side\">\r\n					<div class=\"SB01-image\">\r\n						<div class=\"SB01-image-block bg--theme\"></div>\r\n						<div class=\"SB01-image-block-overlay\"></div>\r\n						"
     + ((stack1 = alias5(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"content") : depth0)) != null ? lookupProperty(stack1,"1") : stack1)) != null ? lookupProperty(stack1,"content") : stack1), depth0)) != null ? stack1 : "")

@@ -12,6 +12,10 @@
     white-space: pre-wrap;
     margin-bottom: 5px;
 
+    &:focus {
+    	outline: none !important;
+    }
+
 	&:hover {
 		opacity: .4;
 	}

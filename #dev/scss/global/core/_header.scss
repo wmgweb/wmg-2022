@@ -54,13 +54,14 @@ html.safari .id7-masthead,
 	background: transparent;
 	padding: 0;
 	position: relative;
-	z-index: 40;
+	z-index: unset;
 
 	.id7-masthead-contents {
 		width: 90%;
 		max-width: 90%;
 		margin: 0 auto;
 		position: relative;
+		z-index: unset;
 
 		&:before {
 			content: '';

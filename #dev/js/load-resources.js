@@ -1,7 +1,7 @@
 jQuery(function ($) {
 
 	var version = '2';
-
+	// PMC TEST
 	// Get all scripts on the page
 	var scripts = document.getElementsByTagName('script');
 

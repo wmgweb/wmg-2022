@@ -50,7 +50,7 @@ jQuery(function ($) {
 		script.src = item + '?v=' + version;
 		script.type = 'text/javascript';
 		script.async = 'true';
-		document.getElementsByTagName('head')[0].appendChild(script);
+		document.getElementsByTagName('body')[0].appendChild(script);
 	});
 
 });

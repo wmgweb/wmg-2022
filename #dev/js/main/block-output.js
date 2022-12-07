@@ -232,6 +232,11 @@ function blockPostDate(timestamp) {
 function blockPostImage(content, contentURL) {
 	let imageUrl = '';
 
+	// If no slash at end of content url, add one
+	if(!contentURL.endsWith('/')) {
+		contentURL = contentURL + '/';
+	}
+
 	// Search for src in content
 	if(content.indexOf('img src="') >= 0) {
 		// Get content between src=" and next "
@@ -241,7 +246,7 @@ function blockPostImage(content, contentURL) {
 		if(image != '') {
 			// If image doesn't have http, set full url
 			if(!image.startsWith('http')) {
-				imageUrl = contentURL + '/' + image;
+				imageUrl = contentURL + image;
 			}
 
 			// Remove url parameters

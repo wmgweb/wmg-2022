@@ -14,8 +14,13 @@
 	.IG02__item {
 		text-align: center;
 
-		img {
+		img,
+		.fa {
 			margin: 0 0 10px;
+		}
+
+		.fa {
+			font-size: 60px;
 		}
 
 		.btn {

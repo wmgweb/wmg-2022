@@ -41,17 +41,12 @@
 					if(panelContent.toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
 						$(this).parent().addClass('active');
 						currentActiveCount = currentActiveCount + 1;
-
-						// If 6 are already showing, stop
-						if(currentActiveCount >= 6) {
-							return false;
-						}
 					}
 				});
 
 			} else {
 				// Else if no content show first 6
-				$('.row', $block).children().slice(0,6).addClass('active');
+				$('.row', $block).children().addClass('active');
 			}
 
 		}

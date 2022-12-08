@@ -82,6 +82,8 @@
 				z-index: 2;
 			}
 
+			@include lg {
+
 			.HB01__carousel-item-content-overlay {
 				svg {
 					display: none;
@@ -99,6 +101,28 @@
 					height: 96px;
 				}
 			}
+		}
+
+		@include md {
+
+			.HB01__carousel-item-content-overlay {
+				svg {
+					display: none;
+				}
+
+				&:after {
+					content: '';
+					mix-blend-mode: multiply;
+					background: rgba(0,0,0,.7);
+					position: absolute;
+					top: -48px;
+					left: 0;
+					z-index: 1;
+					width: 100%;
+					height: 96px;
+				}
+			}
+		}
 
 			h1,
 			h2,

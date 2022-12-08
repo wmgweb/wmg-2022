@@ -58,6 +58,8 @@
 			align-items: center;	
 		}
 
+		@include md {
+
 		&.FB01__module-left .FB01__module-top {
 			position: relative;
 
@@ -80,6 +82,7 @@
 			}
 
 		}
+	}
 	}
 
 	@include md {

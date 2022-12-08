@@ -17,6 +17,8 @@
 				z-index: 1;
 			}
 
+			@include md {
+
 			&:before {
 				content: '';
 				width: 49px;
@@ -28,6 +30,7 @@
 				left: 0;
 				z-index: 2;
 			}
+		}
 		}
 
 		.FB04__article-content {

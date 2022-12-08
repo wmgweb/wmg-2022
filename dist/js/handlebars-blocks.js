@@ -581,7 +581,7 @@ this["WMG"]["blocks"]["HB01"] = Handlebars.template({"1":function(container,dept
         return undefined
     };
 
-  return "				<div class=\"HB01__carousel-item\">\r\n					<div class=\"HB01__carousel-item-bg\"></div>\r\n					<div class=\"HB01__carousel-item-content\">\r\n						<div class=\"HB01__carousel-item-content-overlay\"><svg width=\"97\" height=\"78\" viewBox=\"0 0 97 78\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g style=\"mix-blend-mode:multiply\"><path d=\"M97 77.036L0 -0.386719V77.036H97Z\" fill=\"#000\"/></g></svg></div>\r\n						<div class=\"HB01__carousel-item-content-main\">\r\n							"
+  return "				<div class=\"HB01__carousel-item\">\r\n					<div class=\"HB01__carousel-item-bg\"></div>\r\n					<div class=\"HB01__carousel-item-content\">\r\n						<div class=\"d-sm-none d-md-block HB01__carousel-item-content-overlay\"><svg width=\"97\" height=\"78\" viewBox=\"0 0 97 78\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><g style=\"mix-blend-mode:multiply\"><path d=\"M97 77.036L0 -0.386719V77.036H97Z\" fill=\"#000\"/></g></svg></div>\r\n						<div class=\"HB01__carousel-item-content-main\">\r\n							"
     + ((stack1 = container.lambda((depth0 != null ? lookupProperty(depth0,"content") : depth0), depth0)) != null ? stack1 : "")
     + "\r\n						</div>\r\n					</div>\r\n				</div>\r\n";
 },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {

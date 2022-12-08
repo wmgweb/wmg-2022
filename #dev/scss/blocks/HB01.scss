@@ -207,6 +207,8 @@
 					flex-direction: column;	
 					background: rgba(0, 0, 0, .8);
 
+					@include lg{
+
 					.HB01__carousel-item-content-overlay {
 						display: block;
 						position: absolute;
@@ -233,6 +235,7 @@
 							top: 77px;
 						}
 					}
+				}
 
 					&:before {
 						content: '';

@@ -10842,15 +10842,28 @@ function blockShortcodes(block) {
 						// Set the embed code depending on which type is set
 						var embed = '';
 						if(scAttr.set == 'youtube') {
-							embed = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + scAttr.id + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
+							var embedVars = '';
+							if('autoplay' in scAttr) {
+								embedVars = '?autoplay=' + scAttr.autoplay + '&controls=0&disablekb=1&loop=1&playsinline=1&mute=1';
+							}
+							embed = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + scAttr.id + embedVars + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
+
 						} else if(scAttr.set == 'vimeo') {
 							embed = '<iframe src="https://player.vimeo.com/video/' + scAttr.id + '" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
 						} else if(scAttr.set == 'sway') {
 							embed = '<iframe width="760px" height="500px" src="https://sway.office.com/s/' + scAttr.id + '/embed" frameborder="0" marginheight="0" marginwidth="0" max-width="100%" sandbox="allow-forms allow-modals allow-orientation-lock allow-popups allow-same-origin allow-scripts" scrolling="no" style="border: none; max-width: 100%; max-height: 100vh;"></iframe>';
+						} else if(scAttr.set == 'mp4') {
+							var videoAttrs = '';
+							if('autoplay' in scAttr) {
+								if(scAttr.autoplay == '1') {
+									videoAttrs = ' autoplay muted';
+								}
+							}
+							embed = '<video' + videoAttrs + '><source src="' + scAttr.id + '" type="video/mp4"></video>';
 						}
 
 						// Output wrapper
-						scOutput = '<div class="video-element video-element--' + scAttr.display + '">';
+						scOutput = '<div class="video-element video-element--' + scAttr.display + ' video-element--' + scAttr.set + '">';
 
 						// If popup is set and image exists
 						if(scAttr.display == 'popup' && 'image' in scAttr) {
@@ -11979,8 +11992,8 @@ this["WMG"]["blocks"]["HB01"] = Handlebars.template({"1":function(container,dept
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":19,"column":18},"end":{"line":19,"column":34}}}) : helper)))
     + "');\r\n		var $block = $('#block-"
     + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":20,"column":25},"end":{"line":20,"column":41}}}) : helper)))
-    + "').parent('.wmg-block');\r\n\r\n		$('.HB01__carousel-item', $block).each(function() {\r\n			$('img', $(this)).appendTo($('.HB01__carousel-item-bg', $(this)));\r\n		});\r\n\r\n		// Initialise Slick Carousel with custom pagination\r\n		var slickObject = {\r\n			autoplay: true,\r\n			arrows: false,\r\n			draggable: true,\r\n			dots: false,\r\n			fade: true,\r\n			speed: 1500,\r\n			pause: 10000,\r\n			customPaging : function(slider, i) {\r\n				var thumb = $(slider.$slides[i]).data();\r\n				return '<a>0' + parseInt(i+1) + '</a>';\r\n			}			\r\n		}\r\n\r\n		// Add dots if setting is set\r\n		if($('.block', $block).hasClass('carousel-dots--true')) {\r\n			slickObject.dots = true;\r\n		}\r\n\r\n		$(window).on('load', function(){\r\n			$('#slick-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":47,"column":13},"end":{"line":47,"column":29}}}) : helper)))
+    + "').parent('.wmg-block');\r\n\r\n		$('.HB01__carousel-item', $block).each(function() {\r\n			$('img', $(this)).appendTo($('.HB01__carousel-item-bg', $(this)));\r\n			$('.video-element', $(this)).appendTo($('.HB01__carousel-item-bg', $(this)));\r\n		});\r\n\r\n		// Initialise Slick Carousel with custom pagination\r\n		var slickObject = {\r\n			autoplay: true,\r\n			arrows: false,\r\n			draggable: true,\r\n			dots: false,\r\n			fade: true,\r\n			speed: 1500,\r\n			pause: 10000,\r\n			customPaging : function(slider, i) {\r\n				var thumb = $(slider.$slides[i]).data();\r\n				return '<a>0' + parseInt(i+1) + '</a>';\r\n			}			\r\n		}\r\n\r\n		// Add dots if setting is set\r\n		if($('.block', $block).hasClass('carousel-dots--true')) {\r\n			slickObject.dots = true;\r\n		}\r\n\r\n		$(window).on('load', function(){\r\n			$('#slick-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"blockCount") || (depth0 != null ? lookupProperty(depth0,"blockCount") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"blockCount","hash":{},"data":data,"loc":{"start":{"line":48,"column":13},"end":{"line":48,"column":29}}}) : helper)))
     + "').slick(slickObject);\r\n		});\r\n	});\r\n</script>";
 },"useData":true});
 this["WMG"]["blocks"]["IG01"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {

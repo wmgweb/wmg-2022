@@ -10842,15 +10842,28 @@ function blockShortcodes(block) {
 						// Set the embed code depending on which type is set
 						var embed = '';
 						if(scAttr.set == 'youtube') {
-							embed = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + scAttr.id + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
+							var embedVars = '';
+							if('autoplay' in scAttr) {
+								embedVars = '?autoplay=' + scAttr.autoplay + '&controls=0&disablekb=1&loop=1&playsinline=1&mute=1';
+							}
+							embed = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + scAttr.id + embedVars + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>';
+
 						} else if(scAttr.set == 'vimeo') {
 							embed = '<iframe src="https://player.vimeo.com/video/' + scAttr.id + '" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
 						} else if(scAttr.set == 'sway') {
 							embed = '<iframe width="760px" height="500px" src="https://sway.office.com/s/' + scAttr.id + '/embed" frameborder="0" marginheight="0" marginwidth="0" max-width="100%" sandbox="allow-forms allow-modals allow-orientation-lock allow-popups allow-same-origin allow-scripts" scrolling="no" style="border: none; max-width: 100%; max-height: 100vh;"></iframe>';
+						} else if(scAttr.set == 'mp4') {
+							var videoAttrs = '';
+							if('autoplay' in scAttr) {
+								if(scAttr.autoplay == '1') {
+									videoAttrs = ' autoplay muted';
+								}
+							}
+							embed = '<video' + videoAttrs + '><source src="' + scAttr.id + '" type="video/mp4"></video>';
 						}
 
 						// Output wrapper
-						scOutput = '<div class="video-element video-element--' + scAttr.display + '">';
+						scOutput = '<div class="video-element video-element--' + scAttr.display + ' video-element--' + scAttr.set + '">';
 
 						// If popup is set and image exists
 						if(scAttr.display == 'popup' && 'image' in scAttr) {

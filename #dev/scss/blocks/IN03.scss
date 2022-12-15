@@ -8,6 +8,14 @@
 	.IN__main {
 		margin-bottom: 30px;
 	}
+
+	.IN__form {
+		.btn {
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
 	
 	@include lg {
 		.IN__main {

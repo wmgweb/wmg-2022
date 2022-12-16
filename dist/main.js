@@ -10850,7 +10850,7 @@ function blockShortcodes(block) {
 
 						} else if(scAttr.set == 'vimeo') {
 							if('autoplay' in scAttr) {
-								embedVars = '?autoplay=' + scAttr.autoplay + '&background=1&mute=1&controls=0&portrait=0&byline=0';
+								embedVars = '?autoplay=' + scAttr.autoplay + '&loop=1&autopause=0&background=1&muted=1&controls=0&portrait=0&byline=0';
 							}
 							embed = '<iframe src="https://player.vimeo.com/video/' + scAttr.id +  embedVars + '" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
 						} else if(scAttr.set == 'sway') {

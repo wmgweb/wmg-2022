@@ -261,7 +261,7 @@ function blockPostImage(content, contentURL) {
 		// If image exists
 		if(image != '') {
 			// If image doesn't have http, set full url
-			if(!image.startsWith('http')) {
+			if(!src.startsWith('/') && !image.startsWith('http')) {
 				imageUrl = contentURL + image;
 			}
 
@@ -478,9 +478,7 @@ jQuery(document).ready(function($) {
 	$('.wmg-block').each(function() {
 		var $block = $(this);
   		var wmgBlockID = $block.data('block_id');
-  		var wmgBlockContentID = 0;
   		var wmgBlockContentURL = $block.data('content_url');
-  		var wmgBlockOptions = $block.data('content_url');
   		var handlebarsBlock = WMG.blocks[wmgBlockID];
   		var handlebarsBlockData = {};
 
@@ -490,24 +488,12 @@ jQuery(document).ready(function($) {
   			return false;
   		}
 
-  		// Format content url
-  		if(!wmgBlockContentURL.startsWith('/')) {
-  			if(pagePath)
-  			wmgBlockContentURL = pagePath + wmgBlockContentURL;
-  			$block.attr('data-content_url', wmgBlockContentURL);
-  		}
-
   		// If content url doesn't contain trailing /, add one
   		if(!wmgBlockContentURL.endsWith('/')) {
   			wmgBlockContentURL = wmgBlockContentURL + '/';
   		}
   		
   		$(this).data('content_url', wmgBlockContentURL);
-
-  		// If block ID is set, load. Otherwise take first block.
-  		if($block.data('content_id')) {
-  			var wmgBlockContentID = parseInt($block.data('content_id'));
-  		}
 
   		// If block content tags are set, filter by them.
   		var wmgBlockContentTags = '';
@@ -554,14 +540,13 @@ jQuery(document).ready(function($) {
 					link : data.link,
 					content : data.items,
 					categories: data.categories,
-					blockCount : wmgCurrentBlockCount,
-					options: wmgBlockOptions
+					blockCount : wmgCurrentBlockCount
 				}
 				$block.html(handlebarsBlock(handlebarsBlockData));
-				console.log('#block-' + wmgCurrentBlockCount + ' built as ' + wmgBlockID);
+				console.log('From block-output.js: #block-' + wmgCurrentBlockCount + ' built as ' + wmgBlockID);
 	        },
 	        error: function(data) {
-	        	console.log('Could not get data from ' + wmgBlockContentURL);
+	        	console.log('From block-output.js: Could not get data from ' + wmgBlockContentURL);
 	        },
         });
         wmgCurrentBlockCount = wmgCurrentBlockCount + 1;

@@ -74,5 +74,15 @@
 		        scrollTop: $('.AC03__tabs', $block).offset().top
 		    }, 500);
 		});
+
+		// Browser parameters check
+		searchParams = new URLSearchParams(window.location.search);
+		// Check if parameter exists
+		if(searchParams.has('AC03active')) {
+			let AC03active = searchParams.get('AC03active');
+
+			// Set tab to parameter tab
+			$('.AC03__tabs-list li[data-id="' + AC03active + '"]', $block).trigger('click');
+		}
 	});
 </script>

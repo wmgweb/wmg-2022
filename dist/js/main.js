@@ -11284,6 +11284,11 @@ jQuery(document).ready(function($) {
 });
 jQuery(document).ready(function($) {
 
+	// Global enquiry button
+	if(userID != '') {
+		$('.id7-masthead').prepend('<div class="wmg-header__button"><a href="/" class="btn btn--orange">Submit website enquiry</a></div>');
+	}
+
 	// If on a datalist page, add class to body to fix styling
 	if($('#entries .datalist.panel').length) {
 		$('body').addClass('page-datalist');

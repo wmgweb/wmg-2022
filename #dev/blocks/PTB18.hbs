@@ -50,9 +50,9 @@
 
 				// Loop through all post data
 				$.each(postsData, function(key, data) {
-					
+
 					// Add to posts string
-					posts = posts + '<div class="col-12 col-sm-6 col-md-4"><a href="' + $block.data('posts_article_page') + '?id=' + data.id + '" class="post-card border-color--theme"><div class="post-card__image"><img src="' + blockPostImage(data.content, postsURL) + '"><svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M34.1855 35L0.867523 35L0.867528 -1.83932e-06L34.1855 35Z" fill="#E6E8EA"/></svg></div><div class="post-card__content"><span class="post-card__date">' + blockPostDate(data.publicationDate) + '</span><h4 class="post-card__heading">' + data.title + '</h4></div></a></div>';
+					posts = posts + '<div class="col-12 col-sm-6 col-md-4"><a href="' + $block.data('posts_article_page') + '?id=' + data.id + '" class="post-card border-color--theme"><div class="post-card__image"><img src="' + blockPostImage(data.content, contentURL) + '"><svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M34.1855 35L0.867523 35L0.867528 -1.83932e-06L34.1855 35Z" fill="#E6E8EA"/></svg></div><div class="post-card__content"><span class="post-card__date">' + blockPostDate(data.publicationDate) + '</span><h4 class="post-card__heading">' + data.title + '</h4></div></a></div>';
 
 				});
 
@@ -107,5 +107,20 @@
 	    	$('.PTB18-filter', $block).toggleClass('active');
 	    	$(this).toggleClass('active');
 	    });
+
+		// Check if parameter exists
+		if(searchParams.has('PTB18active')) {
+			// Get params and split into an array
+			let PTB18active = searchParams.get('PTB18active');
+			let PTB18ActiveParams = PTB18active.split(',');
+
+			// Set active filters
+			$.each(PTB18ActiveParams, function(i, val) {
+			  	$('.PTB18-filter input[value="' + val + '"]').prop('checked', true);
+			});
+
+			// Render posts
+			PTB18RenderPosts();
+		}
 	});
 </script>

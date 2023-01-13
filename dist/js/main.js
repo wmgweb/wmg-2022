@@ -10728,6 +10728,7 @@ return Outlayer;
 // Global vars
 const userID = jQuery('#account-link a').data('usercode');
 var pagePath = window.location.pathname;
+const searchParams = new URLSearchParams(window.location.search);
 
 // If last character of page url is not slash, add
 if(pagePath.slice(pagePath.length - 1) != '/') {

@@ -4,16 +4,10 @@
 			<div class="PTB-carousel PTB04-carousel">
 				{{#each content}}
 					<div class="PTB04-carousel__item">
-						<div class="row">
-							<div class="col-12 col-md-6">
-								<div class="PTB04-carousel__item-image">
-									<div class="PTB04-carousel__item-image-wrapper"></div>
-								</div>
-							</div>
-							<div class="col-12 col-md-6">
-								<div class="PTB04-carousel__item-content"><div class="PTB04-carousel__item-content-wrapper">{{{content}}}</div></div>
-							</div>
+						<div class="PTB04-carousel__item-image">
+							<div class="PTB04-carousel__item-image-wrapper"></div>
 						</div>
+						<div class="PTB04-carousel__item-content"><div class="PTB04-carousel__item-content-wrapper">{{{content}}}</div></div>
 					</div>
 				{{/each}}
 			</div>
@@ -27,8 +21,12 @@
 
 		// Loop through each carousel item
 		$('.PTB04-carousel__item', $block).each(function() {
-			// Move image to wrapper
-			$('.PTB04-carousel__item-content img', $(this)).appendTo($('.PTB04-carousel__item-image-wrapper', $(this)));
+			if($('.PTB04-carousel__item-content img', $(this)).length) {
+				// Move image to wrapper
+				$('.PTB04-carousel__item-content img', $(this)).appendTo($('.PTB04-carousel__item-image-wrapper', $(this)));
+			} else {
+				$(this).addClass('PTB04-carousel__item--noimage')
+			}
 		});
 
 		// Initialise Slick Carousel

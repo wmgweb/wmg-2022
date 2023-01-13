@@ -23,12 +23,12 @@
 			position: absolute;
 			top: 0;
 			right: 0;
-		}
 
-		.SB01-main-topbtn {
-			color: #818181;
-			display: inline-block;
-			margin-bottom: 20px;
+			& + .btn {
+				color: #818181;
+				display: inline-block;
+				margin-bottom: 20px;
+			}
 		}
 	}
 

@@ -74,9 +74,7 @@
 		        scrollTop: $('.AC03__tabs', $block).offset().top
 		    }, 500);
 		});
-
-		// Browser parameters check
-		searchParams = new URLSearchParams(window.location.search);
+		
 		// Check if parameter exists
 		if(searchParams.has('AC03active')) {
 			let AC03active = searchParams.get('AC03active');

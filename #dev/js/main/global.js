@@ -97,5 +97,11 @@ jQuery(document).ready(function($) {
 		$('.video-popup').removeClass('active');
 	});
 
+	// Share widget
+	$('body').on('click', '.wmg-share-widget-btn', function() {
+		var $parent = $(this).parent('.wmg-share-widget');
+		$parent.toggleClass('active');
+	});
+
 
 });

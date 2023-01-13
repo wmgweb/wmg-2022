@@ -30,6 +30,18 @@
 		}
 	}
 
+	.card-block__content {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+
+	.wmg-share-widget {
+		flex: 1;
+		display: flex;
+		align-items: flex-end;
+	}
+
 	h4,
 	.h4 {
 		margin: 0 0 15px;

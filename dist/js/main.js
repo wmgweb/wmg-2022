@@ -11231,6 +11231,11 @@ function relativeContentURL(contentURL) {
 	}
 	return contentURL;
 }
+
+function blockPostShare(url, title) {
+	let shareHTML = '<div class="wmg-share-widget"><div class="wmg-share-widget-btn"></div><ul class="wmg-share-widget-options"><li><a target="_blank" href="https://www.facebook.com/share.php?u=' + url + '" class="fa fa-facebook-f"></a></li><li><a target="_blank" href="http://www.twitter.com/share?text='+ title + '&url=' + url + '" class="fa fa-twitter"></a></li><li><a target="_blank" href="https://www.linkedin.com/sharing/share-offsite/?url=' + url + '" class="fa fa-linkedin"></a></li><li><a target="_blank" href="mailto:?to=&subject=Read this on WMG: ' + title + '&body=' + url + '" class="fa fa-envelope"></a></li></ul></div>';
+	return shareHTML;
+}
 	
 jQuery(document).ready(function($) {  
 
@@ -11415,6 +11420,12 @@ jQuery(document).ready(function($) {
 	$('.video-popup__close').click(function() {
 		$('.video-popup__code').empty();
 		$('.video-popup').removeClass('active');
+	});
+
+	// Share widget
+	$('body').on('click', '.wmg-share-widget-btn', function() {
+		var $parent = $(this).parent('.wmg-share-widget');
+		$parent.toggleClass('active');
 	});
 
 

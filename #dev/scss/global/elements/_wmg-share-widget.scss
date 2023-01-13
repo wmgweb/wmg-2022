@@ -1,0 +1,50 @@
+.wmg-share-widget {
+	position: relative;
+	width: 50px;
+
+	.wmg-share-widget-btn {
+		cursor: pointer;
+		width: 30px;
+		height: 50px;
+		display: block;
+		background: url($file_path + 'share-btn.svg') no-repeat center / contain;
+		margin: 0 auto;
+	}
+
+	.wmg-share-widget-options {
+		display: none;
+		width: 50px;
+		position: absolute;
+		z-index: 10;
+		padding: 4px;
+		left: 0;
+		bottom: 100%;
+		list-style: none;
+		margin: 0;
+		background: $color-black;
+
+		li {
+			margin: 0;
+			padding: 8px 0;
+			text-align: center;
+
+			a {
+				text-decoration: none;
+				display: inline-block;
+				font-size: 24px;
+				color: $color-white;
+
+				&:focus {
+					text-decoration: none !important;
+					color: $color-white !important;
+				}
+			}
+		}
+	}
+
+	&.active {
+		.wmg-share-widget-options {
+			display: block;
+		}
+	}
+}

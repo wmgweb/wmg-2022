@@ -10727,7 +10727,7 @@ return Outlayer;
 
 // Global vars
 const userID = jQuery('#account-link a').data('usercode');
-var pagePath = window.location.pathname;
+let pagePath = window.location.pathname;
 const searchParams = new URLSearchParams(window.location.search);
 
 // If last character of page url is not slash, add
@@ -11006,6 +11006,7 @@ function blockPostImage(content, contentURL) {
 function postsQuery(postsURL, postsCount, postsTags) {
 	var postsData = false;
 	var postsTagsString = '';
+	postsURL = relativeContentURL(postsURL);
 
 	if(postsTags) {
 		var postTagsArray = postsTags.split(',');
@@ -11198,6 +11199,38 @@ function eventDates(startTimestamp, endTimestamp) {
 
 	return returnedDateTimeString;
 }
+
+// Converts a relative content url into an absolute url
+function relativeContentURL(contentURL) {
+
+	// Check it's a relative url
+	if(contentURL.startsWith('../')) {
+		// Set default page path
+		let relativePage = pagePath;
+
+		// Remove / on end of url
+		if(relativePage.endsWith('/')) {
+			relativePage = relativePage.slice(0, relativePage.lastIndexOf('/'));
+		}
+
+		// Get number of relative back folders - regex to match ../
+		let relativeBackCount = (contentURL.match(/\.\.\//g) || []).length;
+
+		// Loop through all ../
+		let currentBackCount = 0;
+		while(currentBackCount < relativeBackCount) {
+			// Remove content at end of url before last /
+	  		relativePage = relativePage.slice(0, relativePage.lastIndexOf('/'));
+	  		// Remove ../ from content url
+	  		contentURL = contentURL.replace('../', '');
+	  		currentBackCount++;
+		}
+
+		// Combine
+		contentURL = relativePage + '/' + contentURL + '/';
+	}
+	return contentURL;
+}
 	
 jQuery(document).ready(function($) {  
 
@@ -11210,6 +11243,9 @@ jQuery(document).ready(function($) {
   		var wmgBlockContentURL = $block.data('content_url');
   		var handlebarsBlock = WMG.blocks[wmgBlockID];
   		var handlebarsBlockData = {};
+
+  		// Check if content url is a relative url
+  		wmgBlockContentURL = relativeContentURL(wmgBlockContentURL);
 
   		// If content url is set to false, output block without content
   		if(wmgBlockContentURL == false) {

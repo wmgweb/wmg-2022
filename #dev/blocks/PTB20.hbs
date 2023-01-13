@@ -15,6 +15,7 @@
 						<div class="col-12 col-sm-6 col-md-3 active">
 							<div class="PTB20-post-content">{{{this.content}}}</div>
 							<a href="{{{this.id}}}" class="post-card border-color--theme">
+								<div class="post-card__image"></div>
 								<div class="post-card__content">
 									<h4>{{{this.title}}}</h4>
 								</div>
@@ -32,18 +33,14 @@
 		blockFunctions('{{ blockCount }}');
 		var $block = $('#block-{{ blockCount }}').parent('.wmg-block');
 		var articlePage = $block.data('posts_article_page');
-
 		// Loop through each item
 		$('.PTB20-grid > .row > div').each(function() {
-			// Get image and move it
-			$('.PTB20-post-content img:first', $(this)).prependTo($('.post-card', $(this))).wrap('<div class="post-card__image"></div>');
+			// Get image
+			var articleImage = blockPostImage($('.PTB20-post-content', $(this)).html(), $block.data('content_url'));
 
-			// Set post page url
-			var id = $('.post-card', $(this)).attr('href');
-			$('.post-card', $(this)).attr('href', articlePage + '?id=' + id);
+			// Create image
+			$('.post-card__image', $(this)).html('<img src="' + articleImage + '" alt="' + $('.PTB20-post-content', $(this)) + '">');
 		});
-
-		$('.')
 
 		// Function to reset blocks
 		function block{{ blockCount }}ResetBlocks() {

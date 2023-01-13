@@ -35,3 +35,5 @@
 @include theme('border-color', '.co-features h4');
 @include theme('border-color', '.co-features h5');
 @include theme('border-color', '.co-features h6');
+
+//.theme--red .co-features h1{border-color:#E32619 !important}

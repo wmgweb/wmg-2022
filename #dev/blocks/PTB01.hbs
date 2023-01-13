@@ -28,22 +28,13 @@
 		if(postsData != false) {
 			$.each(postsData, function(key, data) {
 
-				// Get image from content string
-				var image = blockPostImage(data.content, postsURL);
-
-				if(image != '') {
-					var image = '<img src="' + image + '" alt="' + data.title + '">';
-				}
-
 				// Create excerpt from content
 				var content = data.content;
 				var excerpt = $(content).text().substr(0, 150);
 				excerpt = excerpt.substr(0, Math.min(excerpt.length, excerpt.lastIndexOf(" ")));
 				excerpt = excerpt + '…';
 
-				console.log(excerpt);
-
-				postsOutput = postsOutput + '<div class="PTB01-carousel__item"><div class="row"><div class="col-12 col-md-6"><div class="PTB01-carousel__item-image">' + image + '</div></div><div class="col-12 col-md-6"><div class="PTB01-carousel__item-content"><h3>' + data.title + '</h3><p class="PTB01-carousel__item-excerpt">' + excerpt + '</p><a href="' + $block.data('posts_article_page') + '?id=' + data.id + '" class="btn btn--theme">Read more</a></div></div></div></div>';
+				postsOutput = postsOutput + '<div class="PTB01-carousel__item"><div class="row"><div class="col-12 col-md-6"><div class="PTB01-carousel__item-image"><img src="' + blockPostImage(data.content, postsURL) + '" alt="' + data.title + '"></div></div><div class="col-12 col-md-6"><div class="PTB01-carousel__item-content"><h3>' + data.title + '</h3><p class="PTB01-carousel__item-excerpt">' + excerpt + '</p><a href="' + $block.data('posts_article_page') + '?id=' + data.id + '" class="btn btn--theme">Read more</a></div></div></div></div>';
 			});
 
 			$('.PTB01-carousel', $block).html(postsOutput);

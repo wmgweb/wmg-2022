@@ -256,18 +256,19 @@ function blockPostImage(content, contentURL) {
 	// Search for src in content
 	if(content.indexOf('img src="') >= 0) {
 		// Get content between src=" and next "
-		let image = content.split('img src="')[1].split('" ')[0];
-		
-		// If image exists
-		if(image != '') {
-			// If image doesn't have http, set full url
-			if(!src.startsWith('/') && !image.startsWith('http')) {
-				imageUrl = contentURL + image;
-			}
+		imageUrl = content.split('img src="')[1].split('" ')[0];
 
+		// If image exists
+		if(imageUrl != '') {
+			// If image doesn't have http, set full url
+			if(!imageUrl.startsWith('/') && !imageUrl.startsWith('http')) {
+				imageUrl = contentURL + imageUrl;
+			}
 			// Remove url parameters
-			imageUrl = imageUrl.split('?')[0] 
+			imageUrl = imageUrl.split('?')[0];
 		}							
+	} else {
+		imageUrl = '/fac/sci/wmg-2021/global/wmg-logo.png';
 	}
 
 	return imageUrl;

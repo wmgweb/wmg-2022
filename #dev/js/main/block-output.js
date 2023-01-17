@@ -475,16 +475,16 @@ function eventDates(startTimestamp, endTimestamp) {
 
 // Converts a relative content url into an absolute url
 function relativeContentURL(contentURL) {
+	// Set default page path
+	let relativePage = pagePath;
+
+	// Remove / on end of url
+	if(relativePage.endsWith('/')) {
+		relativePage = relativePage.slice(0, relativePage.lastIndexOf('/'));
+	}
 
 	// Check it's a relative url
 	if(contentURL.startsWith('../')) {
-		// Set default page path
-		let relativePage = pagePath;
-
-		// Remove / on end of url
-		if(relativePage.endsWith('/')) {
-			relativePage = relativePage.slice(0, relativePage.lastIndexOf('/'));
-		}
 
 		// Get number of relative back folders - regex to match ../
 		let relativeBackCount = (contentURL.match(/\.\.\//g) || []).length;
@@ -501,7 +501,10 @@ function relativeContentURL(contentURL) {
 
 		// Combine
 		contentURL = relativePage + '/' + contentURL + '/';
+	} else if(!contentURL.startsWith('/')) { // Check if it's a child
+		contentURL = relativePage + '/' + contentURL;
 	}
+
 	return contentURL;
 }
 

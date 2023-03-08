@@ -1,5 +1,17 @@
 /* Footer */
 .id7-page-footer,
+#cookie-banner {
+	display: none !important;
+}
+
+body.--wmg-blocks-loaded {
+	.id7-page-footer,
+	#cookie-banner {
+		display: block !important;
+	}
+}
+
+.id7-page-footer,
 .id7-page-footer.id7-footer-coloured {	
 	.id7-site-footer {
 		display: none;

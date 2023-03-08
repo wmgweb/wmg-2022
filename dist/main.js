@@ -11326,6 +11326,10 @@ jQuery(document).ready(function($) {
 	});
  
 });
+
+jQuery(window).on('load', function () {
+      jQuery('body').addClass('--wmg-blocks-loaded');
+});
 jQuery(document).ready(function($) {
 
 	// Global enquiry button
